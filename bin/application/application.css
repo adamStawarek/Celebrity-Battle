@@ -1,0 +1,5 @@
+#dd{
+	-fx-background-image: url("../dd.png");
+	-fx-background-radius: 10;
+	-fx-background-color: blue;
+}
