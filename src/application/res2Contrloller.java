@@ -20,7 +20,7 @@ import javafx.scene.shape.Circle;
 public class res2Contrloller {
 
 	public void CloseWindow() {
-		System.out.println("Close window");
+		System.out.println("Close window, pretty please");
 	}
 	
 	
