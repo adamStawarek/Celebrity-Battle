@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import javafx.scene.canvas.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.BorderPane?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.settings">
+   <children>
+      <Button layoutX="196.0" layoutY="130.0" mnemonicParsing="false" onAction="#Play" prefHeight="70.0" prefWidth="209.0" style="-fx-background-radius: 30;" text="PLAY">
+         <font>
+            <Font name="Serif Bold" size="25.0" />
+         </font>
+         <effect>
+            <DropShadow />
+         </effect>
+      </Button>
+      <Button layoutX="202.0" layoutY="306.0" mnemonicParsing="false" onAction="#GoBack" prefHeight="70.0" prefWidth="209.0" style="-fx-background-radius: 30;" text="Back">
+         <font>
+            <Font name="Serif Bold" size="25.0" />
+         </font>
+         <effect>
+            <DropShadow />
+         </effect>
+      </Button>
+      <Text layoutX="182.0" layoutY="97.0" strokeType="OUTSIDE" strokeWidth="0.0" text="MENU" wrappingWidth="215.0">
+         <font>
+            <Font name="Verdana" size="69.0" />
+         </font>
+      </Text>
+   </children>
+   <effect>
+      <Blend />
+   </effect>
+</AnchorPane>

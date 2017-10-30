@@ -29,7 +29,7 @@
             <DropShadow />
          </effect>
       </Button>
-      <Button layoutX="354.0" layoutY="210.0" mnemonicParsing="false" prefHeight="70.0" prefWidth="209.0" style="-fx-background-radius: 30;" text="SETTINGS">
+      <Button layoutX="354.0" layoutY="210.0" mnemonicParsing="false" onAction="#OpenMenu" prefHeight="70.0" prefWidth="209.0" style="-fx-background-radius: 30;" text="MENU">
          <font>
             <Font name="Serif Bold" size="25.0" />
          </font>

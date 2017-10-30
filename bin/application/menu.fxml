@@ -11,9 +11,9 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.BorderPane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.res2Contrloller">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.meu">
    <children>
-      <Button layoutX="354.0" layoutY="130.0" mnemonicParsing="false" onAction="#PlayGameAgain" prefHeight="70.0" prefWidth="209.0" style="-fx-background-radius: 30;" text="PLAY AGAIN">
+      <Button layoutX="196.0" layoutY="130.0" mnemonicParsing="false" onAction="#OpenSettings" prefHeight="70.0" prefWidth="209.0" style="-fx-background-radius: 30;" text="PLAY">
          <font>
             <Font name="Serif Bold" size="25.0" />
          </font>
@@ -21,7 +21,7 @@
             <DropShadow />
          </effect>
       </Button>
-      <Button fx:id="btnClose" layoutX="354.0" layoutY="294.0" mnemonicParsing="false" onAction="#CloseWindow" prefHeight="70.0" prefWidth="209.0" style="-fx-background-radius: 30;" text="EXIT">
+      <Button layoutX="202.0" layoutY="306.0" mnemonicParsing="false" onAction="#Close" prefHeight="70.0" prefWidth="209.0" style="-fx-background-radius: 30;" text="EXIT">
          <font>
             <Font name="Serif Bold" size="25.0" />
          </font>
@@ -29,7 +29,7 @@
             <DropShadow />
          </effect>
       </Button>
-      <Button layoutX="354.0" layoutY="210.0" mnemonicParsing="false" onAction="#OpenMenu" prefHeight="70.0" prefWidth="209.0" style="-fx-background-radius: 30;" text="MENU">
+      <Button layoutX="196.0" layoutY="216.0" mnemonicParsing="false" onAction="#OpenScores" prefHeight="70.0" prefWidth="209.0" style="-fx-background-radius: 30;" text="SCORES">
          <font>
             <Font name="Serif Bold" size="25.0" />
          </font>
@@ -37,7 +37,7 @@
             <DropShadow />
          </effect>
       </Button>
-      <Text layoutX="22.0" layoutY="91.0" strokeType="OUTSIDE" strokeWidth="0.0" text="GAME OVER" wrappingWidth="427.0">
+      <Text layoutX="182.0" layoutY="97.0" strokeType="OUTSIDE" strokeWidth="0.0" text="MENU" wrappingWidth="215.0">
          <font>
             <Font name="Verdana" size="69.0" />
          </font>

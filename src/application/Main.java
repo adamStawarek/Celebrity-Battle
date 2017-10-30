@@ -294,7 +294,7 @@ public class Main extends Application {
 					}
 				}
 
-
+				//check if player avatar remains in the canvas
 				private void check() {
 					// TODO Auto-generated method stub
 					if(player.GetPosX()<0) {
@@ -578,6 +578,8 @@ public class Main extends Application {
         a.play();
     }
 	
+    
+    //The main is now launched in res2Controller
 	//public static void main(String[] args) {
 		//launch(args);
 	//}
