@@ -10,6 +10,7 @@ import java.util.List;
 import application.Main.Bullet;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.stage.Stage;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -17,6 +18,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
@@ -31,12 +33,13 @@ public class Main extends Application {
 	BorderPane root;	
 	Player2 player,player2;
 	int WIDTH=1150,HEIGHT=700;
-	public boolean isPress=false,isPress2=false,isStop=false,IsEnd=false;
+	public boolean isPress=false,isPress2=false,isStop=false,IsEnd=false,SuperAttack=false;
 	private List<Bullet> bullets = new ArrayList<>();
 	private List<Bullet> bullets2 = new ArrayList<>();
 	private List<Point2D> points = new ArrayList<>();
 	private java.applet.AudioClip audioClip,audioClip2,audioClip3;
-	int score1=0,score2=0,n=1,k=0,t=0,r=0,timeToDisplayFinalWindow=0;
+	int score1=0,score2=0,n=1,k=0,t=0,r=0,timeToDisplayFinalWindow=0,attackloader=0;
+	Circle c;
 	int tick=0;
 	double angle;
 	AnimationTimer timer;	
@@ -44,6 +47,7 @@ public class Main extends Application {
 	Image im;
 	Text score;
 	
+			
 	@Override
 	public void start(Stage primaryStage) {
 		try {
@@ -86,6 +90,7 @@ public class Main extends Application {
 	        timer = new AnimationTimer() {
 	            @Override
 	            public void handle(long now) {
+	            	
 	                onUpdate();
 	                tick++;
 	                check();
@@ -94,12 +99,33 @@ public class Main extends Application {
 	                	 autoEnemy();
 	                
 	                removeBulletsOutOfBounds();
+	                updateSuperAttack();
 	               //delay();
-	               //System.out.println(player.view.getTranslateX());
+	               
 	            }
 	            	
 	            
-	            @SuppressWarnings("unlikely-arg-type")
+	            private void updateSuperAttack() {
+					// TODO Auto-generated method stub
+					if(SuperAttack==true) {
+						if(GetDistance()-c.getRadius()>-100&&GetDistance()-c.getRadius()<100) {
+							score2++;
+						}
+						System.out.println(GetDistance());
+						attackloader+=5;
+						c.setRadius(attackloader);
+						if(attackloader>=300) {
+							attackloader=0;
+							SuperAttack=false;
+							root.getChildren().remove(c);
+						}
+					}
+					
+						
+				}
+
+
+				@SuppressWarnings("unlikely-arg-type")
 				private void removeBulletsOutOfBounds() {
 					for(Bullet b:bullets) {
 						if (b.GetPosX()>WIDTH||b.GetPosX()<0||b.GetPosY()<0||b.GetPosY()>HEIGHT)							
@@ -142,7 +168,7 @@ public class Main extends Application {
 									player.rotateRight();
 								else if(difference>5)
 									player.rotateLeft();
-								System.out.println("2 Cwiartka player Angle "+playerAngle+" Angle to shoot "+angleToShoot+" angle "+angle);
+								//System.out.println("2 Cwiartka player Angle "+playerAngle+" Angle to shoot "+angleToShoot+" angle "+angle);
 						}
 						else {													
 							
@@ -155,7 +181,7 @@ public class Main extends Application {
 								else if(difference>5)
 									player.rotateLeft();
 								
-								System.out.println("1 Cwiartka player Angle "+playerAngle+" Angle to shoot "+angleToShoot+" angle "+angle);
+								//System.out.println("1 Cwiartka player Angle "+playerAngle+" Angle to shoot "+angleToShoot+" angle "+angle);
 						}
 						
 					}
@@ -171,7 +197,7 @@ public class Main extends Application {
 							else if(difference>5)
 								player.rotateLeft();
 							
-							System.out.println("3 Cwiartka player Angle "+playerAngle+" Angle to shoot "+angleToShoot+" angle "+angle);
+							//System.out.println("3 Cwiartka player Angle "+playerAngle+" Angle to shoot "+angleToShoot+" angle "+angle);
 							
 						}
 						else {							
@@ -185,7 +211,7 @@ public class Main extends Application {
 							else if(difference>5)
 								player.rotateLeft();
 							
-							System.out.println("4 Cwiartka player Angle "+playerAngle+" Angle to shoot "+angleToShoot+" angle "+angle);
+							//System.out.println("4 Cwiartka player Angle "+playerAngle+" Angle to shoot "+angleToShoot+" angle "+angle);
 						}
 					}										
 					
@@ -462,6 +488,40 @@ public class Main extends Application {
 		            		addObject(bullet, player2.getView().getTranslateX()+30, player2.getView().getTranslateY()+30);
 		            	}
 	        	  }
+	        	if (e.getCode() == KeyCode.E) {
+	            	makeSound(audioClip2);
+	            	
+	            	
+	            	
+	            		Bullet bullet = new Bullet(Color.BLUE);
+	            		Bullet bullet2 = new Bullet(Color.YELLOW);
+	            		Bullet bullet3 = new Bullet(Color.GREEN);
+	            		bullet.setVelocity(player2.getVelocity().normalize().multiply(5));
+	            		bullet2.setVelocity(player2.getVelocity().normalize().multiply(5));
+	            		bullet3.setVelocity(player2.getVelocity().normalize().multiply(5));
+	            		
+	            		bullets2.add(bullet);
+	            		bullets2.add(bullet2);
+	            		bullets2.add(bullet3);
+	            		addObject(bullet, player2.getView().getTranslateX()+30, player2.getView().getTranslateY()+20);
+	            		addObject(bullet2, player2.getView().getTranslateX()+30, player2.getView().getTranslateY()+40);
+	            		addObject(bullet3, player2.getView().getTranslateX()+30, player2.getView().getTranslateY()+60);
+	        	}
+	        	
+	        	if (e.getCode() == KeyCode.Y) {
+	        		if(SuperAttack==false) {
+	        		SuperAttack=true;
+	        		c=new Circle();
+	            	c.setCenterX(player2.GetPosX()+40);
+	            	c.setCenterY(player2.GetPosY()+40);
+	            	c.setRadius(attackloader);
+	            	c.setStroke(Color.BLACK);
+	            	c.setFill(null);
+	            	c.setStrokeWidth(5);
+	            	//c.strc.getStyleClass().add("ring");
+	            	root.getChildren().add(c);
+	        		}
+	            }
 	        	
 	        	 if (e.getCode() == KeyCode.N) {
 		            	makeSound(audioClip);
@@ -511,15 +571,16 @@ public class Main extends Application {
 			e.printStackTrace();
 		}
 	}
+		
 	
 	
     public void makeSound(java.applet.AudioClip a){
         a.play();
     }
 	
-	public static void main(String[] args) {
-		launch(args);
-	}
+	//public static void main(String[] args) {
+		//launch(args);
+	//}
 	
 	private void addObject(Object object, double x, double y) {
         object.getView().setTranslateX(x);
@@ -541,6 +602,10 @@ public class Main extends Application {
             
         }
     }
+	
+	int GetDistance() {
+		return (int) Math.sqrt(Math.pow(player.GetPosY()-c.getCenterY(),2)+Math.pow(player.GetPosX()-c.getCenterX(),2));
+	}
 	
 	public void shoot(Obiect_Player p,List<Bullet> b) {
 		
@@ -566,7 +631,10 @@ public class Main extends Application {
 	
 	public class Bullet extends Object{
 		Bullet(){
-			super(new Circle(5,5,5,Color.RED));
+			super(new Circle(5,5,5,Color.RED));			
+		}
+		Bullet(Color color){
+			super(new Circle(5,5,5,color));			
 		}
 	}
 	

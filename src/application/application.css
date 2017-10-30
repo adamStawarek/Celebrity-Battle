@@ -3,3 +3,6 @@
 	-fx-background-radius: 10;
 	-fx-background-color: blue;
 }
+.ring {
+      -fx-fill:  rgba(100,0,0,0);
+ }
