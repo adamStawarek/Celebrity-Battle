@@ -39,6 +39,7 @@ public class Main extends Application {
 	private List<Point2D> points = new ArrayList<>();
 	private java.applet.AudioClip audioClip,audioClip2,audioClip3;
 	int score1=0,score2=0,n=1,k=0,t=0,r=0,timeToDisplayFinalWindow=0,attackloader=0;
+	public Stage stage;
 	Circle c;
 	int tick=0;
 	double angle;
@@ -238,7 +239,7 @@ public class Main extends Application {
 								primaryStage.close();
 						        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("res2.fxml"));
 						                Parent root1 = (Parent) fxmlLoader.load();
-						                Stage stage = new Stage();
+						                stage = new Stage();
 						                stage.setScene(new Scene(root1));  
 						                stage.show();
 						        } catch(Exception e) {
@@ -620,6 +621,7 @@ public class Main extends Application {
         addObject(bullet, p.getView().getTranslateX()+30, p.getView().getTranslateY()+30);
 		}
 	}
+	
 	
 	public void shoot2(Obiect_Player p,List<Bullet> b) {
 			

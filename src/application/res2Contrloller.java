@@ -25,20 +25,25 @@ import javafx.stage.Stage;
 
 public class res2Contrloller  {
 	static boolean IsClicked=false;
+	Stage stage2;
 	public void CloseWindow() {
 		Platform.exit();
 		System.out.println("Close window, pretty please");
 	}
+	
 	public void OpenMenu() {
+		
 		try {
 	        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("menu.fxml"));
 	                Parent root1 = (Parent) fxmlLoader.load();
-	                Stage stage = new Stage();
-	                stage.setScene(new Scene(root1));  
-	                stage.show();
+	                stage2 = new Stage();
+	                stage2.setScene(new Scene(root1));  
+	                stage2.show();
 	        } catch(Exception e) {
 	           e.printStackTrace();
 	   }
+		
+		
 	}
 	public void PlayGameAgain() {
 		IsClicked=true;		
