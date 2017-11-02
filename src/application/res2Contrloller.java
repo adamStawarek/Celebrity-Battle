@@ -17,7 +17,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 
-public class res2Contrloller {
+public class res2Contrloller extends Application{
 	static boolean IsClicked=false;
 	
 	@FXML
@@ -33,15 +33,14 @@ public class res2Contrloller {
 	
 	public void OpenMenu() {
 		IsClicked=false;
+		meu m=new meu();
+		Stage s=new Stage();
 		try {
-	        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("menu.fxml"));
-	                Parent root1 = (Parent) fxmlLoader.load();
-	                stage2 = new Stage();
-	                stage2.setScene(new Scene(root1));  
-	                stage2.show();
-	        } catch(Exception e) {
-	           e.printStackTrace();
-	   }
+			m.start(s);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		Stage stage = (Stage) btnPlayAgain.getScene().getWindow();
 	    stage.close();
 		
@@ -55,10 +54,21 @@ public class res2Contrloller {
 		Stage stage = (Stage) btnPlayAgain.getScene().getWindow();
 	    stage.close();
 	}
-
+		
 	
-	
-
-	
+	@Override
+	public void start(Stage stage) throws Exception {
+		// TODO Auto-generated method stub
+		try {
+			
+	        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("res2.fxml"));
+	                Parent root1 = (Parent) fxmlLoader.load();
+	                stage = new Stage();
+	                stage.setScene(new Scene(root1));  
+	                stage.show();
+	        } catch(Exception e) {
+	           e.printStackTrace();
+	   }
+	}	
 	
 }

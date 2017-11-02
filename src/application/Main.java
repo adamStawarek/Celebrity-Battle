@@ -233,18 +233,17 @@ public class Main extends Application {
 							IsEnd=true;
 							
 							timeToDisplayFinalWindow++;
-							if(timeToDisplayFinalWindow>360) {
-							try {
+							if(timeToDisplayFinalWindow>240) {
+							
 								timer.stop();
 								primaryStage.close();
-						        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("res2.fxml"));
-						                Parent root1 = (Parent) fxmlLoader.load();
-						                stage = new Stage();
-						                stage.setScene(new Scene(root1));  
-						                stage.show();
-						        } catch(Exception e) {
-						           e.printStackTrace();
-						   }
+								res2Contrloller r=new res2Contrloller();
+								try {
+									r.start(new Stage());
+								} catch (Exception e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								}
 							}
 							
 						}
@@ -270,18 +269,16 @@ public class Main extends Application {
 							IsEnd=true;
 							
 							timeToDisplayFinalWindow++;
-							if(timeToDisplayFinalWindow>360) {
-							try {
-							timer.stop();
-							primaryStage.close();
-						        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("res2.fxml"));
-						                Parent root1 = (Parent) fxmlLoader.load();
-						                Stage stage = new Stage();
-						                stage.setScene(new Scene(root1));  
-						                stage.show();
-						        } catch(Exception e) {
-						           e.printStackTrace();
-						   }
+							if(timeToDisplayFinalWindow>240) {
+								timer.stop();
+								primaryStage.close();
+								res2Contrloller r=new res2Contrloller();
+								try {
+									r.start(new Stage());
+								} catch (Exception e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								}
 							}
 						}
 						else {
@@ -580,10 +577,7 @@ public class Main extends Application {
     }
 	
     
-    //The main is now launched in res2Controlle
-   	public static void main(String[] args) {
-   			launch(args);
-   	}
+   
 	
 	private void addObject(Object object, double x, double y) {
         object.getView().setTranslateX(x);

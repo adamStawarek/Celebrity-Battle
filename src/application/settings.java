@@ -37,8 +37,15 @@ public class settings implements Initializable{
 	public void GoBack() {
 		Stage stage = (Stage) btnPlay.getScene().getWindow();	    
 	    stage.close();
-		res2Contrloller r=new res2Contrloller();
-		r.OpenMenu();
+	    meu m=new meu();
+		Stage s=new Stage();
+		try {
+			m.start(s);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 		
 	}
 	
