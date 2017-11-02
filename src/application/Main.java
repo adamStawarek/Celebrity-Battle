@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 
 import application.Main.Bullet;
 import javafx.animation.AnimationTimer;
@@ -24,11 +25,12 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.geometry.Point2D;
 import javafx.scene.media.AudioClip;
 
 
-public class Main extends Application {
+public class Main extends Application implements Initializable{
 	
 	BorderPane root;	
 	Player2 player,player2;
@@ -68,11 +70,11 @@ public class Main extends Application {
 	        score=new Text(WIDTH/2, 50, "0:0");
 	       
 
-	        URL url = new URL("file:\\Users\\Adam\\Downloads\\shoot.wav");
+	        URL url = getClass().getResource("/sounds/shoot.wav");
 	        audioClip = Applet.newAudioClip(url);	        
-	        URL url2 = new URL("file:\\Users\\Adam\\Desktop\\wavs\\t3.wav");
+	        URL url2 = getClass().getResource("/sounds/t3.wav");
 	        audioClip2 = Applet.newAudioClip(url2);
-	        URL url3 = new URL("file:\\Users\\Adam\\Desktop\\wavs\\h3.wav");
+	        URL url3 = getClass().getResource("/sounds/h3.wav");
 	        audioClip3 = Applet.newAudioClip(url3);
 	        
 	        
@@ -635,6 +637,15 @@ public class Main extends Application {
 		Bullet(Color color){
 			super(new Circle(5,5,5,color));			
 		}
+	}
+
+
+	@Override
+	public void initialize(URL location, ResourceBundle resources) {
+		// TODO Auto-generated method stub
+		//Game_properties gameProp=new Game_properties();
+		//gameProp.setWidth()
+		//WIDTH=gameProp
 	}
 	
 }

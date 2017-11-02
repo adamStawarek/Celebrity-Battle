@@ -33,16 +33,14 @@ public class meu extends Application{
 	}
 	public void OpenSettings() {
 		System.out.println("Open Settings");		
+		settings sets=new settings();
 		try {
-	    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("set.fxml"));
-        Parent root1 = (Parent) fxmlLoader.load();
-        Stage stage = new Stage();
-        stage.setScene(new Scene(root1));  
-        stage.show();
-       
-		} catch(Exception e) {
+			sets.start(new Stage());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
 		Stage stage = (Stage) btnSettings.getScene().getWindow();	    
 	    stage.close();
 	}

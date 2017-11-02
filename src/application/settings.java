@@ -3,16 +3,22 @@ package application;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.RadioButton;
+import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
 import javafx.stage.Stage;
 
-public class settings implements Initializable{
+public class settings extends Application implements Initializable{
 	
 	@FXML
     private RadioButton rbMulti,rbSingle,rbOnline,rbSmall,rbMedium,rbLarge,rbTime,rbKill ;
@@ -49,7 +55,30 @@ public class settings implements Initializable{
 		
 	}
 	
-	
+			
+
+	@Override
+	public void start(Stage stage) throws Exception {
+		
+		try {
+		    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("set.fxml"));
+	        Parent root1 = (Parent) fxmlLoader.load();
+	        stage = new Stage();
+	        stage.setScene(new Scene(root1)); 
+	        
+	        
+	        
+	        stage.show();
+	       
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+
+		
+		
+		
+	}
+
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		// TODO Auto-generated method stub
@@ -82,6 +111,32 @@ public class settings implements Initializable{
 	    
 	    cmbScenario.getItems().addAll("USA-Elections", "Korwin the King", "Study apocalypse");
 	    cmbScenario.getSelectionModel().select("USA-Elections");
+	    
+	    rbSmall.selectedProperty().addListener(new ChangeListener<Boolean>() {
+	        @Override
+	        public void changed(ObservableValue<? extends Boolean> obs, Boolean wasPreviouslySelected, Boolean isNowSelected) {
+	            if (isNowSelected) { 
+	                System.out.println("Kjkjalklkfdj");
+	            } 
+	        }
+	    });
+	    rbMedium.selectedProperty().addListener(new ChangeListener<Boolean>() {
+	        @Override
+	        public void changed(ObservableValue<? extends Boolean> obs, Boolean wasPreviouslySelected, Boolean isNowSelected) {
+	            if (isNowSelected) { 
+	                System.out.println("Kjkjalklkfdj");
+	            } 
+	        }
+	    });
+	    rbLarge.selectedProperty().addListener(new ChangeListener<Boolean>() {
+	        @Override
+	        public void changed(ObservableValue<? extends Boolean> obs, Boolean wasPreviouslySelected, Boolean isNowSelected) {
+	            if (isNowSelected) { 
+	                System.out.println("Kjkjalklkfdj");
+	            } 
+	        }
+	    });
+	    
 	    
 	    
 	}

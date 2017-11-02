@@ -17,6 +17,20 @@ public class scores extends Application{
 	@FXML
 	ListView<String> lstScores;
 	
+	@FXML
+	public void GoBack() {
+		meu m=new meu();		
+		Stage s=new Stage();
+		try {
+			m.start(s);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Stage stage = (Stage) lstScores.getScene().getWindow();
+	    stage.close();
+	}
+	
 	
 	@Override
 	public void start(Stage stage) throws Exception {
