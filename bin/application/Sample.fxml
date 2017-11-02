@@ -11,14 +11,6 @@
 
 <BorderPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.SampleController">
    <center>
-      <Pane prefHeight="3938.0" prefWidth="8233.0" BorderPane.alignment="CENTER">
-         <children>
-            <ImageView fitHeight="793.0" fitWidth="1371.0" layoutY="-3.0" opacity="0.41" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../../../Downloads/whitehause.png" />
-               </image>
-            </ImageView>
-         </children>
-      </Pane>
+      <Pane prefHeight="3938.0" prefWidth="8233.0" BorderPane.alignment="CENTER" />
    </center>
 </BorderPane>

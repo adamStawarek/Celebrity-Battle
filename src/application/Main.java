@@ -56,6 +56,7 @@ public class Main extends Application implements Initializable{
 		try {
 			root=new BorderPane();
 		    root = (BorderPane)FXMLLoader.load(getClass().getResource("Sample.fxml"));
+		    root.setId("pane");
 			Scene scene = new Scene(root,WIDTH,HEIGHT);
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			primaryStage.setResizable(false);

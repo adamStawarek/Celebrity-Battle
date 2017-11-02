@@ -1,8 +1,5 @@
-#dd{
-	-fx-background-image: url("../dd.png");
-	-fx-background-radius: 10;
-	-fx-background-color: blue;
+#pane{
+        -fx-background-image: url("/resources/whitehause.png");  
+        -fx-background-size:stretch;
 }
-.ring {
-      -fx-fill:  rgba(100,0,0,0);
- }
+
