@@ -35,12 +35,12 @@ public class Main extends Application implements Initializable{
 	BorderPane root;	
 	Player2 player,player2;
 	int WIDTH=1150,HEIGHT=700;
-	public boolean isPress=false,isPress2=false,isStop=false,IsEnd=false,SuperAttack=false;
+	public boolean isPress=false,isPress2=false,isStop=false,IsEnd=false,SuperAttack=false,IsMultiPlayer=false;
 	private List<Bullet> bullets = new ArrayList<>();
 	private List<Bullet> bullets2 = new ArrayList<>();
 	private List<Point2D> points = new ArrayList<>();
 	private java.applet.AudioClip audioClip,audioClip2,audioClip3;
-	int score1=0,score2=0,n=1,k=0,t=0,r=0,timeToDisplayFinalWindow=0,attackloader=0;
+	int score1=0,score2=0,n=1,k=0,t=0,r=0,timeToDisplayFinalWindow=0,attackloader=0,MAXSCORE=1200;
 	public Stage stage;
 	Circle c;
 	int tick=0;
@@ -62,9 +62,7 @@ public class Main extends Application implements Initializable{
 			primaryStage.setResizable(false);
 			primaryStage.setTitle("GAME");
 			primaryStage.setScene(scene);
-			//player = new Player(Color.BLUE);
-	        //player.setVelocity(new Point2D(0, 0));
-	        //addObject(player, 300, 300);
+			
 	        player2 = new Player2("/resources/trump.png");	       
 	        player2.setVelocity(new Point2D(1, 1));
 	        addPlayerObject(player2, 100, 100);
@@ -84,13 +82,7 @@ public class Main extends Application implements Initializable{
 	        player=new Player2("/resources/hilary.png");
 	        player.setVelocity(new Point2D(-1,-1));
 	        addPlayerObject(player, 300, 300);
-	        
-	        
-	        
-			
-			
-			
-	        
+	        	        
 	        timer = new AnimationTimer() {
 	            @Override
 	            public void handle(long now) {
@@ -99,7 +91,8 @@ public class Main extends Application implements Initializable{
 	                tick++;
 	                check();
 	                updatePic();
-	                if (isStop==false&&IsEnd==false)
+	                
+	                if (isStop==false&&IsEnd==false&&IsMultiPlayer==false)
 	                	 autoEnemy();
 	                
 	                removeBulletsOutOfBounds();
@@ -223,7 +216,7 @@ public class Main extends Application implements Initializable{
 
 				private void updatePic() {
 					// TODO Auto-generated method stub
-					if(score2>1200) {
+					if(score2>MAXSCORE) {
 						
 						if (n>10) {
 							player.ChangeImg("/resources/hilary2.png");
@@ -260,7 +253,7 @@ public class Main extends Application implements Initializable{
 						}				
 						
 					}
-					if(score1>1200) {
+					if(score1>MAXSCORE) {
 						if (n>10) {
 							player2.ChangeImg("/resources/trump2.png");			
 							Text txtSCORES=new Text("Player2 sucks!");
@@ -579,7 +572,9 @@ public class Main extends Application implements Initializable{
         a.play();
     }
 	
-    
+    public void setMultiplayer(boolean b) {
+    	IsMultiPlayer=b;
+    }
    
 	
 	private void addObject(Object object, double x, double y) {

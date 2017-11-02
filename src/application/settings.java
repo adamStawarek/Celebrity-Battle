@@ -35,12 +35,38 @@ public class settings extends Application implements Initializable{
 		Main m=new Main();
 		Stage s= new Stage();
 		
+		if (rbTime.isSelected())
+			cmbKill.setDisable(true);
+		else if (rbKill.isSelected())
+			cmbTime.setDisable(true);
+		
+		if (!(rbSingle.isSelected()))
+			cmbLevel.setDisable(true);
+			
+		
 		if (rbSmall.isSelected())
 			m.setSmall();
 		else if (rbLarge.isSelected())
 			m.setLarge();
 		else if (rbMedium.isSelected())
 			m.setMedium();
+		
+		if(rbSingle.isSelected())
+			m.setMultiplayer(false);
+		else
+			m.setMultiplayer(true);
+		
+		if (rbKill.isSelected()) {
+			if(cmbKill.getSelectionModel().getSelectedItem().toString()=="100") {
+				m.MAXSCORE=1200;
+			}
+			else if(cmbKill.getSelectionModel().getSelectedItem().toString()=="300") {
+				m.MAXSCORE=1200*3;
+			}
+			else
+				m.MAXSCORE=1200*5;
+		}
+		
 		m.start(s);
 		Stage stage = (Stage) btnPlay.getScene().getWindow();	    
 	    stage.close();
@@ -105,10 +131,11 @@ public class settings extends Application implements Initializable{
 		
 		rbTime.setToggleGroup(group3);
 		rbKill.setToggleGroup(group3);
-		rbTime.setSelected(true);
+		rbKill.setSelected(true);
 		
 	    cmbTime.getItems().addAll("3min", "5min", "10min");
 	    cmbTime.getSelectionModel().select("3min");
+	    cmbTime.setDisable(true);
 		
 	    cmbKill.getItems().addAll("100", "300", "500");
 	    cmbKill.getSelectionModel().select("100");
@@ -119,28 +146,32 @@ public class settings extends Application implements Initializable{
 	    cmbScenario.getItems().addAll("USA-Elections", "Korwin the King", "Study apocalypse");
 	    cmbScenario.getSelectionModel().select("USA-Elections");
 	    
-	    rbSmall.selectedProperty().addListener(new ChangeListener<Boolean>() {
+	    rbTime.selectedProperty().addListener(new ChangeListener<Boolean>() {
 	        @Override
 	        public void changed(ObservableValue<? extends Boolean> obs, Boolean wasPreviouslySelected, Boolean isNowSelected) {
 	            if (isNowSelected) { 
-	                System.out.println("Kjkjalklkfdj");
+	            	cmbKill.setDisable(true);
+	            	cmbTime.setDisable(false);
 	            } 
 	        }
 	    });
-	    rbMedium.selectedProperty().addListener(new ChangeListener<Boolean>() {
+	    rbKill.selectedProperty().addListener(new ChangeListener<Boolean>() {
 	        @Override
 	        public void changed(ObservableValue<? extends Boolean> obs, Boolean wasPreviouslySelected, Boolean isNowSelected) {
 	            if (isNowSelected) { 
-	                System.out.println("Kjkjalklkfdj");
+	            	cmbTime.setDisable(true);
+	            	cmbKill.setDisable(false);
 	            } 
 	        }
 	    });
-	    rbLarge.selectedProperty().addListener(new ChangeListener<Boolean>() {
+	    rbSingle.selectedProperty().addListener(new ChangeListener<Boolean>() {
 	        @Override
 	        public void changed(ObservableValue<? extends Boolean> obs, Boolean wasPreviouslySelected, Boolean isNowSelected) {
-	            if (isNowSelected) { 
-	                System.out.println("Kjkjalklkfdj");
+	            if (!(isNowSelected)) { 
+	            	cmbLevel.setDisable(true);
 	            } 
+	            else
+	            	cmbLevel.setDisable(false);
 	        }
 	    });
 	    
