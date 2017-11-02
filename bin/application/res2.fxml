@@ -13,7 +13,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.res2Contrloller">
    <children>
-      <Button layoutX="354.0" layoutY="130.0" mnemonicParsing="false" onAction="#PlayGameAgain" prefHeight="70.0" prefWidth="209.0" style="-fx-background-radius: 30;" text="PLAY AGAIN">
+      <Button fx:id="btnPlayAgain" layoutX="354.0" layoutY="130.0" mnemonicParsing="false" onAction="#PlayGameAgain" prefHeight="70.0" prefWidth="209.0" style="-fx-background-radius: 30;" text="PLAY AGAIN">
          <font>
             <Font name="Serif Bold" size="25.0" />
          </font>
@@ -21,7 +21,7 @@
             <DropShadow />
          </effect>
       </Button>
-      <Button fx:id="btnClose" layoutX="354.0" layoutY="294.0" mnemonicParsing="false" onAction="#CloseWindow" prefHeight="70.0" prefWidth="209.0" style="-fx-background-radius: 30;" text="EXIT">
+      <Button layoutX="354.0" layoutY="294.0" mnemonicParsing="false" onAction="#CloseWindow" prefHeight="70.0" prefWidth="209.0" style="-fx-background-radius: 30;" text="EXIT">
          <font>
             <Font name="Serif Bold" size="25.0" />
          </font>
@@ -29,7 +29,7 @@
             <DropShadow />
          </effect>
       </Button>
-      <Button layoutX="354.0" layoutY="210.0" mnemonicParsing="false" onAction="#OpenMenu" prefHeight="70.0" prefWidth="209.0" style="-fx-background-radius: 30;" text="MENU">
+      <Button fx:id="btnMenu" layoutX="354.0" layoutY="210.0" mnemonicParsing="false" onAction="#OpenMenu" prefHeight="70.0" prefWidth="209.0" style="-fx-background-radius: 30;" text="MENU">
          <font>
             <Font name="Serif Bold" size="25.0" />
          </font>

@@ -6,6 +6,7 @@ import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
@@ -20,15 +21,28 @@ public class settings implements Initializable{
 	private ComboBox<String> cmbTime,cmbKill,cmbScenario,cmbLevel;  
 
 	
+	@FXML
+	Button btnPlay,btnBack;
+	
+	@FXML
 	public void Play() {
 		Main m=new Main();
 		Stage s= new Stage();
 		m.start(s);
+		Stage stage = (Stage) btnPlay.getScene().getWindow();	    
+	    stage.close();
 	}
+	
+	@FXML
 	public void GoBack() {
+		Stage stage = (Stage) btnPlay.getScene().getWindow();	    
+	    stage.close();
 		res2Contrloller r=new res2Contrloller();
 		r.OpenMenu();
+		
 	}
+	
+	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		// TODO Auto-generated method stub

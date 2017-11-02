@@ -1,14 +1,22 @@
 package application;
 
 import javafx.application.Platform;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.stage.Stage;
 
 public class meu {
+	
+	@FXML
+	Button btnSettings;
+	
 	public void OpenScores() {
 		System.out.println("SHow scores");
+		Stage stage = (Stage) btnSettings.getScene().getWindow();	    
+	    stage.close();
 	}
 	public void Close() {
 		System.out.println("Close window");
@@ -26,5 +34,7 @@ public class meu {
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
+		Stage stage = (Stage) btnSettings.getScene().getWindow();	    
+	    stage.close();
 	}
 }

@@ -62,7 +62,7 @@ public class Main extends Application {
 			//player = new Player(Color.BLUE);
 	        //player.setVelocity(new Point2D(0, 0));
 	        //addObject(player, 300, 300);
-	        player2 = new Player2("trump.png");	       
+	        player2 = new Player2("/resources/trump.png");	       
 	        player2.setVelocity(new Point2D(1, 1));
 	        addPlayerObject(player2, 100, 100);
 	        score=new Text(WIDTH/2, 50, "0:0");
@@ -78,7 +78,7 @@ public class Main extends Application {
 	        
 	        score.setFont(Font.font(40));
 	        root.getChildren().add(score);
-	        player=new Player2("hilary.png");
+	        player=new Player2("/resources/hilary.png");
 	        player.setVelocity(new Point2D(-1,-1));
 	        addPlayerObject(player, 300, 300);
 	        
@@ -223,7 +223,7 @@ public class Main extends Application {
 					if(score2>1200) {
 						
 						if (n>10) {
-							player.ChangeImg("hilary2.png");
+							player.ChangeImg("/resources/hilary2.png");
 							Text txtSCORES=new Text("Player1 sucks!");
 							txtSCORES.setFill(Color.BLACK);
 							txtSCORES.setFont(Font.font(STYLESHEET_CASPIAN, 60));
@@ -249,7 +249,7 @@ public class Main extends Application {
 							
 						}
 						else {
-							player.ChangeImg("h"+n+".png");
+							player.ChangeImg("/resources/h"+n+".png");
 							
 							k++;
 							if (k==3||k==6||k==9||k==12||k==15||k==18||k==21||k==24||k==27||k==30||k==33||k==36||k==39||k==42)
@@ -260,7 +260,7 @@ public class Main extends Application {
 					}
 					if(score1>1200) {
 						if (n>10) {
-							player2.ChangeImg("trump2.png");			
+							player2.ChangeImg("/resources/trump2.png");			
 							Text txtSCORES=new Text("Player2 sucks!");
 							txtSCORES.setFill(Color.BLACK);
 							txtSCORES.setFont(Font.font(STYLESHEET_CASPIAN, 60));
@@ -285,7 +285,7 @@ public class Main extends Application {
 							}
 						}
 						else {
-							player2.ChangeImg("t"+n+".png");
+							player2.ChangeImg("/resources/t"+n+".png");
 							
 							k++;
 							if (k==3||k==6||k==9||k==12||k==15||k==18||k==21||k==24||k==27||k==30||k==33||k==36||k==39||k==42)
@@ -580,10 +580,10 @@ public class Main extends Application {
     }
 	
     
-    //The main is now launched in res2Controller
-	//public static void main(String[] args) {
-		//launch(args);
-	//}
+    //The main is now launched in res2Controlle
+   	public static void main(String[] args) {
+   			launch(args);
+   	}
 	
 	private void addObject(Object object, double x, double y) {
         object.getView().setTranslateX(x);
@@ -605,6 +605,7 @@ public class Main extends Application {
             
         }
     }
+	
 	
 	int GetDistance() {
 		return (int) Math.sqrt(Math.pow(player.GetPosY()-c.getCenterY(),2)+Math.pow(player.GetPosX()-c.getCenterX(),2));
