@@ -8,13 +8,21 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
 
-public class meu {
+public class meu{
 	
 	@FXML
 	Button btnSettings;
 	
 	public void OpenScores() {
 		System.out.println("SHow scores");
+		scores s=new scores();
+		Stage stg=new Stage();
+		try {
+			s.start(stg);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		Stage stage = (Stage) btnSettings.getScene().getWindow();	    
 	    stage.close();
 	}
