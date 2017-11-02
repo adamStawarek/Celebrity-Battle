@@ -639,14 +639,23 @@ public class Main extends Application implements Initializable{
 			super(new Circle(5,5,5,color));			
 		}
 	}
-
+	
+	public void setSmall() {
+		WIDTH/=1.3;
+		HEIGHT/=1.3;
+	}
+	public void setLarge() {
+		WIDTH*=1.2;
+		HEIGHT*=1.2;
+	}
+	public void setMedium() {
+		WIDTH=1150;
+		HEIGHT=700;
+	}
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		// TODO Auto-generated method stub
-		//Game_properties gameProp=new Game_properties();
-		//gameProp.setWidth()
-		//WIDTH=gameProp
+		
 	}
 	
 }

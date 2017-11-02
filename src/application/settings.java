@@ -34,6 +34,13 @@ public class settings extends Application implements Initializable{
 	public void Play() {
 		Main m=new Main();
 		Stage s= new Stage();
+		
+		if (rbSmall.isSelected())
+			m.setSmall();
+		else if (rbLarge.isSelected())
+			m.setLarge();
+		else if (rbMedium.isSelected())
+			m.setMedium();
 		m.start(s);
 		Stage stage = (Stage) btnPlay.getScene().getWindow();	    
 	    stage.close();
