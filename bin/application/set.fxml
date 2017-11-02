@@ -10,7 +10,6 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.BorderPane?>
 
-
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.settings">
    <children>
       <Button layoutX="14.0" layoutY="348.0" mnemonicParsing="false" onAction="#GoBack" prefHeight="38.0" prefWidth="110.0" style="-fx-background-radius: 400;" text="Go Back" />
@@ -20,9 +19,9 @@
             <Font size="50.0" />
          </font>
       </Text>
-      <RadioButton layoutX="350.0" layoutY="121.0" mnemonicParsing="false" text="Multiplayer" />
-      <RadioButton layoutX="352.0" layoutY="150.0" mnemonicParsing="false" text="Singleplayer" />
-      <RadioButton layoutX="355.0" layoutY="214.0" mnemonicParsing="false" text="Online" />
+      <RadioButton fx:id="rbMulti" layoutX="350.0" layoutY="121.0" mnemonicParsing="false" text="Multiplayer" />
+      <RadioButton fx:id="rbSingle" layoutX="352.0" layoutY="150.0" mnemonicParsing="false" text="Singleplayer" />
+      <RadioButton fx:id="rbOnline" layoutX="355.0" layoutY="214.0" mnemonicParsing="false" text="Online" />
       <Text layoutX="354.0" layoutY="104.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tryb gry">
          <font>
             <Font size="20.0" />
@@ -33,19 +32,19 @@
             <Font size="20.0" />
          </font>
       </Text>
-      <RadioButton layoutX="195.0" layoutY="121.0" mnemonicParsing="false" text="Small" />
-      <RadioButton layoutX="195.0" layoutY="150.0" mnemonicParsing="false" text="Medium" />
-      <RadioButton layoutX="195.0" layoutY="180.0" mnemonicParsing="false" text="Large" />
+      <RadioButton fx:id="rbSmall" layoutX="195.0" layoutY="121.0" mnemonicParsing="false" text="Small" />
+      <RadioButton fx:id="rbMedium" layoutX="195.0" layoutY="150.0" mnemonicParsing="false" text="Medium" />
+      <RadioButton fx:id="rbLarge" layoutX="195.0" layoutY="180.0" mnemonicParsing="false" text="Large" />
       <Text layoutX="25.0" layoutY="104.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Czas gry/ilość żyć">
          <font>
             <Font size="20.0" />
          </font>
       </Text>
-      <RadioButton layoutX="25.0" layoutY="121.0" mnemonicParsing="false" text="Czasowa" />
-      <RadioButton layoutX="26.0" layoutY="192.0" mnemonicParsing="false" text="&quot;Do zabicia&quot;" />
-      <ComboBox layoutX="17.0" layoutY="151.0" prefHeight="27.0" prefWidth="150.0"/>
-      <ComboBox layoutX="17.0" layoutY="222.0" prefWidth="150.0"/>
-      <ComboBox layoutX="352.0" layoutY="176.0" prefHeight="25.0" prefWidth="86.0" />
+      <RadioButton fx:id="rbTime" layoutX="25.0" layoutY="121.0" mnemonicParsing="false" text="Czasowa" />
+      <RadioButton fx:id="rbKill" layoutX="26.0" layoutY="192.0" mnemonicParsing="false" text="&quot;Do zabicia&quot;" />
+      <ComboBox fx:id="cmbTime" layoutX="17.0" layoutY="151.0" prefHeight="27.0" prefWidth="150.0" />
+      <ComboBox fx:id="cmbKill" layoutX="17.0" layoutY="222.0" prefWidth="150.0" />
+      <ComboBox fx:id="cmbLevel" layoutX="352.0" layoutY="176.0" prefHeight="25.0" prefWidth="86.0" />
       <Separator layoutX="189.0" layoutY="78.0" orientation="VERTICAL" prefHeight="196.0" prefWidth="5.0" />
       <Separator layoutX="340.0" layoutY="78.0" orientation="VERTICAL" prefHeight="196.0" prefWidth="5.0" />
       <Separator layoutX="453.0" layoutY="82.0" orientation="VERTICAL" prefHeight="196.0" prefWidth="5.0" />
@@ -54,6 +53,6 @@
             <Font size="20.0" />
          </font>
       </Text>
-      <ComboBox layoutX="466.0" layoutY="116.0" prefHeight="27.0" prefWidth="123.0" />
+      <ComboBox fx:id="cmbScenario" layoutX="466.0" layoutY="116.0" prefHeight="27.0" prefWidth="123.0" />
    </children>
 </AnchorPane>
