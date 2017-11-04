@@ -41,7 +41,7 @@ public class Main extends Application implements Initializable{
 	private List<Bullet> bullets = new ArrayList<>();
 	private List<Bullet> bullets2 = new ArrayList<>();
 	private List<Point2D> points = new ArrayList<>();
-	private java.applet.AudioClip audioClip,audioClip2,audioClip3;
+	private java.applet.AudioClip audioClip,audioClip2,audioClip3,audioClip4,audioClip5;
 	int score1=0,score2=0,n=1,k=0,t=0,r=0,timeToDisplayFinalWindow=0,attackloader=0,MAXSCORE=1200,ComboTimeCounter=600;
 	public Stage stage;
 	Circle c;
@@ -77,6 +77,10 @@ public class Main extends Application implements Initializable{
 	        audioClip2 = Applet.newAudioClip(url2);
 	        URL url3 = getClass().getResource("/sounds/h3.wav");
 	        audioClip3 = Applet.newAudioClip(url3);
+	        URL url4 = getClass().getResource("/sounds/gameOver.wav");
+	        audioClip4 = Applet.newAudioClip(url4);
+	        URL url5 = getClass().getResource("/sounds/explosion.wav");
+	        audioClip5 = Applet.newAudioClip(url5);
 	        
 	        Image bonus = new Image(getClass().getResourceAsStream("/resources/eagle.gif"));
 	        ImageView bonusView = new ImageView();
@@ -282,7 +286,7 @@ public class Main extends Application implements Initializable{
 							
 							timeToDisplayFinalWindow++;
 							if(timeToDisplayFinalWindow>240) {
-							
+								audioClip4.play();
 								timer.stop();
 								primaryStage.close();
 								res2Contrloller r=new res2Contrloller();
@@ -301,7 +305,9 @@ public class Main extends Application implements Initializable{
 							k++;
 							if (k==3||k==6||k==9||k==12||k==15||k==18||k==21||k==24||k==27||k==30||k==33||k==36||k==39||k==42)
 								n++;
-							
+							if(k==3) {
+								audioClip5.play();
+							}
 						}				
 						
 					}
@@ -318,6 +324,7 @@ public class Main extends Application implements Initializable{
 							
 							timeToDisplayFinalWindow++;
 							if(timeToDisplayFinalWindow>240) {
+								audioClip4.play();
 								timer.stop();
 								primaryStage.close();
 								res2Contrloller r=new res2Contrloller();
@@ -335,7 +342,9 @@ public class Main extends Application implements Initializable{
 							k++;
 							if (k==3||k==6||k==9||k==12||k==15||k==18||k==21||k==24||k==27||k==30||k==33||k==36||k==39||k==42)
 								n++;
-							
+							if(k==3) {
+								audioClip5.play();
+							}
 						}
 					}
 				}
