@@ -37,12 +37,12 @@ public class Main extends Application implements Initializable{
 	BorderPane root;	
 	Player2 player,player2;
 	int WIDTH=1150,HEIGHT=700;
-	public boolean isPress=false,isPress2=false,isStop=false,IsEnd=false,SuperAttack=false,IsMultiPlayer=false;
+	public boolean isPress=false,isPress2=false,isStop=false,IsEnd=false,SuperAttack=false,IsMultiPlayer=false,EnableSuperComboPlayer1=false,EnableSuperComboPlayer2=false;
 	private List<Bullet> bullets = new ArrayList<>();
 	private List<Bullet> bullets2 = new ArrayList<>();
 	private List<Point2D> points = new ArrayList<>();
 	private java.applet.AudioClip audioClip,audioClip2,audioClip3;
-	int score1=0,score2=0,n=1,k=0,t=0,r=0,timeToDisplayFinalWindow=0,attackloader=0,MAXSCORE=1200;
+	int score1=0,score2=0,n=1,k=0,t=0,r=0,timeToDisplayFinalWindow=0,attackloader=0,MAXSCORE=1200,ComboTimeCounter=600;
 	public Stage stage;
 	Circle c;
 	int tick=0;
@@ -123,9 +123,30 @@ public class Main extends Application implements Initializable{
 				        bonusView.setTranslateY(randNumb2);
 				        root.getChildren().add(bonusView);
 					}
-					if(tick%400>300) {
+					else if(tick%400>300) {
 						if(root.getChildren().contains(bonusView))
 							root.getChildren().remove(bonusView);
+						EnableSuperComboPlayer1=false;
+						EnableSuperComboPlayer2=false;
+					}
+					else {
+						if(root.getChildren().contains(bonusView)) {
+							int dist1=GetDistanceUniversal(player.GetPosX()+30, player.GetPosY()+30, bonusView.getTranslateX()+100, bonusView.getTranslateY()+20);
+							int dist2=GetDistanceUniversal(player2.GetPosX()+30, player2.GetPosY()+30, bonusView.getTranslateX()+100, bonusView.getTranslateY()+20);
+							if(80>dist1) {
+								root.getChildren().remove(bonusView);
+								System.out.println("Distance1:"+dist1+" Distance2:"+dist2);
+								EnableSuperComboPlayer1=true;
+							}
+							else if(80>dist2) {
+								root.getChildren().remove(bonusView);
+								System.out.println("Distance1:"+dist1+" Distance2:"+dist2);
+								EnableSuperComboPlayer2=true;
+							}
+							
+							
+						}
+							
 					}
 						
 				}
@@ -418,7 +439,7 @@ public class Main extends Application implements Initializable{
 		               
 		        }
 					
-					score.setText(score1/12+":"+score2/12);
+					score.setText(score1/12+" : "+score2/12);
 					player.update();
 					player2.update();
 					for(Bullet bullet:bullets) {
@@ -495,7 +516,7 @@ public class Main extends Application implements Initializable{
 	        	if (e.getCode() == KeyCode.R) {
 	            	shoot2(player2,bullets2);	            	
 	            }
-	        
+	        	if(EnableSuperComboPlayer2) {
 	        	if (e.getCode() == KeyCode.T) {
 		            	makeSound(audioClip2);
 		            	points.add(new Point2D(5,0));
@@ -514,10 +535,7 @@ public class Main extends Application implements Initializable{
 		            	}
 	        	  }
 	        	if (e.getCode() == KeyCode.E) {
-	            	makeSound(audioClip2);
-	            	
-	            	
-	            	
+	        			makeSound(audioClip2);           	
 	            		Bullet bullet = new Bullet(Color.BLUE);
 	            		Bullet bullet2 = new Bullet(Color.YELLOW);
 	            		Bullet bullet3 = new Bullet(Color.GREEN);
@@ -542,11 +560,11 @@ public class Main extends Application implements Initializable{
 	            	c.setRadius(attackloader);
 	            	c.setStroke(Color.BLACK);
 	            	c.setFill(null);
-	            	c.setStrokeWidth(5);
-	            	//c.strc.getStyleClass().add("ring");
+	            	c.setStrokeWidth(5);	            	
 	            	root.getChildren().add(c);
 	        		}
 	            }
+	        	}
 	        	
 	        	 if (e.getCode() == KeyCode.N) {
 		            	makeSound(audioClip);
@@ -632,6 +650,10 @@ public class Main extends Application implements Initializable{
 	
 	int GetDistance() {
 		return (int) Math.sqrt(Math.pow(player.GetPosY()-c.getCenterY(),2)+Math.pow(player.GetPosX()-c.getCenterX(),2));
+	}
+	
+	int GetDistanceUniversal(double x1,double y1, double x2,double y2) {
+		return (int) Math.sqrt(Math.pow(y1-y2,2)+Math.pow(x1-x2,2));
 	}
 	
 	public void shoot(Obiect_Player p,List<Bullet> b) {
