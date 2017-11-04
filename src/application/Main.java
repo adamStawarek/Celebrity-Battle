@@ -1,11 +1,11 @@
 package application;
 	
 import java.applet.Applet;
-import java.awt.Image;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.ResourceBundle;
 
 import application.Main.Bullet;
@@ -28,6 +28,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Point2D;
 import javafx.scene.media.AudioClip;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 
 public class Main extends Application implements Initializable{
@@ -76,6 +78,12 @@ public class Main extends Application implements Initializable{
 	        URL url3 = getClass().getResource("/sounds/h3.wav");
 	        audioClip3 = Applet.newAudioClip(url3);
 	        
+	        Image bonus = new Image(getClass().getResourceAsStream("/resources/eagle.gif"));
+	        ImageView bonusView = new ImageView();
+	       // bonusView.setFitHeight(50);
+	       // bonusView.setFitWidth(100);
+	        bonusView.setImage(bonus);
+	        
 	        
 	        score.setFont(Font.font(40));
 	        root.getChildren().add(score);
@@ -86,11 +94,12 @@ public class Main extends Application implements Initializable{
 	        timer = new AnimationTimer() {
 	            @Override
 	            public void handle(long now) {
-	            	
+	            		            		            		            	
 	                onUpdate();
 	                tick++;
 	                check();
 	                updatePic();
+	                addBonus();
 	                
 	                if (isStop==false&&IsEnd==false&&IsMultiPlayer==false)
 	                	 autoEnemy();
@@ -102,7 +111,27 @@ public class Main extends Application implements Initializable{
 	            }
 	            	
 	            
-	            private void updateSuperAttack() {
+	            private void addBonus() {
+					// TODO Auto-generated method stub
+					if(tick%400==0) {
+						Random r=new Random();
+						int randNumb1=r.nextInt(WIDTH-330);
+						int randNumb2=r.nextInt(HEIGHT-140);
+						
+				        
+				        bonusView.setTranslateX(randNumb1);
+				        bonusView.setTranslateY(randNumb2);
+				        root.getChildren().add(bonusView);
+					}
+					if(tick%400>300) {
+						if(root.getChildren().contains(bonusView))
+							root.getChildren().remove(bonusView);
+					}
+						
+				}
+
+
+				private void updateSuperAttack() {
 					// TODO Auto-generated method stub
 					if(SuperAttack==true) {
 						if(GetDistance()-c.getRadius()>-100&&GetDistance()-c.getRadius()<100) {
@@ -122,16 +151,18 @@ public class Main extends Application implements Initializable{
 				}
 
 
-				@SuppressWarnings("unlikely-arg-type")
+				
 				private void removeBulletsOutOfBounds() {
-					for(Bullet b:bullets) {
-						if (b.GetPosX()>WIDTH||b.GetPosX()<0||b.GetPosY()<0||b.GetPosY()>HEIGHT)							
-							root.getChildren().remove(b);
+					for(Object b:bullets) {
+						if (b.GetPosX()>WIDTH-205||b.GetPosX()<0||b.GetPosY()<0||b.GetPosY()>HEIGHT) {							
+							root.getChildren().remove(b.getView());							
+						}
 							
 					}
-					for(Bullet b:bullets2) {
-						if (b.GetPosX()>WIDTH||b.GetPosX()<0||b.GetPosY()<0||b.GetPosY()>HEIGHT)							
-							root.getChildren().remove(b);						
+					for(Object b:bullets2) {
+						if (b.GetPosX()>WIDTH-205||b.GetPosX()<0||b.GetPosY()<0||b.GetPosY()>HEIGHT) {							
+							root.getChildren().remove(b.getView());								
+						}
 				    }
 					
 				}
@@ -292,9 +323,9 @@ public class Main extends Application implements Initializable{
 				private void check() {
 					// TODO Auto-generated method stub
 					if(player.GetPosX()<0) {
-						player.imageView.setTranslateX(WIDTH);
+						player.imageView.setTranslateX(WIDTH-265);
 					}
-					if(player.GetPosX()>WIDTH) {
+					if(player.GetPosX()>WIDTH-265) {
 						player.imageView.setTranslateX(0);
 					}
 					if(player.GetPosY()<0) {
@@ -304,9 +335,9 @@ public class Main extends Application implements Initializable{
 						player.imageView.setTranslateY(0);
 					}
 					if(player2.GetPosX()<0) {
-						player2.imageView.setTranslateX(WIDTH);
+						player2.imageView.setTranslateX(WIDTH-265);
 					}
-					if(player2.GetPosX()>WIDTH) {
+					if(player2.GetPosX()>WIDTH-265) {
 						player2.imageView.setTranslateX(0);
 					}
 					if(player2.GetPosY()<0) {
@@ -636,12 +667,12 @@ public class Main extends Application implements Initializable{
 	}
 	
 	public void setSmall() {
-		WIDTH/=1.3;
-		HEIGHT/=1.3;
+		WIDTH/=1.2;
+		HEIGHT/=1.2;
 	}
 	public void setLarge() {
-		WIDTH*=1.2;
-		HEIGHT*=1.2;
+		WIDTH*=1.1;
+		HEIGHT*=1.1;
 	}
 	public void setMedium() {
 		WIDTH=1150;
