@@ -13,11 +13,13 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 
-public class res2Contrloller extends Application{
+public class res2Contrloller extends Application implements Initializable{
 	static boolean IsClicked=false;
 	
 	@FXML
@@ -25,7 +27,7 @@ public class res2Contrloller extends Application{
 	@FXML
 	Stage stage2;
 	
-	
+		
 	public void CloseWindow() {
 		Platform.exit();
 		System.out.println("Close window, pretty please");
@@ -56,19 +58,28 @@ public class res2Contrloller extends Application{
 	}
 		
 	
+	
 	@Override
 	public void start(Stage stage) throws Exception {
 		// TODO Auto-generated method stub
 		try {
 			
 	        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("res2.fxml"));
-	                Parent root1 = (Parent) fxmlLoader.load();
-	                stage = new Stage();
-	                stage.setScene(new Scene(root1));  
+	                Parent root1 = (Parent) fxmlLoader.load();	               
+	                stage = new Stage();	               
+	                stage.setScene(new Scene(root1));                 			                
 	                stage.show();
 	        } catch(Exception e) {
 	           e.printStackTrace();
 	   }
+	}
+
+	
+	@Override
+	public void initialize(URL location, ResourceBundle resources) {
+		
+		
+        
 	}	
 	
 }

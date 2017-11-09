@@ -57,7 +57,8 @@ public class Main extends Application implements Initializable{
 	private List<Bullet> bullets2 = new ArrayList<>();
 	private List<Point2D> points = new ArrayList<>();
 	private java.applet.AudioClip audioClip,audioClip2,audioClip3,audioClip4,audioClip5;
-	public static int score1=0,score2=0,n=1,k=0,t=0,r=0,timeToDisplayFinalWindow=0,attackloader=0,MAXSCORE=1200,ComboTimeCounter=600;
+	public int n=1,k=0,t=0,r=0,timeToDisplayFinalWindow=0,attackloader=0,ComboTimeCounter=600;
+	public static int score1=0,score2=0,MAXSCORE=1200;
 	int time;
 	
 
@@ -86,6 +87,9 @@ public class Main extends Application implements Initializable{
 	
 	@FXML
 	Text txtTime,pl1life,pl2life,txtScore;
+	
+	@FXML
+	ImageView pl1Img,pl2Img;
 			
 	@Override
 	public void start(Stage primaryStage) {
@@ -103,7 +107,9 @@ public class Main extends Application implements Initializable{
 	        player2.setVelocity(new Point2D(2, 2));
 	        addPlayerObject(player2, 100, 100);
 	        
-	        
+	        score1=0;
+	        score2=0;
+	        //MAXSCORE=1200;
 	        //Formatowanie textu
 	        df.setMaximumFractionDigits(2); 
 			df.setMinimumFractionDigits(2); 
@@ -336,6 +342,7 @@ public class Main extends Application implements Initializable{
 								timer.stop();
 								primaryStage.close();
 								res2Contrloller r=new res2Contrloller();
+								//r.IsPlayerOneWinner(false);
 								try {
 									r.start(new Stage());
 								} catch (Exception e) {
@@ -374,6 +381,7 @@ public class Main extends Application implements Initializable{
 								timer.stop();
 								primaryStage.close();
 								res2Contrloller r=new res2Contrloller();
+								//r.IsPlayerOneWinner(true);
 								try {
 									r.start(new Stage());
 								} catch (Exception e) {
@@ -736,7 +744,11 @@ public class Main extends Application implements Initializable{
 
 
 	@Override
-	public void initialize(URL location, ResourceBundle resources) {		 
+	public void initialize(URL location, ResourceBundle resources) {	
+		Image i1 = new Image(getClass().getResourceAsStream("/resources/trump.png"));
+        pl1Img.setImage(i1);
+        Image i2 = new Image(getClass().getResourceAsStream("/resources/hilary.png"));
+        pl2Img.setImage(i2);
 		  time=0;
 		  handleStartAction();		
 		 
