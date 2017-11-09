@@ -17,16 +17,22 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.shape.Circle;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class res2Contrloller extends Application implements Initializable{
+	
 	static boolean IsClicked=false;
+	static boolean IsTrumpWin=false;
 	
 	@FXML
 	Button btnPlayAgain;
 	@FXML
 	Stage stage2;
-	
+	@FXML
+	ImageView imgEnd;
+	@FXML
+	Text txtResult;
 		
 	public void CloseWindow() {
 		Platform.exit();
@@ -77,7 +83,16 @@ public class res2Contrloller extends Application implements Initializable{
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		
+		Image i;
+		if (IsTrumpWin) {
+			 i = new Image(getClass().getResourceAsStream("/resources/ClintonWin.png"));
+			 txtResult.setText("Clinton wins!");
+		}
+		else {
+			 i = new Image(getClass().getResourceAsStream("/resources/TrumpWin.png"));
+			 txtResult.setText("Trump wins!");
+		}
+        imgEnd.setImage(i);
 		
         
 	}	

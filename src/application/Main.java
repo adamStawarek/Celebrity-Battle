@@ -60,7 +60,8 @@ public class Main extends Application implements Initializable{
 	public int n=1,k=0,t=0,r=0,timeToDisplayFinalWindow=0,attackloader=0,ComboTimeCounter=600;
 	public static int score1=0,score2=0,MAXSCORE=1200;
 	int time;
-	
+	int currentCombo=100,currentCombo2=100;//set for normal shooting
+	public static Text txtSCORES;
 
 	ImageView bonusView;
 	public Stage stage;
@@ -70,6 +71,8 @@ public class Main extends Application implements Initializable{
 	AnimationTimer timer;	
 	ImageView i;
 	Image im;
+	Random randCombo;
+	
 	
 	int timeWithoutBonus = 0;
 	int timeWithBonus=0;
@@ -109,7 +112,14 @@ public class Main extends Application implements Initializable{
 	        
 	        score1=0;
 	        score2=0;
-	        //MAXSCORE=1200;
+	        txtSCORES=new Text();
+	        txtSCORES.setText("");
+	        txtSCORES.setFill(Color.BLACK);
+			txtSCORES.setFont(Font.font(STYLESHEET_CASPIAN, 60));
+			txtSCORES.setLayoutX(WIDTH/3);
+			txtSCORES.setLayoutY(300);
+			root.getChildren().add(txtSCORES);
+	        
 	        //Formatowanie textu
 	        df.setMaximumFractionDigits(2); 
 			df.setMinimumFractionDigits(2); 
@@ -126,6 +136,8 @@ public class Main extends Application implements Initializable{
 	        audioClip4 = Applet.newAudioClip(url4);
 	        URL url5 = getClass().getResource("/sounds/explosion.wav");
 	        audioClip5 = Applet.newAudioClip(url5);
+	        
+	        randCombo=new Random();
 	        
 	        Image bonus = new Image(getClass().getResourceAsStream("/resources/eagle.gif"));
 	        bonusView = new ImageView();	       
@@ -178,15 +190,19 @@ public class Main extends Application implements Initializable{
 	            		int dist1=GetDistanceUniversal(player.GetPosX()+30, player.GetPosY()+30, bonusView.getTranslateX()+100, bonusView.getTranslateY()+20);
 						int dist2=GetDistanceUniversal(player2.GetPosX()+30, player2.GetPosY()+30, bonusView.getTranslateX()+100, bonusView.getTranslateY()+20);
 						if(80>dist1) {
+							makeSound(audioClip3);
 							root.getChildren().remove(bonusView);
 							timeWithBonus=0;
 							pl1bonus=1;
-							
+							currentCombo2=randCombo.nextInt(2);
+
 						}
 						else if(80>dist2) {
+							makeSound(audioClip2);
 							root.getChildren().remove(bonusView);
 							timeWithBonus=0;
 							pl2bonus=1;
+							currentCombo=randCombo.nextInt(3);
 						}
 	            	}	  
 	            	
@@ -199,8 +215,12 @@ public class Main extends Application implements Initializable{
 	            	
 	            	if(pl1bonus>0)
 	            		pl1bonus-=0.005;
+	            	else
+	            		currentCombo2=100;
 	            	if(pl2bonus>0)
 	            		pl2bonus-=0.005;
+	            	else
+	            		currentCombo=100;
 	            						
 				}
 
@@ -212,7 +232,7 @@ public class Main extends Application implements Initializable{
 							score2++;
 						}
 						System.out.println(GetDistance());
-						attackloader+=5;
+						attackloader+=10;
 						c.setRadius(attackloader);
 						if(attackloader>=300) {
 							attackloader=0;
@@ -328,12 +348,7 @@ public class Main extends Application implements Initializable{
 						
 						if (n>10) {
 							player.ChangeImg("/resources/hilary2.png");
-							Text txtSCORES=new Text("Player1 sucks!");
-							txtSCORES.setFill(Color.BLACK);
-							txtSCORES.setFont(Font.font(STYLESHEET_CASPIAN, 60));
-							txtSCORES.setLayoutX(WIDTH/3);
-							txtSCORES.setLayoutY(300);
-							root.getChildren().add(txtSCORES);
+							txtSCORES.setText("Player1 sucks!");
 							IsEnd=true;
 							
 							timeToDisplayFinalWindow++;
@@ -342,7 +357,8 @@ public class Main extends Application implements Initializable{
 								timer.stop();
 								primaryStage.close();
 								res2Contrloller r=new res2Contrloller();
-								//r.IsPlayerOneWinner(false);
+								r.IsTrumpWin=false;
+								
 								try {
 									r.start(new Stage());
 								} catch (Exception e) {
@@ -367,12 +383,8 @@ public class Main extends Application implements Initializable{
 					if(score1>MAXSCORE) {
 						if (n>10) {
 							player2.ChangeImg("/resources/trump2.png");			
-							Text txtSCORES=new Text("Player2 sucks!");
-							txtSCORES.setFill(Color.BLACK);
-							txtSCORES.setFont(Font.font(STYLESHEET_CASPIAN, 60));
-							txtSCORES.setLayoutX(WIDTH/3);
-							txtSCORES.setLayoutY(300);
-							root.getChildren().add(txtSCORES);
+							txtSCORES.setText("Player2 sucks!");
+							
 							IsEnd=true;
 							
 							timeToDisplayFinalWindow++;
@@ -381,7 +393,8 @@ public class Main extends Application implements Initializable{
 								timer.stop();
 								primaryStage.close();
 								res2Contrloller r=new res2Contrloller();
-								//r.IsPlayerOneWinner(true);
+								r.IsTrumpWin=true;
+								
 								try {
 									r.start(new Stage());
 								} catch (Exception e) {
@@ -523,84 +536,38 @@ public class Main extends Application implements Initializable{
 	        primaryStage.getScene().setOnKeyReleased(e -> {
 	        	
 	        	if (e.getCode() == KeyCode.R) {
-	            	shoot2(player2,bullets2);	            	
-	            }
-	        	if(pl2bonus>0) {
-	        	if (e.getCode() == KeyCode.T) {
-		            	makeSound(audioClip2);
-		            	points.add(new Point2D(5,0));
-		            	points.add(new Point2D(-5,0));
-		            	points.add(new Point2D(0,5));
-		            	points.add(new Point2D(0,-5));
-		            	points.add(new Point2D(5,5));
-		            	points.add(new Point2D(-5,-5));
-		            	points.add(new Point2D(-5,5));
-		            	points.add(new Point2D(5,-5));
-		            	for(int i=0;i<8;i++) {
-		            		Bullet bullet = new Bullet();
-		            		bullet.setVelocity(points.get(i));	                
-		            		bullets2.add(bullet);
-		            		addObject(bullet, player2.getView().getTranslateX()+30, player2.getView().getTranslateY()+30);
-		            	}
-	        	  }
-	        	if (e.getCode() == KeyCode.E) {
-	        			makeSound(audioClip2);           	
-	            		Bullet bullet = new Bullet(Color.BLUE);
-	            		Bullet bullet2 = new Bullet(Color.YELLOW);
-	            		Bullet bullet3 = new Bullet(Color.GREEN);
-	            		bullet.setVelocity(player2.getVelocity().normalize().multiply(5));
-	            		bullet2.setVelocity(player2.getVelocity().normalize().multiply(5));
-	            		bullet3.setVelocity(player2.getVelocity().normalize().multiply(5));
-	            		
-	            		bullets2.add(bullet);
-	            		bullets2.add(bullet2);
-	            		bullets2.add(bullet3);
-	            		addObject(bullet, player2.getView().getTranslateX()+30, player2.getView().getTranslateY()+20);
-	            		addObject(bullet2, player2.getView().getTranslateX()+30, player2.getView().getTranslateY()+40);
-	            		addObject(bullet3, player2.getView().getTranslateX()+30, player2.getView().getTranslateY()+60);
-	        	}
+	            	//shoot2(player2,bullets2);	            	
+	        		System.out.println(currentCombo);
 	        	
-	        	if (e.getCode() == KeyCode.Y) {
-	        		if(SuperAttack==false) {
-	        		SuperAttack=true;
-	        		c=new Circle();
-	            	c.setCenterX(player2.GetPosX()+40);
-	            	c.setCenterY(player2.GetPosY()+40);
-	            	c.setRadius(attackloader);
-	            	c.setStroke(Color.BLACK);
-	            	c.setFill(null);
-	            	c.setStrokeWidth(5);	            	
-	            	root.getChildren().add(c);
+	        		if(currentCombo==100) {
+	        			shoot2(player2,bullets2);
 	        		}
-	            }
-	        	}
+	        		else if(currentCombo==0) {
+	        			shootCombo1(player2, bullets2);
+	        		}
+	        		else if(currentCombo==1) {
+	        			shootCombo2(player2, bullets2);
+	        		}
+	        		else {
+	        			shootCombo3(player2, bullets2);
+	        		}
+	        	 }
 	        	
+	        	//Do sprawdzenia!!!!!!!!!!!!!!!!!!
 	        	 if (e.getCode() == KeyCode.N) {
-		            	makeSound(audioClip);
-		                Bullet bullet = new Bullet();
-		                bullet.setVelocity(player.getVelocity().normalize().multiply(5));		               
-		                bullets.add(bullet);
-		                addObject(bullet, player.getView().getTranslateX()+30, player.getView().getTranslateY()+30);
-		         }
+	        		 if(currentCombo2==100) {
+		        			shoot2(player,bullets);
+		        		}
+		        		else if(currentCombo2==0) {
+		        			shootCombo1(player, bullets);
+		        		}
+		        		else {
+		        			shootCombo2(player, bullets);
+		        		}
+	        		 
+	        	 }
+	        	
 	        	 
-		         if (e.getCode() == KeyCode.M) {
-		            	makeSound(audioClip3);
-		            	points.add(new Point2D(5,0));
-		            	points.add(new Point2D(-5,0));
-		            	points.add(new Point2D(0,5));
-		            	points.add(new Point2D(0,-5));
-		            	points.add(new Point2D(5,5));
-		            	points.add(new Point2D(-5,-5));
-		            	points.add(new Point2D(-5,5));
-		            	points.add(new Point2D(5,-5));
-		            	for(int i=0;i<8;i++) {
-		            		Bullet bullet = new Bullet();
-		            		bullet.setVelocity(points.get(i));	                
-		            		bullets.add(bullet);
-		            		addObject(bullet, player.getView().getTranslateX()+30, player.getView().getTranslateY()+30);
-		            	}	            	
-		            		                
-		           }
 		         
 		           if (e.getCode() == KeyCode.DIGIT1) {
 		            	if (isStop)
@@ -687,6 +654,59 @@ public class Main extends Application implements Initializable{
         addObject(bullet, p.getView().getTranslateX()+30, p.getView().getTranslateY()+30);
 		
 	}
+	public void shootCombo1(Obiect_Player p,List<Bullet> b) {
+		
+		makeSound(audioClip2);
+    	points.add(new Point2D(5,0));
+    	points.add(new Point2D(-5,0));
+    	points.add(new Point2D(0,5));
+    	points.add(new Point2D(0,-5));
+    	points.add(new Point2D(5,5));
+    	points.add(new Point2D(-5,-5));
+    	points.add(new Point2D(-5,5));
+    	points.add(new Point2D(5,-5));
+    	for(int i=0;i<8;i++) {
+    		Bullet bullet = new Bullet();
+    		bullet.setVelocity(points.get(i));	                
+    		b.add(bullet);
+    		addObject(bullet, p.getView().getTranslateX()+30, p.getView().getTranslateY()+30);
+    	}
+		
+	}
+	public void shootCombo2(Obiect_Player p,List<Bullet> b) {
+		
+		makeSound(audioClip2);           	
+		Bullet bullet = new Bullet(Color.BLUE);
+		Bullet bullet2 = new Bullet(Color.YELLOW);
+		Bullet bullet3 = new Bullet(Color.GREEN);
+		bullet.setVelocity(p.getVelocity().normalize().multiply(5));
+		bullet2.setVelocity(p.getVelocity().normalize().multiply(5));
+		bullet3.setVelocity(p.getVelocity().normalize().multiply(5));
+		
+		b.add(bullet);
+		b.add(bullet2);
+		b.add(bullet3);
+		addObject(bullet, p.getView().getTranslateX()+30, p.getView().getTranslateY()+20);
+		addObject(bullet2, p.getView().getTranslateX()+30, p.getView().getTranslateY()+40);
+		addObject(bullet3, p.getView().getTranslateX()+30, p.getView().getTranslateY()+60);
+		
+	}
+	public void shootCombo3(Obiect_Player p,List<Bullet> b) {
+	
+		if(SuperAttack==false) {
+    		SuperAttack=true;
+    		c=new Circle();
+        	c.setCenterX(p.GetPosX()+40);
+        	c.setCenterY(p.GetPosY()+40);
+        	c.setRadius(attackloader);
+        	c.setStroke(Color.BLACK);
+        	c.setFill(null);
+        	c.setStrokeWidth(5);	            	
+        	root.getChildren().add(c);
+    	}
+	
+	}
+	
 	
 	public class Bullet extends Object{
 		Bullet(){
