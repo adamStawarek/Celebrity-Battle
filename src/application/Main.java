@@ -3,6 +3,9 @@ package application;
 import java.applet.Applet;
 import java.io.IOException;
 import java.net.URL;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -10,11 +13,22 @@ import java.util.ResourceBundle;
 
 import application.Main.Bullet;
 import javafx.animation.AnimationTimer;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
@@ -24,6 +38,7 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Point2D;
@@ -37,12 +52,16 @@ public class Main extends Application implements Initializable{
 	BorderPane root;	
 	Player2 player,player2;
 	int WIDTH=1150,HEIGHT=700;
-	public boolean isPress=false,isPress2=false,isStop=false,IsEnd=false,SuperAttack=false,IsMultiPlayer=false,EnableSuperComboPlayer1=false,EnableSuperComboPlayer2=false;
+	public boolean isPress=false,isPress2=false,isStop=false,IsEnd=false,SuperAttack=false,IsMultiPlayer=false;
 	private List<Bullet> bullets = new ArrayList<>();
 	private List<Bullet> bullets2 = new ArrayList<>();
 	private List<Point2D> points = new ArrayList<>();
 	private java.applet.AudioClip audioClip,audioClip2,audioClip3,audioClip4,audioClip5;
-	int score1=0,score2=0,n=1,k=0,t=0,r=0,timeToDisplayFinalWindow=0,attackloader=0,MAXSCORE=1200,ComboTimeCounter=600;
+	public static int score1=0,score2=0,n=1,k=0,t=0,r=0,timeToDisplayFinalWindow=0,attackloader=0,MAXSCORE=1200,ComboTimeCounter=600;
+	int time;
+	
+
+	ImageView bonusView;
 	public Stage stage;
 	Circle c;
 	int tick=0;
@@ -50,12 +69,27 @@ public class Main extends Application implements Initializable{
 	AnimationTimer timer;	
 	ImageView i;
 	Image im;
-	Text score;
 	
+	int timeWithoutBonus = 0;
+	int timeWithBonus=0;
+	
+	
+	public static double pl1bonus=0;
+	public static double pl2bonus=0;
+	
+	double p1,p2;
+	java.text.DecimalFormat df=new java.text.DecimalFormat(); 
+	NumberFormat nf;
+			
+	@FXML
+	ProgressBar pbPlayer1,pbPlayer2;
+	
+	@FXML
+	Text txtTime,pl1life,pl2life,txtScore;
 			
 	@Override
 	public void start(Stage primaryStage) {
-		try {
+		try {			
 			root=new BorderPane();
 		    root = (BorderPane)FXMLLoader.load(getClass().getResource("Sample.fxml"));
 		    root.setId("pane");
@@ -66,9 +100,14 @@ public class Main extends Application implements Initializable{
 			primaryStage.setScene(scene);
 			
 	        player2 = new Player2("/resources/trump.png");	       
-	        player2.setVelocity(new Point2D(1, 1));
+	        player2.setVelocity(new Point2D(2, 2));
 	        addPlayerObject(player2, 100, 100);
-	        score=new Text(WIDTH/2, 50, "0:0");
+	        
+	        
+	        //Formatowanie textu
+	        df.setMaximumFractionDigits(2); 
+			df.setMinimumFractionDigits(2); 
+			nf = new DecimalFormat("#0.00");
 	       
 
 	        URL url = getClass().getResource("/sounds/shoot.wav");
@@ -83,16 +122,11 @@ public class Main extends Application implements Initializable{
 	        audioClip5 = Applet.newAudioClip(url5);
 	        
 	        Image bonus = new Image(getClass().getResourceAsStream("/resources/eagle.gif"));
-	        ImageView bonusView = new ImageView();
-	       // bonusView.setFitHeight(50);
-	       // bonusView.setFitWidth(100);
-	        bonusView.setImage(bonus);
-	        
-	        
-	        score.setFont(Font.font(40));
-	        root.getChildren().add(score);
+	        bonusView = new ImageView();	       
+	        bonusView.setImage(bonus);	
+	      
 	        player=new Player2("/resources/hilary.png");
-	        player.setVelocity(new Point2D(-1,-1));
+	        player.setVelocity(new Point2D(-2,-2));
 	        addPlayerObject(player, 300, 300);
 	        	        
 	        timer = new AnimationTimer() {
@@ -104,55 +138,64 @@ public class Main extends Application implements Initializable{
 	                check();
 	                updatePic();
 	                addBonus();
+	               
 	                
 	                if (isStop==false&&IsEnd==false&&IsMultiPlayer==false)
 	                	 autoEnemy();
 	                
 	                removeBulletsOutOfBounds();
-	                updateSuperAttack();
-	               //delay();
+	                updateSuperAttack();	               
 	               
 	            }
 	            	
 	            
 	            private void addBonus() {
 					// TODO Auto-generated method stub
-					if(tick%400==0) {
-						Random r=new Random();
+	            	
+	            	
+	            	if(IsBonus()==false&&timeWithoutBonus>100) {	            		
+	            		Random r=new Random();
 						int randNumb1=r.nextInt(WIDTH-330);
-						int randNumb2=r.nextInt(HEIGHT-140);
-						
-				        
+						int randNumb2=r.nextInt(HEIGHT-140);				        
 				        bonusView.setTranslateX(randNumb1);
 				        bonusView.setTranslateY(randNumb2);
 				        root.getChildren().add(bonusView);
-					}
-					else if(tick%400>300) {
-						if(root.getChildren().contains(bonusView))
+				        timeWithoutBonus=0;
+	            	}
+	            	
+	            	if(IsBonus()==true&&timeWithBonus>900) {
+	            		root.getChildren().remove(bonusView);
+	            		timeWithBonus=0;            		
+	            	}
+	            	
+	            	if(IsBonus()==true&&timeWithBonus<=900) {
+	            		int dist1=GetDistanceUniversal(player.GetPosX()+30, player.GetPosY()+30, bonusView.getTranslateX()+100, bonusView.getTranslateY()+20);
+						int dist2=GetDistanceUniversal(player2.GetPosX()+30, player2.GetPosY()+30, bonusView.getTranslateX()+100, bonusView.getTranslateY()+20);
+						if(80>dist1) {
 							root.getChildren().remove(bonusView);
-						EnableSuperComboPlayer1=false;
-						EnableSuperComboPlayer2=false;
-					}
-					else {
-						if(root.getChildren().contains(bonusView)) {
-							int dist1=GetDistanceUniversal(player.GetPosX()+30, player.GetPosY()+30, bonusView.getTranslateX()+100, bonusView.getTranslateY()+20);
-							int dist2=GetDistanceUniversal(player2.GetPosX()+30, player2.GetPosY()+30, bonusView.getTranslateX()+100, bonusView.getTranslateY()+20);
-							if(80>dist1) {
-								root.getChildren().remove(bonusView);
-								System.out.println("Distance1:"+dist1+" Distance2:"+dist2);
-								EnableSuperComboPlayer1=true;
-							}
-							else if(80>dist2) {
-								root.getChildren().remove(bonusView);
-								System.out.println("Distance1:"+dist1+" Distance2:"+dist2);
-								EnableSuperComboPlayer2=true;
-							}
-							
+							timeWithBonus=0;
+							pl1bonus=1;
 							
 						}
-							
-					}
-						
+						else if(80>dist2) {
+							root.getChildren().remove(bonusView);
+							timeWithBonus=0;
+							pl2bonus=1;
+						}
+	            	}	  
+	            	
+	            	if(IsBonus()) {
+	            		timeWithBonus++;
+	            	}
+	            	else {
+	            		timeWithoutBonus++;
+	            	}
+	            	
+	            	if(pl1bonus>0)
+	            		pl1bonus-=0.005;
+	            	if(pl2bonus>0)
+	            		pl2bonus-=0.005;
+	            						
 				}
 
 
@@ -272,6 +315,9 @@ public class Main extends Application implements Initializable{
 
 				private void updatePic() {
 					// TODO Auto-generated method stub
+					
+					
+					
 					if(score2>MAXSCORE) {
 						
 						if (n>10) {
@@ -377,59 +423,7 @@ public class Main extends Application implements Initializable{
 						player2.imageView.setTranslateY(0);
 					}
 				}
-
-				
-				//Actually not in use
-				private void delay() {
-					
-					
-					
-					if (!isPress) {
-					if (player.velocity.getY()<0) {
-						
-						player.velocity=player.velocity.add(0,0.1);
-						
-		        	}
-					if (player.velocity.getY()>0) {
-						
-						player.velocity=player.velocity.add(0,-0.1);
-						
-		        	}
-		        	if (player.velocity.getX()<0) {
-		        		player.velocity=player.velocity.add(0.1,0);
-		        		
-		        	}
-		        	if (player.velocity.getX()>0) {
-		        		player.velocity=player.velocity.add(-0.1,0);
-		        		
-
-		        	}	
-		        	
-		        	
-					}
-					if (!isPress2) {
-						if (player2.velocity.getY()<0) {
-							
-							player2.velocity=player2.velocity.add(0,0.1);
-			        	}
-						if (player2.velocity.getY()>0) {
-							
-							player2.velocity=player2.velocity.add(0,-0.1);
-			        	}
-			        	if (player2.velocity.getX()<0) {
-			        		
-			        		player2.velocity=player2.velocity.add(0.1,0);
-			        	}
-			        	if (player2.velocity.getX()>0) {
-			        		
-			        		player2.velocity=player2.velocity.add(-0.1,0);
-
-			        	}	
-			        	
-			        	
-						}
-				}
-
+								
 				private void onUpdate() {
 					for (Object bullet : bullets) {
 			            
@@ -447,8 +441,6 @@ public class Main extends Application implements Initializable{
 		                }
 		               
 		        }
-					
-					score.setText(score1/12+" : "+score2/12);
 					player.update();
 					player2.update();
 					for(Bullet bullet:bullets) {
@@ -525,7 +517,7 @@ public class Main extends Application implements Initializable{
 	        	if (e.getCode() == KeyCode.R) {
 	            	shoot2(player2,bullets2);	            	
 	            }
-	        	if(EnableSuperComboPlayer2) {
+	        	if(pl2bonus>0) {
 	        	if (e.getCode() == KeyCode.T) {
 		            	makeSound(audioClip2);
 		            	points.add(new Point2D(5,0));
@@ -679,7 +671,7 @@ public class Main extends Application implements Initializable{
 	
 	
 	public void shoot2(Obiect_Player p,List<Bullet> b) {
-			
+		
 		makeSound(audioClip);
         Bullet bullet = new Bullet();
         bullet.setVelocity(p.getVelocity().normalize().multiply(5));
@@ -709,10 +701,45 @@ public class Main extends Application implements Initializable{
 		WIDTH=1150;
 		HEIGHT=700;
 	}
+	
+	private boolean IsBonus() {
+		return root.getChildren().contains(bonusView);
+	}
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@FXML
+	protected void handleStartAction() {
+		 
+     
+        Timeline timeline = new Timeline();
+        timeline.setCycleCount(Timeline.INDEFINITE);
+        timeline.getKeyFrames().add(
+                new KeyFrame(Duration.millis(10),
+                  new EventHandler() {
+
+					@Override
+					public void handle(Event event) {
+						// TODO Auto-generated method stub
+					
+						time++;
+						pbPlayer1.setProgress(pl2bonus);
+						pbPlayer2.setProgress(pl1bonus);
+						txtTime.setText("Time: "+time/100);
+						pl1life.setText("Life: "+(MAXSCORE-score1)/12);
+						pl2life.setText("Life: "+(MAXSCORE-score2)/12);
+						txtScore.setText("Score: "+score2/12+" : "+score1/12);
+					}
+                	
+                }));
+        timeline.playFromStart();
+	   }
+
 
 	@Override
-	public void initialize(URL location, ResourceBundle resources) {
-		
+	public void initialize(URL location, ResourceBundle resources) {		 
+		  time=0;
+		  handleStartAction();		
+		 
 	}
 	
 }

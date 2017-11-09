@@ -32,6 +32,8 @@ public class settings extends Application implements Initializable{
 	
 	@FXML
 	public void Play() {
+		
+		
 		Main m=new Main();
 		Stage s= new Stage();
 		

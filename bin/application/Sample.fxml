@@ -11,16 +11,21 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.BorderPane?>
 
-<BorderPane prefHeight="581.0" prefWidth="611.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.SampleController">
+<BorderPane prefHeight="581.0" prefWidth="611.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Main">
    <center>
       <Pane prefHeight="581.0" prefWidth="431.0" BorderPane.alignment="CENTER" />
    </center>
    <right>
       <VBox prefHeight="581.0" prefWidth="181.0" style="-fx-background-color: #efefef; -fx-padding: 10; -fx-pref-width: 200;" BorderPane.alignment="CENTER">
          <children>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Time:" wrappingWidth="125.970703125">
+            <Text fx:id="txtTime" strokeType="OUTSIDE" strokeWidth="0.0" text="Time:" wrappingWidth="178.970703125">
                <font>
-                  <Font size="38.0" />
+                  <Font size="28.0" />
+               </font>
+            </Text>
+            <Text fx:id="txtScore" layoutX="20.0" layoutY="50.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Score: " wrappingWidth="179.970703125">
+               <font>
+                  <Font name="System Bold" size="20.0" />
                </font>
             </Text>
             <Separator layoutX="10.0" layoutY="278.0" prefHeight="18.0" prefWidth="120.0" />
@@ -34,16 +39,21 @@
                   <Font size="36.0" />
                </font>
             </Text>
-            <Text layoutX="10.0" layoutY="347.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Lives:">
+            <Text fx:id="pl1life" layoutX="10.0" layoutY="347.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Lives:" wrappingWidth="173.8310546875">
                <font>
                   <Font size="22.0" />
                </font>
             </Text>
-            <Text layoutX="10.0" layoutY="455.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Bonus:">
-               <font>
-                  <Font size="22.0" />
-               </font>
-            </Text>
+            <HBox prefHeight="44.0" prefWidth="180.0">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Bonus:">
+                     <font>
+                        <Font size="22.0" />
+                     </font>
+                  </Text>
+                  <ProgressBar fx:id="pbPlayer1" prefHeight="18.0" prefWidth="105.0" progress="0.0" style="-fx-translate-x: 5; -fx-translate-y: 10;" />
+               </children>
+            </HBox>
             <Separator prefHeight="31.0" prefWidth="164.0" />
             <ImageView fitHeight="107.0" fitWidth="90.0" pickOnBounds="true" preserveRatio="true" style="-fx-translate-x: 30;">
                <image>
@@ -55,16 +65,21 @@
                   <Font size="36.0" />
                </font>
             </Text>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Lives:">
+            <Text fx:id="pl2life" strokeType="OUTSIDE" strokeWidth="0.0" text="Lives:" wrappingWidth="174.8310546875">
                <font>
                   <Font size="22.0" />
                </font>
             </Text>
-            <Text layoutX="10.0" layoutY="194.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Bonus:">
-               <font>
-                  <Font size="22.0" />
-               </font>
-            </Text>
+            <HBox layoutX="20.0" layoutY="276.0" prefHeight="44.0" prefWidth="180.0">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Bonus:">
+                     <font>
+                        <Font size="22.0" />
+                     </font>
+                  </Text>
+                  <ProgressBar fx:id="pbPlayer2" prefHeight="18.0" prefWidth="105.0" progress="0.0" style="-fx-translate-x: 5; -fx-translate-y: 10;" />
+               </children>
+            </HBox>
          </children>
          <effect>
             <DropShadow blurType="GAUSSIAN" spread="0.35" />
