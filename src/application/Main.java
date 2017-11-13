@@ -339,6 +339,9 @@ public class Main extends Application implements Initializable{
 				private void updatePic() {										
 					if(score2>MAXSCORE) {						
 						if (n>10) {
+							
+							
+							
 							player.ChangeImg("/resources/hilary2.png");
 							txtSCORES.setText("Player1 sucks!");
 							IsEnd=true;							
@@ -346,6 +349,11 @@ public class Main extends Application implements Initializable{
 							if(timeToDisplayFinalWindow>240) {
 								audioClip4.play();
 								timer.stop();
+								
+								SqlScores scr=new SqlScores();
+								scr.insertScore("Trump", score2);
+								scr.closeConnection();
+								
 								primaryStage.close();
 								res2Contrloller r=new res2Contrloller();
 								r.IsTrumpWin=false;								
@@ -368,6 +376,7 @@ public class Main extends Application implements Initializable{
 					}
 					if(score1>MAXSCORE) {
 						if (n>10) {
+														
 							player2.ChangeImg("/resources/trump2.png");			
 							txtSCORES.setText("Player2 sucks!");							
 							IsEnd=true;							
@@ -375,6 +384,11 @@ public class Main extends Application implements Initializable{
 							if(timeToDisplayFinalWindow>240) {
 								audioClip4.play();
 								timer.stop();
+								
+								SqlScores scr=new SqlScores();
+								scr.insertScore("Clinton", score1);
+								scr.closeConnection();
+								
 								primaryStage.close();
 								res2Contrloller r=new res2Contrloller();
 								r.IsTrumpWin=true;								

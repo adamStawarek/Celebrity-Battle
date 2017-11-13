@@ -13,13 +13,12 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.scores">
    <children>
-      <ListView fx:id="lstScores" layoutX="16.0" layoutY="51.0" prefHeight="298.0" prefWidth="569.0" />
       <Text layoutX="46.0" layoutY="45.0" strokeType="OUTSIDE" strokeWidth="0.0" text="10 BEST SCORES" wrappingWidth="508.13671875">
          <font>
             <Font name="Arial Bold" size="42.0" />
          </font>
       </Text>
-      <Button fx:id="btnGoBack" layoutX="16.0" layoutY="356.0" mnemonicParsing="false" onAction="#GoBack" prefHeight="31.0" prefWidth="74.0" style="-fx-background-radius: 400;" text="Back">
+      <Button layoutX="16.0" layoutY="356.0" mnemonicParsing="false" onAction="#GoBack" prefHeight="31.0" prefWidth="74.0" style="-fx-background-radius: 400;" text="Back">
          <font>
             <Font size="17.0" />
          </font>
