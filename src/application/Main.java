@@ -71,13 +71,10 @@ public class Main extends Application implements Initializable{
 	AnimationTimer timer;	
 	ImageView i;
 	Image im;
-	Random randCombo;
-	
+	Random randCombo;	
 	
 	int timeWithoutBonus = 0;
-	int timeWithBonus=0;
-	
-	
+	int timeWithBonus=0;	
 	public static double pl1bonus=0;
 	public static double pl2bonus=0;
 	
@@ -224,7 +221,7 @@ public class Main extends Application implements Initializable{
 	            						
 				}
 
-
+	            //resize the circle in combo3, and check if it hits opponent
 				private void updateSuperAttack() {
 					// TODO Auto-generated method stub
 					if(SuperAttack==true) {
@@ -339,73 +336,57 @@ public class Main extends Application implements Initializable{
 					
 				}
 
-				private void updatePic() {
-					// TODO Auto-generated method stub
-					
-					
-					
-					if(score2>MAXSCORE) {
-						
+				private void updatePic() {										
+					if(score2>MAXSCORE) {						
 						if (n>10) {
 							player.ChangeImg("/resources/hilary2.png");
 							txtSCORES.setText("Player1 sucks!");
-							IsEnd=true;
-							
+							IsEnd=true;							
 							timeToDisplayFinalWindow++;
 							if(timeToDisplayFinalWindow>240) {
 								audioClip4.play();
 								timer.stop();
 								primaryStage.close();
 								res2Contrloller r=new res2Contrloller();
-								r.IsTrumpWin=false;
-								
+								r.IsTrumpWin=false;								
 								try {
 									r.start(new Stage());
-								} catch (Exception e) {
-									// TODO Auto-generated catch block
+								} catch (Exception e) {									
 									e.printStackTrace();
 								}
-							}
-							
+							}						
 						}
 						else {
-							player.ChangeImg("/resources/h"+n+".png");
-							
+							player.ChangeImg("/resources/h"+n+".png");							
 							k++;
 							if (k==3||k==6||k==9||k==12||k==15||k==18||k==21||k==24||k==27||k==30||k==33||k==36||k==39||k==42)
 								n++;
 							if(k==3) {
 								audioClip5.play();
 							}
-						}				
-						
+						}										
 					}
 					if(score1>MAXSCORE) {
 						if (n>10) {
 							player2.ChangeImg("/resources/trump2.png");			
-							txtSCORES.setText("Player2 sucks!");
-							
-							IsEnd=true;
-							
+							txtSCORES.setText("Player2 sucks!");							
+							IsEnd=true;							
 							timeToDisplayFinalWindow++;
 							if(timeToDisplayFinalWindow>240) {
 								audioClip4.play();
 								timer.stop();
 								primaryStage.close();
 								res2Contrloller r=new res2Contrloller();
-								r.IsTrumpWin=true;
-								
+								r.IsTrumpWin=true;								
 								try {
 									r.start(new Stage());
-								} catch (Exception e) {
-									// TODO Auto-generated catch block
+								} catch (Exception e) {									
 									e.printStackTrace();
 								}
 							}
 						}
 						else {
-							player2.ChangeImg("/resources/t"+n+".png");
-							
+							player2.ChangeImg("/resources/t"+n+".png");							
 							k++;
 							if (k==3||k==6||k==9||k==12||k==15||k==18||k==21||k==24||k==27||k==30||k==33||k==36||k==39||k==42)
 								n++;
@@ -418,7 +399,7 @@ public class Main extends Application implements Initializable{
 
 				//check if player avatar remains in the canvas
 				private void check() {
-					// TODO Auto-generated method stub
+					
 					if(player.GetPosX()<0) {
 						player.imageView.setTranslateX(WIDTH-265);
 					}
@@ -553,7 +534,7 @@ public class Main extends Application implements Initializable{
 	        		}
 	        	 }
 	        	
-	        	//Do sprawdzenia!!!!!!!!!!!!!!!!!!
+	        	
 	        	 if (e.getCode() == KeyCode.N) {
 	        		 if(currentCombo2==100) {
 		        			shoot2(player,bullets);
@@ -565,10 +546,8 @@ public class Main extends Application implements Initializable{
 		        			shootCombo2(player, bullets);
 		        		}
 	        		 
-	        	 }
-	        	
-	        	 
-		         
+	        	 }	        	
+	        	 	//Pomocnicza funkcja(zamraza przeciwnika w czasie gry) do testowania przed oddaniem do usuniêcia	         
 		           if (e.getCode() == KeyCode.DIGIT1) {
 		            	if (isStop)
 		            		isStop=false;
@@ -632,8 +611,7 @@ public class Main extends Application implements Initializable{
 		return (int) Math.sqrt(Math.pow(y1-y2,2)+Math.pow(x1-x2,2));
 	}
 	
-	public void shoot(Obiect_Player p,List<Bullet> b) {
-		
+	public void shoot(Obiect_Player p,List<Bullet> b) {		
 		t++;
 		if(t%10==0) {
 		makeSound(audioClip);
@@ -645,8 +623,7 @@ public class Main extends Application implements Initializable{
 	}
 	
 	
-	public void shoot2(Obiect_Player p,List<Bullet> b) {
-		
+	public void shoot2(Obiect_Player p,List<Bullet> b) {		
 		makeSound(audioClip);
         Bullet bullet = new Bullet();
         bullet.setVelocity(p.getVelocity().normalize().multiply(5));
@@ -654,8 +631,8 @@ public class Main extends Application implements Initializable{
         addObject(bullet, p.getView().getTranslateX()+30, p.getView().getTranslateY()+30);
 		
 	}
-	public void shootCombo1(Obiect_Player p,List<Bullet> b) {
-		
+	
+	public void shootCombo1(Obiect_Player p,List<Bullet> b) {		
 		makeSound(audioClip2);
     	points.add(new Point2D(5,0));
     	points.add(new Point2D(-5,0));
@@ -670,9 +647,9 @@ public class Main extends Application implements Initializable{
     		bullet.setVelocity(points.get(i));	                
     		b.add(bullet);
     		addObject(bullet, p.getView().getTranslateX()+30, p.getView().getTranslateY()+30);
-    	}
-		
+    	}		
 	}
+	
 	public void shootCombo2(Obiect_Player p,List<Bullet> b) {
 		
 		makeSound(audioClip2);           	
@@ -691,8 +668,8 @@ public class Main extends Application implements Initializable{
 		addObject(bullet3, p.getView().getTranslateX()+30, p.getView().getTranslateY()+60);
 		
 	}
-	public void shootCombo3(Obiect_Player p,List<Bullet> b) {
 	
+	public void shootCombo3(Obiect_Player p,List<Bullet> b) {	
 		if(SuperAttack==false) {
     		SuperAttack=true;
     		c=new Circle();
@@ -703,11 +680,9 @@ public class Main extends Application implements Initializable{
         	c.setFill(null);
         	c.setStrokeWidth(5);	            	
         	root.getChildren().add(c);
-    	}
-	
+    	}	
 	}
-	
-	
+		
 	public class Bullet extends Object{
 		Bullet(){
 			super(new Circle(5,5,5,Color.RED));			
@@ -721,10 +696,12 @@ public class Main extends Application implements Initializable{
 		WIDTH/=1.2;
 		HEIGHT/=1.2;
 	}
+	
 	public void setLarge() {
 		WIDTH*=1.1;
 		HEIGHT*=1.1;
 	}
+	
 	public void setMedium() {
 		WIDTH=1150;
 		HEIGHT=700;
@@ -744,11 +721,8 @@ public class Main extends Application implements Initializable{
         timeline.getKeyFrames().add(
                 new KeyFrame(Duration.millis(10),
                   new EventHandler() {
-
 					@Override
 					public void handle(Event event) {
-						// TODO Auto-generated method stub
-					
 						time++;
 						pbPlayer1.setProgress(pl2bonus);
 						pbPlayer2.setProgress(pl1bonus);
@@ -756,12 +730,10 @@ public class Main extends Application implements Initializable{
 						pl1life.setText("Life: "+(MAXSCORE-score1)/12);
 						pl2life.setText("Life: "+(MAXSCORE-score2)/12);
 						txtScore.setText("Score: "+score2/12+" : "+score1/12);
-					}
-                	
+					}                	
                 }));
         timeline.playFromStart();
 	   }
-
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {	
@@ -769,8 +741,8 @@ public class Main extends Application implements Initializable{
         pl1Img.setImage(i1);
         Image i2 = new Image(getClass().getResourceAsStream("/resources/hilary.png"));
         pl2Img.setImage(i2);
-		  time=0;
-		  handleStartAction();		
+		time=0;
+		handleStartAction();		
 		 
 	}
 	
