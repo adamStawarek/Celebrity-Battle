@@ -1,5 +1,6 @@
 package application;
 
+import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -8,9 +9,11 @@ import javafx.application.Application;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ListView;
@@ -22,9 +25,10 @@ import javafx.stage.Stage;
 public class scores extends Application{
 	
 	ListView<ScoreObiect> lstScores;
+	SqlScores sql;
 	
 	@FXML
-	public void GoBack() {
+	public void GoBack(ActionEvent event) {
 		meu m=new meu();		
 		Stage s=new Stage();
 		try {
@@ -33,8 +37,10 @@ public class scores extends Application{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		Stage stage = (Stage) lstScores.getScene().getWindow();
-	    stage.close();
+		//Stage stage = (Stage) lstScores.getScene().getWindow();
+		
+	    //stage.close();
+		((Node)event.getSource()).getScene().getWindow().hide();
 	}
 	
 	
@@ -47,7 +53,7 @@ public class scores extends Application{
 	        lstScores=new ListView<ScoreObiect>(data);		
 	        SqlScores sql=new SqlScores();
 	        List<ScoreObiect> scOb=sql.selectScores();
-	        sql.closeConnection();
+	       sql.closeConnection();
 	        for(ScoreObiect s:scOb) {
 	        	data.add(s);
 	        	System.out.println(s.toString());
@@ -65,13 +71,8 @@ public class scores extends Application{
 	                stage = new Stage();
 	                stage.setScene(new Scene(root));  
 	                stage.show();
-	        } catch(Exception e) {
+	        }catch(Exception e) {
 	           e.printStackTrace();
-	   }finally {
-		   	
-		    
-	       // lstScores.setCellFactory(ComboBoxListCell.forListView(data));
-	
 	   }
 		
 	}

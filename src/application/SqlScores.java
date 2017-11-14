@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -36,7 +37,7 @@ public class SqlScores {
         createTables();
     }
     public boolean createTables()  {
-        String createScores = "CREATE TABLE IF NOT EXISTS scores (id INTEGER PRIMARY KEY AUTOINCREMENT, name varchar(255), score int)";
+        String createScores = "CREATE TABLE IF NOT EXISTS scores (id INTEGER PRIMARY KEY AUTOINCREMENT, name varchar(255), score int, date DATETIME)";
         try {
             stat.execute(createScores);
         } catch (SQLException e) {
@@ -49,9 +50,10 @@ public class SqlScores {
     public boolean insertScore(String name, int score) {
         try {
             PreparedStatement prepStmt = conn.prepareStatement(
-                    "insert into scores values (NULL, ?, ?);");
+                    "insert into scores values (NULL, ?, ?,?);");
             prepStmt.setString(1, name);
-            prepStmt.setLong(2, score );           
+            prepStmt.setLong(2, score );
+            prepStmt.setDate(3,  getCurrentDate());
             prepStmt.execute();
         } catch (SQLException e) {
             System.err.println("Blad przy wstawianiu wyniku");
@@ -60,6 +62,11 @@ public class SqlScores {
         }
         return true;
     }
+    private static java.sql.Date getCurrentDate() {
+        java.util.Date today = new java.util.Date();
+        return new java.sql.Date(today.getTime());
+    }
+    
     public List<ScoreObiect> selectScores() {
         List<ScoreObiect> scores = new LinkedList<ScoreObiect>();
         try {
@@ -67,12 +74,14 @@ public class SqlScores {
             int id;
             String name;
             int score;
+            Date date;
             while(result.next()) {
                 id = result.getInt("id");
                 name = result.getString("name");
                 score= (int) result.getLong("score");
+                date=result.getDate("date");
                 
-                scores.add(new ScoreObiect(id, name, score));
+                scores.add(new ScoreObiect(id, name, score,date));
             }
         } catch (SQLException e) {
             e.printStackTrace();
