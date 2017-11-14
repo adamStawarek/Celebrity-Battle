@@ -24,6 +24,7 @@ public class res2Contrloller extends Application implements Initializable{
 	
 	static boolean IsClicked=false;
 	static boolean IsTrumpWin=false;
+	static String res;
 	
 	@FXML
 	Button btnPlayAgain;
@@ -85,12 +86,12 @@ public class res2Contrloller extends Application implements Initializable{
 	public void initialize(URL location, ResourceBundle resources) {
 		Image i;
 		if (IsTrumpWin) {
-			 i = new Image(getClass().getResourceAsStream("/resources/ClintonWin.png"));
-			 txtResult.setText("Clinton wins!");
+			 i = new Image(getClass().getResourceAsStream(res+"/Player1Win.png"));
+			 txtResult.setText("Player1 wins!");
 		}
 		else {
-			 i = new Image(getClass().getResourceAsStream("/resources/TrumpWin.png"));
-			 txtResult.setText("Trump wins!");
+			 i = new Image(getClass().getResourceAsStream(res+"/Player2Win.png"));
+			 txtResult.setText("Player2 wins!");
 		}
         imgEnd.setImage(i);
 		

@@ -62,7 +62,7 @@ public class Main extends Application implements Initializable{
 	int time;
 	int currentCombo=100,currentCombo2=100;//set for normal shooting
 	public static Text txtSCORES;
-
+	
 	ImageView bonusView;
 	public Stage stage;
 	Circle c;
@@ -71,7 +71,10 @@ public class Main extends Application implements Initializable{
 	AnimationTimer timer;	
 	ImageView i;
 	Image im;
+	
+	
 	Random randCombo;	
+	public static String res="/resources2";
 	
 	int timeWithoutBonus = 0;
 	int timeWithBonus=0;	
@@ -90,20 +93,23 @@ public class Main extends Application implements Initializable{
 	
 	@FXML
 	ImageView pl1Img,pl2Img;
+	
+	@FXML
+	Image i1,i2;
 			
 	@Override
 	public void start(Stage primaryStage) {
 		try {			
 			root=new BorderPane();
 		    root = (BorderPane)FXMLLoader.load(getClass().getResource("Sample.fxml"));
-		    root.setId("pane");
+		    //root.setId("pane");
 			Scene scene = new Scene(root,WIDTH,HEIGHT);
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			primaryStage.setResizable(false);
 			primaryStage.setTitle("GAME");
 			primaryStage.setScene(scene);
 			
-	        player2 = new Player2("/resources/trump.png");	       
+	        player2 = new Player2(res+"/Player2.png");	       
 	        player2.setVelocity(new Point2D(2, 2));
 	        addPlayerObject(player2, 100, 100);
 	        
@@ -121,7 +127,7 @@ public class Main extends Application implements Initializable{
 	        df.setMaximumFractionDigits(2); 
 			df.setMinimumFractionDigits(2); 
 			nf = new DecimalFormat("#0.00");
-	       
+			
 
 	        URL url = getClass().getResource("/sounds/shoot.wav");
 	        audioClip = Applet.newAudioClip(url);	        
@@ -136,11 +142,19 @@ public class Main extends Application implements Initializable{
 	        
 	        randCombo=new Random();
 	        
-	        Image bonus = new Image(getClass().getResourceAsStream("/resources/eagle.gif"));
+	        Image bonus = new Image(getClass().getResourceAsStream(res+"/bonus.gif"));
 	        bonusView = new ImageView();	       
-	        bonusView.setImage(bonus);	
+	        bonusView.setImage(bonus);
+	        if (res=="/resources2") {
+	        	bonusView.setFitHeight(100);
+	        	bonusView.setFitWidth(140);
+	        	root.setId("pane2");
+	        }
+	        else {
+	        	root.setId("pane");
+	        }
 	      
-	        player=new Player2("/resources/hilary.png");
+	        player=new Player2(res+"/Player1.png");
 	        player.setVelocity(new Point2D(-2,-2));
 	        addPlayerObject(player, 300, 300);
 	        	        
@@ -342,7 +356,7 @@ public class Main extends Application implements Initializable{
 							
 							
 							
-							player.ChangeImg("/resources/hilary2.png");
+							player.ChangeImg(res+"/Player1Lost.png");
 							txtSCORES.setText("Player1 sucks!");
 							IsEnd=true;							
 							timeToDisplayFinalWindow++;
@@ -356,7 +370,8 @@ public class Main extends Application implements Initializable{
 								
 								primaryStage.close();
 								res2Contrloller r=new res2Contrloller();
-								r.IsTrumpWin=false;								
+								r.IsTrumpWin=false;	
+								r.res=res;
 								try {
 									r.start(new Stage());
 								} catch (Exception e) {									
@@ -365,7 +380,7 @@ public class Main extends Application implements Initializable{
 							}						
 						}
 						else {
-							player.ChangeImg("/resources/h"+n+".png");							
+							player.ChangeImg(res+"/p1explosion"+n+".png");							
 							k++;
 							if (k==3||k==6||k==9||k==12||k==15||k==18||k==21||k==24||k==27||k==30||k==33||k==36||k==39||k==42)
 								n++;
@@ -377,7 +392,7 @@ public class Main extends Application implements Initializable{
 					if(score1>MAXSCORE) {
 						if (n>10) {
 														
-							player2.ChangeImg("/resources/trump2.png");			
+							player2.ChangeImg(res+"/Player2Lost.png");			
 							txtSCORES.setText("Player2 sucks!");							
 							IsEnd=true;							
 							timeToDisplayFinalWindow++;
@@ -391,7 +406,8 @@ public class Main extends Application implements Initializable{
 								
 								primaryStage.close();
 								res2Contrloller r=new res2Contrloller();
-								r.IsTrumpWin=true;								
+								r.IsTrumpWin=true;	
+								r.res=res;
 								try {
 									r.start(new Stage());
 								} catch (Exception e) {									
@@ -400,7 +416,7 @@ public class Main extends Application implements Initializable{
 							}
 						}
 						else {
-							player2.ChangeImg("/resources/t"+n+".png");							
+							player2.ChangeImg(res+"/p2explosion"+n+".png");							
 							k++;
 							if (k==3||k==6||k==9||k==12||k==15||k==18||k==21||k==24||k==27||k==30||k==33||k==36||k==39||k==42)
 								n++;
@@ -721,15 +737,21 @@ public class Main extends Application implements Initializable{
 		HEIGHT=700;
 	}
 	
+	public void setScenario2() {		
+		res="/resources2";
+	}
+	public void setScenario1() {
+		res="/resources";		
+	}
+	
 	private boolean IsBonus() {
 		return root.getChildren().contains(bonusView);
 	}
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@FXML
-	protected void handleStartAction() {
-		 
-     
+	protected void handleStartAction() {		 
+		
         Timeline timeline = new Timeline();
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.getKeyFrames().add(
@@ -751,9 +773,9 @@ public class Main extends Application implements Initializable{
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {	
-		Image i1 = new Image(getClass().getResourceAsStream("/resources/trump.png"));
+		i1 = new Image(getClass().getResourceAsStream(res+"/Player2.png"));
         pl1Img.setImage(i1);
-        Image i2 = new Image(getClass().getResourceAsStream("/resources/hilary.png"));
+        i2 = new Image(getClass().getResourceAsStream(res+"/Player1.png"));
         pl2Img.setImage(i2);
 		time=0;
 		handleStartAction();		

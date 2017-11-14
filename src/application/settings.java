@@ -69,6 +69,12 @@ public class settings extends Application implements Initializable{
 				m.MAXSCORE=1200*5;
 		}
 		
+		
+		if (cmbScenario.getSelectionModel().getSelectedItem().toString()=="USA-Elections")
+			m.setScenario1();
+		else if (cmbScenario.getSelectionModel().getSelectedItem().toString()=="Krucjata Korwina")
+			m.setScenario2();
+		
 		m.start(s);
 		Stage stage = (Stage) btnPlay.getScene().getWindow();	    
 	    stage.close();
@@ -142,7 +148,7 @@ public class settings extends Application implements Initializable{
 	    cmbLevel.getItems().addAll("Easy", "Medium", "Hard");
 	    cmbLevel.getSelectionModel().select("Medium");
 	    
-	    cmbScenario.getItems().addAll("USA-Elections", "Korwin the King", "Study apocalypse");
+	    cmbScenario.getItems().addAll("USA-Elections", "Krucjata Korwina");
 	    cmbScenario.getSelectionModel().select("USA-Elections");
 	    
 	    rbTime.selectedProperty().addListener(new ChangeListener<Boolean>() {
