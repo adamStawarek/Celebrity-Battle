@@ -1,7 +1,9 @@
 package application;
 
 
+import java.io.File;
 import java.net.URL;
+import java.nio.file.Paths;
 import java.util.ResourceBundle;
 
 import javafx.application.Application;
@@ -16,6 +18,8 @@ import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaView;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -34,6 +38,8 @@ public class res2Contrloller extends Application implements Initializable{
 	ImageView imgEnd;
 	@FXML
 	Text txtResult;
+	
+	
 		
 	public void CloseWindow() {
 		Platform.exit();
@@ -94,8 +100,14 @@ public class res2Contrloller extends Application implements Initializable{
 			 txtResult.setText("Player2 wins!");
 		}
         imgEnd.setImage(i);
-		
-        
+		 /*File file=new File("C:\\Users\\Adam\\Desktop\\EndVideo1.mp4");
+
+		 String source=file.toURI().toString();
+		 //Media media = new Media(this.getClass().getResource("/resources2/EndVideo1.mp4").toExternalForm());
+		 Media media=new Media(source);
+		 javafx.scene.media.MediaPlayer player = new   javafx.scene.media.MediaPlayer(media);
+		 endVideo = new MediaView(player);
+		 player.play();*/
 	}	
 	
 }

@@ -50,12 +50,13 @@ import javafx.scene.image.ImageView;
 public class Main extends Application implements Initializable{
 	
 	BorderPane root;	
-	Player2 player,player2;
+	Player2 player,player2,player3;
 	int WIDTH=1150,HEIGHT=700;
 	public boolean isPress=false,isPress2=false,isStop=false,IsEnd=false,SuperAttack=false,IsMultiPlayer=false;
 	private List<Bullet> bullets = new ArrayList<>();
 	private List<Bullet> bullets2 = new ArrayList<>();
 	private List<Point2D> points = new ArrayList<>();
+	private List<Player2> players = new ArrayList<>();
 	private java.applet.AudioClip audioClip,audioClip2,audioClip3,audioClip4,audioClip5;
 	public int n=1,k=0,t=0,r=0,timeToDisplayFinalWindow=0,attackloader=0,ComboTimeCounter=600;
 	public static int score1=0,score2=0,MAXSCORE=1200;
@@ -63,21 +64,22 @@ public class Main extends Application implements Initializable{
 	int currentCombo=100,currentCombo2=100;//set for normal shooting
 	public static Text txtSCORES;
 	
-	ImageView bonusView;
+	ImageView bonusView, dangerView;
 	public Stage stage;
 	Circle c;
-	int tick=0;
+	int tick=0,player3Life=100, explosionImgCounter=0, explosionTimetoChangePic=0;
 	double angle;
 	AnimationTimer timer;	
 	ImageView i;
 	Image im;
 	
+	public static boolean IsHardMode=true,IsExplosion1=false, IsExplosion2=false;
 	
 	Random randCombo;	
 	public static String res="/resources2";
 	
-	int timeWithoutBonus = 0;
-	int timeWithBonus=0;	
+	int timeWithoutBonus = 0,timeWithDanger=0;
+	int timeWithBonus=0,timeWithoutDanger=0;	
 	public static double pl1bonus=0;
 	public static double pl2bonus=0;
 	
@@ -102,16 +104,13 @@ public class Main extends Application implements Initializable{
 		try {			
 			root=new BorderPane();
 		    root = (BorderPane)FXMLLoader.load(getClass().getResource("Sample.fxml"));
-		    //root.setId("pane");
 			Scene scene = new Scene(root,WIDTH,HEIGHT);
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			primaryStage.setResizable(false);
 			primaryStage.setTitle("GAME");
 			primaryStage.setScene(scene);
 			
-	        player2 = new Player2(res+"/Player2.png");	       
-	        player2.setVelocity(new Point2D(2, 2));
-	        addPlayerObject(player2, 100, 100);
+	        
 	        
 	        score1=0;
 	        score2=0;
@@ -145,6 +144,13 @@ public class Main extends Application implements Initializable{
 	        Image bonus = new Image(getClass().getResourceAsStream(res+"/bonus.gif"));
 	        bonusView = new ImageView();	       
 	        bonusView.setImage(bonus);
+	        
+	        Image danger = new Image(getClass().getResourceAsStream("/sounds/warning.png"));
+	        dangerView = new ImageView();    
+	        dangerView.setImage(danger);
+	        dangerView.setFitHeight(80);
+        	dangerView.setFitWidth(90);
+	        
 	        if (res=="/resources2") {
 	        	bonusView.setFitHeight(100);
 	        	bonusView.setFitWidth(140);
@@ -153,27 +159,107 @@ public class Main extends Application implements Initializable{
 	        else {
 	        	root.setId("pane");
 	        }
+	        
+	        //Do zrobienia na super hard mode(difficult)
+	        /*if(IsHardMode) {
+	        	player3=new Player2(res+"/Player3.png");
+	        	player3.setVelocity(new Point2D(2,2));
+	 	        addPlayerObject(player3, 0, 0);
+	        	players.add(player3);
+	        }*/
 	      
+	        
+	        //Dodawanie graczy
 	        player=new Player2(res+"/Player1.png");
 	        player.setVelocity(new Point2D(-2,-2));
 	        addPlayerObject(player, 300, 300);
-	        	        
+	        players.add(player);
+	        player2 = new Player2(res+"/Player2.png");	       
+	        player2.setVelocity(new Point2D(2, 2));
+	        addPlayerObject(player2, 100, 100);	         
+	        players.add(player2);
+	        
+	        
+	        
 	        timer = new AnimationTimer() {
 	            @Override
 	            public void handle(long now) {
 	            		            		            		            	
 	                onUpdate();
 	                tick++;
-	                check();
+	                
+	                for(Player2 p:players) {
+	                	check(p);
+	                }
+	                
 	                updatePic();
 	                addBonus();
 	               
 	                
-	                if (isStop==false&&IsEnd==false&&IsMultiPlayer==false)
-	                	 autoEnemy();
+	                if (isStop==false&&IsEnd==false&&IsMultiPlayer==false) {
+	                	 autoEnemy(player);
+	                	// if(IsHardMode) {
+	                		// autoEnemy(player3);
+	                	// }
+	                }
+	                
+	                if(IsExplosion1)
+	                	explosionHandler(player,"/p1explosion" ,"Player1");
+	                if(IsExplosion2)
+	                	explosionHandler(player2,"/p2explosion" ,"Player2");
 	                
 	                removeBulletsOutOfBounds();
-	                updateSuperAttack();	               
+	                updateSuperAttack();	
+	                
+	               if (IsHardMode) {
+	            		   if(IsDanger()==false&&timeWithoutDanger>100) {	            		
+	   	            		Random r=new Random();
+	   						int randNumb1=r.nextInt(WIDTH-330);
+	   						int randNumb2=r.nextInt(HEIGHT-140);				        
+	   				        dangerView.setTranslateX(randNumb1);
+	   				        dangerView.setTranslateY(randNumb2);
+	   				        root.getChildren().add(dangerView);
+	   				        timeWithoutDanger=0;
+	   	            	}
+	   	            	
+	   	            	if(IsDanger()==true&&timeWithDanger>900) {
+	   	            		root.getChildren().remove(dangerView);
+	   	            		timeWithDanger=0;            		
+	   	            	}
+	   	            	
+	   	            	if(IsDanger()==true&&timeWithDanger<=900) {
+	   	            		int dist1=GetDistanceUniversal(player.GetPosX()+30, player.GetPosY()+30, dangerView.getTranslateX()+100, dangerView.getTranslateY()+20);
+	   						int dist2=GetDistanceUniversal(player2.GetPosX()+30, player2.GetPosY()+30, dangerView.getTranslateX()+100, dangerView.getTranslateY()+20);
+	   						if(80>dist1) {
+	   							//makeSound(audioClip3);
+	   							root.getChildren().remove(dangerView);
+	   							timeWithDanger=0;
+	   							score2+=100;
+	   							explosionImgCounter=1;
+	   							explosionTimetoChangePic=0;
+	   							IsExplosion1=true;
+	   							
+
+	   						}
+	   						else if(80>dist2) {
+	   							//makeSound(audioClip2);
+	   							root.getChildren().remove(dangerView);
+	   							timeWithoutDanger=0;
+	   							score1+=100;
+	   							explosionImgCounter=1;
+	   							explosionTimetoChangePic=0;				
+	   							IsExplosion2=true;
+	   							
+	   						}
+	   	            	}	
+	   	            	if(IsDanger()) {
+	   	            		timeWithDanger++;
+	   	            	}
+	   	            	else {
+	   	            		timeWithoutDanger++;
+	   	            	}
+	   	            	
+	               }
 	               
 	            }
 	            	
@@ -274,12 +360,11 @@ public class Main extends Application implements Initializable{
 
 
 				//method to control enemy by the computer
-				private void autoEnemy() {
-										
-					
+				private void autoEnemy(Player2 player) {
+															
 					double X=player.GetPosX()-player2.GetPosX();
 					double Y=player.GetPosY()-player2.GetPosY();
-					double angleToShoot,difference;
+					double angleToShoot;
 					double tan=Y/X;
 					angle=(Math.toDegrees(Math.atan(tan))%360);
 					double playerAngle=(player.getRotate()+90)%360;
@@ -287,64 +372,26 @@ public class Main extends Application implements Initializable{
 						playerAngle*=-1;
 					if(angle<0)
 						angle*=-1;										
-					
-					
-					if (player2.GetPosX()>player.GetPosX()) {
-						
-						if (player2.GetPosY()>player.GetPosY()) {
-							
+										
+					if (player2.GetPosX()>player.GetPosX()) {					
+						if (player2.GetPosY()>player.GetPosY()) {						
 								angleToShoot=180-angle;
-								difference=playerAngle-angleToShoot;
-								if(difference>=-5&&difference<=5)
-									shoot(player,bullets);
-								else if(difference<-5)
-									player.rotateRight();
-								else if(difference>5)
-									player.rotateLeft();
-								//System.out.println("2 Cwiartka player Angle "+playerAngle+" Angle to shoot "+angleToShoot+" angle "+angle);
+								autoEnemyHelper(player, angleToShoot,playerAngle);
 						}
-						else {													
-							
-								angleToShoot=90-angle;						
-								difference=playerAngle-angleToShoot;
-								if(difference>=-5&&difference<=5)
-									shoot(player,bullets);
-								else if(difference<-5)
-									player.rotateRight();
-								else if(difference>5)
-									player.rotateLeft();
-								
-								//System.out.println("1 Cwiartka player Angle "+playerAngle+" Angle to shoot "+angleToShoot+" angle "+angle);
+						else {																				
+								angleToShoot=90-angle;			
+								autoEnemyHelper(player, angleToShoot,playerAngle);
 						}
 						
 					}
 					else {
-						if (player2.GetPosY()>player.GetPosY()) {
-							
+						if (player2.GetPosY()>player.GetPosY()) {							
 							angleToShoot=270-angle;
-							difference=playerAngle-angleToShoot;
-							if(difference>=-5&&difference<=5)
-								shoot(player,bullets);
-							else if(difference<-5)
-								player.rotateRight();
-							else if(difference>5)
-								player.rotateLeft();
-							
-							//System.out.println("3 Cwiartka player Angle "+playerAngle+" Angle to shoot "+angleToShoot+" angle "+angle);
-							
+							autoEnemyHelper(player, angleToShoot,playerAngle);
 						}
-						else {							
-							
+						else {														
 							angleToShoot=360-angle;
-							difference=playerAngle-angleToShoot;
-							if(difference>=-5&&difference<=5)
-								shoot(player,bullets);
-							else if(difference<-5)
-								player.rotateRight();
-							else if(difference>5)
-								player.rotateLeft();
-							
-							//System.out.println("4 Cwiartka player Angle "+playerAngle+" Angle to shoot "+angleToShoot+" angle "+angle);
+							autoEnemyHelper(player, angleToShoot,playerAngle);
 						}
 					}										
 					
@@ -353,9 +400,7 @@ public class Main extends Application implements Initializable{
 				private void updatePic() {										
 					if(score2>MAXSCORE) {						
 						if (n>10) {
-							
-							
-							
+																					
 							player.ChangeImg(res+"/Player1Lost.png");
 							txtSCORES.setText("Player1 sucks!");
 							IsEnd=true;							
@@ -382,12 +427,12 @@ public class Main extends Application implements Initializable{
 						else {
 							player.ChangeImg(res+"/p1explosion"+n+".png");							
 							k++;
-							if (k==3||k==6||k==9||k==12||k==15||k==18||k==21||k==24||k==27||k==30||k==33||k==36||k==39||k==42)
+							if (k%3==0&&k<43)
 								n++;
 							if(k==3) {
 								audioClip5.play();
 							}
-						}										
+						}									
 					}
 					if(score1>MAXSCORE) {
 						if (n>10) {
@@ -418,7 +463,7 @@ public class Main extends Application implements Initializable{
 						else {
 							player2.ChangeImg(res+"/p2explosion"+n+".png");							
 							k++;
-							if (k==3||k==6||k==9||k==12||k==15||k==18||k==21||k==24||k==27||k==30||k==33||k==36||k==39||k==42)
+							if (k%3==0&&k<43)
 								n++;
 							if(k==3) {
 								audioClip5.play();
@@ -428,8 +473,7 @@ public class Main extends Application implements Initializable{
 				}
 
 				//check if player avatar remains in the canvas
-				private void check() {
-					
+				private void check(Player2 player) {					
 					if(player.GetPosX()<0) {
 						player.imageView.setTranslateX(WIDTH-265);
 					}
@@ -441,18 +485,6 @@ public class Main extends Application implements Initializable{
 					}
 					if(player.GetPosY()>HEIGHT) {
 						player.imageView.setTranslateY(0);
-					}
-					if(player2.GetPosX()<0) {
-						player2.imageView.setTranslateX(WIDTH-265);
-					}
-					if(player2.GetPosX()>WIDTH-265) {
-						player2.imageView.setTranslateX(0);
-					}
-					if(player2.GetPosY()<0) {
-						player2.imageView.setTranslateY(HEIGHT);
-					}
-					if(player2.GetPosY()>HEIGHT) {
-						player2.imageView.setTranslateY(0);
 					}
 				}
 								
@@ -473,8 +505,9 @@ public class Main extends Application implements Initializable{
 		                }
 		               
 		        }
-					player.update();
-					player2.update();
+					for(Player2 p:players) {
+						p.update();
+					}
 					for(Bullet bullet:bullets) {
 						bullet.update();
 					}
@@ -488,66 +521,48 @@ public class Main extends Application implements Initializable{
 	        primaryStage.getScene().setOnKeyPressed(e -> {
 	        	
 	            if (e.getCode() == KeyCode.LEFT) {
-	            	if((player.velocity.getX()>-5)) {
-	            		player.rotateLeft();	            		
-	            	}     
+	            	player.rotateLeft();	            		   
 	            	isPress=true;
 	            		
-	            } else if (e.getCode() == KeyCode.RIGHT) {
-	            
-	            	if((player.velocity.getX()<5)) {
-	            		player.rotateRight();	            		
-	            	}     
+	            } else if (e.getCode() == KeyCode.RIGHT) {	            	
+	            	player.rotateRight();	            		   
 	            	isPress=true;
 	            } 
 	            else if (e.getCode() == KeyCode.UP) {
-	            	if((player.velocity.getY()>-5)) {	            		
+	            	if((player.velocity.getY()>-3)&&(player.velocity.getY()<3)&&(player.velocity.getX()>-3)&&(player.velocity.getX()<3)) {	            		
 	            		player.speedUp();
 	            	}    	            	
 	            	isPress=true;
 	            } 
-	            else if (e.getCode() == KeyCode.DOWN) {
-	            	if((player.velocity.getY()<5)) {	            		
-	            		player.slowDown();
-	            	}     
+	            else if (e.getCode() == KeyCode.DOWN) {            		
+	            	player.slowDown();   
 	            	isPress=true;
 	            		 
 	            }
 	            
 	            
-	           if (e.getCode() == KeyCode.A) {
-	            	if((player2.velocity.getX()>-5)) {	            		
-	            		player2.rotateLeft();	
-	            	}     
-	          
+	           if (e.getCode() == KeyCode.A) {            		
+	            	player2.rotateLeft();	    	          
 	            	isPress2=true;
 	            } else if (e.getCode() == KeyCode.D) {
-	            	if((player2.velocity.getX()<5)) {
-	            		player2.rotateRight();
-	            	}  
+	            	player2.rotateRight();
 	            	isPress2=true;
 	            } 
 	            else if (e.getCode() == KeyCode.W) {
-	            	if((player2.velocity.getY()>-5)) {
+	            	if((player2.velocity.getY()>-3)&&(player2.velocity.getY()<3)&&(player2.velocity.getX()>-3)&&(player2.velocity.getX()<3)) {
 	            		player2.speedUp();
 	            	}     	 
 	            	isPress2=true;
 	            } 
 	            else if (e.getCode() == KeyCode.S) {
-	            	if((player2.velocity.getY()<5)) {
-	            		player2.slowDown();
-	            	}     
-	            	isPress2=true;
-	            		 
-	            }
-	           
-	           
+	            	player2.slowDown();
+	            	isPress2=true;	            		 
+	            }	           	           
 	        });
 	        
 	        primaryStage.getScene().setOnKeyReleased(e -> {
 	        	
-	        	if (e.getCode() == KeyCode.R) {
-	            	//shoot2(player2,bullets2);	            	
+	        	if (e.getCode() == KeyCode.R) {          	
 	        		System.out.println(currentCombo);
 	        	
 	        		if(currentCombo==100) {
@@ -631,6 +646,32 @@ public class Main extends Application implements Initializable{
             
         }
     }
+
+	void explosionHandler(Player2 p, String s, String playerName) {
+		p.ChangeImg(res+s+explosionImgCounter+".png");							
+		explosionTimetoChangePic++;
+		if (explosionTimetoChangePic%3==0 && explosionTimetoChangePic<36 && explosionImgCounter<8)
+			explosionImgCounter++;
+		if(explosionTimetoChangePic==3) {
+			audioClip5.play();
+		}
+		if (explosionTimetoChangePic>=36) {
+			p.ChangeImg(res+"/"+playerName+".png");
+			if(playerName=="Player1");
+				IsExplosion1=false;
+			if(playerName=="Player2");
+				IsExplosion2=false;
+		}
+	}
+	void autoEnemyHelper(Player2 player,double angleToShoot,double playerAngle) {				
+		double difference=playerAngle-angleToShoot;
+		if(difference>=-5&&difference<=5)
+			shoot(player,bullets);
+		else if(difference<-5)
+			player.rotateRight();
+		else if(difference>5)
+			player.rotateLeft();
+	}
 	
 	
 	int GetDistance() {
@@ -743,9 +784,18 @@ public class Main extends Application implements Initializable{
 	public void setScenario1() {
 		res="/resources";		
 	}
+	public void setHardModeOn() {
+		IsHardMode=true;
+	}
+	public void setHardModeOff() {
+		IsHardMode=false;
+	}
 	
 	private boolean IsBonus() {
 		return root.getChildren().contains(bonusView);
+	}
+	private boolean IsDanger() {
+		return root.getChildren().contains(dangerView);
 	}
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })

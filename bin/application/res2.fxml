@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.media.*?>
 <?import javafx.scene.effect.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.text.*?>
@@ -42,12 +43,13 @@
             <Font name="Verdana" size="69.0" />
          </font>
       </Text>
-      <ImageView fx:id="imgEnd" fitHeight="250.0" fitWidth="320.0" layoutX="7.0" layoutY="100.0" pickOnBounds="true" preserveRatio="true" />
+     <ImageView fx:id="imgEnd" fitHeight="250.0" fitWidth="320.0" layoutX="22.0" layoutY="105.0" pickOnBounds="true" preserveRatio="true" />
       <Text fx:id="txtResult" fill="#e10c0c" layoutX="65.0" layoutY="374.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Result">
          <font>
             <Font name="Times New Roman" size="30.0" />
          </font>
       </Text>
+      <MediaView fx:id="endVideo" fitHeight="200.0" fitWidth="300.0" layoutX="25.0" layoutY="125.0" />
    </children>
    <effect>
       <Blend />

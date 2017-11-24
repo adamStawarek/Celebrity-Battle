@@ -63,11 +63,12 @@ public class Obiect_Player {
 	    }
 	    
 	    public void speedUp() {
-	    	 setVelocity(new Point2D(velocity.getX()*1.1, velocity.getY()*1.1));
+	    	 setVelocity(new Point2D(velocity.getX()*1.05, velocity.getY()*1.05));
 	    }
 	    public void slowDown() {
-	    	 setVelocity(new Point2D(velocity.getX()*0.9, velocity.getY()*0.9));
+	    	 setVelocity(new Point2D(velocity.getX()*0.999, velocity.getY()*0.999));
 	    }
+	    
 
 	    public void rotateRight() {
 	    	imageView.setRotate(imageView.getRotate() + 5);
