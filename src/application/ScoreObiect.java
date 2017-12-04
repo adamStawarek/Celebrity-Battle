@@ -4,7 +4,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class ScoreObiect {
+public class ScoreObiect implements Comparable<ScoreObiect>{
 	int id;
 	String name;
 	int score;
@@ -23,5 +23,9 @@ public class ScoreObiect {
 	public String toString() {
 		return "id: " + id + "                     name: " + name + "                        score: " + score+"                          date: "+dateFormat.format(date);
 	}
-	
+	@Override
+    public int compareTo(ScoreObiect o) {
+        int porownaneWyniki = ((Integer) score).compareTo(o.score);
+        return porownaneWyniki;     
+    }
 }

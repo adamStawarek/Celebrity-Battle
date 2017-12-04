@@ -73,7 +73,7 @@ public class Main extends Application implements Initializable{
 	ImageView i;
 	Image im;
 	
-	public static boolean IsHardMode=true,IsExplosion1=false, IsExplosion2=false;
+	public static boolean IsHardMode=false,IsExplosion1=false, IsExplosion2=false;
 	
 	Random randCombo;	
 	public static String res="/resources2";
@@ -145,7 +145,7 @@ public class Main extends Application implements Initializable{
 	        bonusView = new ImageView();	       
 	        bonusView.setImage(bonus);
 	        
-	        Image danger = new Image(getClass().getResourceAsStream("/sounds/warning.png"));
+	        Image danger = new Image(getClass().getResourceAsStream("/sounds/danger.gif"));
 	        dangerView = new ImageView();    
 	        dangerView.setImage(danger);
 	        dangerView.setFitHeight(80);
@@ -218,8 +218,11 @@ public class Main extends Application implements Initializable{
 	   						int randNumb2=r.nextInt(HEIGHT-140);				        
 	   				        dangerView.setTranslateX(randNumb1);
 	   				        dangerView.setTranslateY(randNumb2);
-	   				        root.getChildren().add(dangerView);
-	   				        timeWithoutDanger=0;
+	   				        int dist=GetDistanceUniversal(bonusView.getTranslateX()+30, bonusView.getTranslateY()+30, dangerView.getTranslateX()+100, dangerView.getTranslateY()+20);
+	   				         if(dist>100) {
+	   				        	 root.getChildren().add(dangerView);
+	   				        	 timeWithoutDanger=0;
+	   				         }
 	   	            	}
 	   	            	
 	   	            	if(IsDanger()==true&&timeWithDanger>900) {
@@ -615,7 +618,6 @@ public class Main extends Application implements Initializable{
 		}
 	}
 		
-	
 	
     public void makeSound(java.applet.AudioClip a){
         a.play();

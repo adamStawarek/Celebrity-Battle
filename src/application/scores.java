@@ -2,6 +2,7 @@ package application;
 
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
+import java.util.Collections;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -53,6 +54,7 @@ public class scores extends Application{
 	        lstScores=new ListView<ScoreObiect>(data);		
 	        SqlScores sql=new SqlScores();
 	        List<ScoreObiect> scOb=sql.selectScores();
+	        Collections.sort(scOb);
 	       sql.closeConnection();
 	        for(ScoreObiect s:scOb) {
 	        	data.add(s);

@@ -75,6 +75,11 @@ public class settings extends Application implements Initializable{
 		else if (cmbScenario.getSelectionModel().getSelectedItem().toString()=="Krucjata Korwina")
 			m.setScenario2();
 		
+		if (cmbLevel.getSelectionModel().getSelectedItem().toString()=="Easy")
+			m.setHardModeOff();
+		else if (cmbLevel.getSelectionModel().getSelectedItem().toString()=="Medium")
+			m.setHardModeOn();
+		
 		m.start(s);
 		Stage stage = (Stage) btnPlay.getScene().getWindow();	    
 	    stage.close();
