@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="347.0" prefWidth="488.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.BSWcontrol">
+   <children>
+      <Text layoutX="31.0" layoutY="72.0" strokeType="OUTSIDE" strokeWidth="0.0" text="CONGRATULATIONS!!!" wrappingWidth="426.40234375">
+         <font>
+            <Font name="Times New Roman Bold" size="37.0" />
+         </font>
+         <fill>
+            <LinearGradient endX="1.0" endY="1.0" startX="0.6476190476190476">
+               <stops>
+                  <Stop color="#e80000" />
+                  <Stop color="WHITE" offset="1.0" />
+               </stops>
+            </LinearGradient>
+         </fill>
+      </Text>
+      <Text fx:id="scoreText" layoutX="60.0" layoutY="109.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Your score was ..." wrappingWidth="387.0">
+         <font>
+            <Font name="Verdana" size="29.0" />
+         </font>
+      </Text>
+      <Text layoutX="40.0" layoutY="199.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Put your name to glory list:" wrappingWidth="407.40234375">
+         <font>
+            <Font name="Verdana" size="25.0" />
+         </font>
+      </Text>
+      <TextField fx:id="gloryName" layoutX="40.0" layoutY="226.0" prefHeight="48.0" prefWidth="379.0" promptText="name">
+         <font>
+            <Font size="22.0" />
+         </font>
+      </TextField>
+      <Button fx:id="btnSubmit" layoutX="196.0" layoutY="295.0" mnemonicParsing="false" onAction="#submit" text="Submit">
+         <font>
+            <Font name="Verdana Bold" size="15.0" />
+         </font>
+      </Button>
+   </children>
+</AnchorPane>

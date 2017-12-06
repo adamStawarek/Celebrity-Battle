@@ -412,10 +412,6 @@ public class Main extends Application implements Initializable{
 								audioClip4.play();
 								timer.stop();
 								
-								SqlScores scr=new SqlScores();
-								scr.insertScore("Trump", score2);
-								scr.closeConnection();
-								
 								primaryStage.close();
 								res2Contrloller r=new res2Contrloller();
 								r.IsTrumpWin=false;	
@@ -425,8 +421,32 @@ public class Main extends Application implements Initializable{
 								} catch (Exception e) {									
 									e.printStackTrace();
 								}
-							}						
-						}
+								
+								if (IsMultiPlayer==false) {
+									SqlScores scr=new SqlScores();							
+									List<ScoreObiect> scOb=scr.selectScores();
+									scr.closeConnection();
+							    
+									int ScorePosition=0;
+									for(ScoreObiect s: scOb) {
+										if(s.score>score2) {
+											ScorePosition++;
+										}
+									}
+									if(ScorePosition<3) {
+										BSWcontrol bsw=new BSWcontrol();
+										bsw.ScorePosition=ScorePosition;
+										bsw.score=score2;
+										try {
+											bsw.start(new Stage());
+										} catch (Exception e) {
+										// TODO Auto-generated catch block
+											e.printStackTrace();
+										}
+									}					
+								}
+							}
+							}
 						else {
 							player.ChangeImg(res+"/p1explosion"+n+".png");							
 							k++;
@@ -448,9 +468,9 @@ public class Main extends Application implements Initializable{
 								audioClip4.play();
 								timer.stop();
 								
-								SqlScores scr=new SqlScores();
-								scr.insertScore("Clinton", score1);
-								scr.closeConnection();
+								//SqlScores scr=new SqlScores();
+								//scr.insertScore("Clinton", score1);
+								//scr.closeConnection();
 								
 								primaryStage.close();
 								res2Contrloller r=new res2Contrloller();
