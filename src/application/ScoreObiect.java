@@ -11,7 +11,16 @@ public class ScoreObiect implements Comparable<ScoreObiect>{
 	int score;
 	DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 	Date date;
+	String prettyDate;
 	
+	public String getPrettyDate() {
+		return prettyDate;
+	}
+
+	public void setPrettyDate(String prettyDate) {
+		this.prettyDate = prettyDate;
+	}
+
 	public String getName() {
 		return name;
 	}
@@ -44,6 +53,7 @@ public class ScoreObiect implements Comparable<ScoreObiect>{
 		this.name = name2;
 		this.score = score2;
 		date = _date;
+		prettyDate=dateFormat.format(date);
 	}
 
 	@Override

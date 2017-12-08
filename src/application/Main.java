@@ -60,7 +60,7 @@ public class Main extends Application implements Initializable{
 	private java.applet.AudioClip audioClip,audioClip2,audioClip3,audioClip4,audioClip5;
 	public int n=1,k=0,t=0,r=0,timeToDisplayFinalWindow=0,attackloader=0,ComboTimeCounter=600;
 	public static int score1=0,score2=0,MAXSCORE=1200;
-	int time;
+	public static int time;
 	int currentCombo=100,currentCombo2=100;//set for normal shooting
 	public static Text txtSCORES;
 	
@@ -435,14 +435,15 @@ public class Main extends Application implements Initializable{
 							    
 									int ScorePosition=0;
 									for(ScoreObiect s: scOb) {
-										if(s.score>score2) {
+										if(s.score<(time/100)) {
 											ScorePosition++;
 										}
 									}
 									if(ScorePosition<3) {
 										BSWcontrol bsw=new BSWcontrol();
 										bsw.ScorePosition=ScorePosition;
-										bsw.score=score2;
+										//bsw.score=score2;
+										bsw.score=time/100;
 										bsw.MaxScore=MAXSCORE;
 										try {
 											bsw.start(new Stage());

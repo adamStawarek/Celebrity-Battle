@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import javafx.application.Application;
+import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -18,13 +19,16 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.ComboBoxListCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 
 public class scores extends Application{
 	
@@ -84,26 +88,54 @@ public class scores extends Application{
 	        	data1.add(Sc);
 	        }
 	        
-			TableColumn IndexCol = new TableColumn("");
-	        IndexCol.setMinWidth(50);
+			
+	        TableColumn numberCol = new TableColumn("#");
+	        numberCol.setMinWidth(20);
+	        numberCol.setCellValueFactory(new Callback<CellDataFeatures<ScoreObiect, ScoreObiect>, ObservableValue<ScoreObiect>>() {
+	            @Override public ObservableValue<ScoreObiect> call(CellDataFeatures<ScoreObiect, ScoreObiect> p) {
+	                return new ReadOnlyObjectWrapper(p.getValue());
+	            }
+	        });
+
+	        numberCol.setCellFactory(new Callback<TableColumn<ScoreObiect, ScoreObiect>, TableCell<ScoreObiect, ScoreObiect>>() {
+	            @Override public TableCell<ScoreObiect, ScoreObiect> call(TableColumn<ScoreObiect, ScoreObiect> param) {
+	                return new TableCell<ScoreObiect, ScoreObiect>() {
+	                    @Override protected void updateItem(ScoreObiect item, boolean empty) {
+	                        super.updateItem(item, empty);
+
+	                        if (this.getTableRow() != null && item != null) {
+	                        	int index=this.getTableRow().getIndex()+1;
+	                            setText(index+"");
+	                        } else {
+	                            setText("");
+	                        }
+	                    }
+	                };
+	            }
+	        });
+	        numberCol.setStyle("-fx-alignment: CENTER;");
+	        numberCol.setSortable(false);
 	       
 	        TableColumn NameCol = new TableColumn("Name");
-	        NameCol.setMinWidth(200);
+	        NameCol.setMinWidth(220);
 	        NameCol.setCellValueFactory(
 	                new PropertyValueFactory<>("name"));
+	        NameCol.setStyle("-fx-alignment: CENTER;");
 	        
-	        TableColumn ScoreCol = new TableColumn("Score");
+	        TableColumn ScoreCol = new TableColumn("Time");
 	        ScoreCol.setMinWidth(100);
 	        ScoreCol.setCellValueFactory(
 	                new PropertyValueFactory<>("score"));
+	        ScoreCol.setStyle("-fx-alignment: CENTER;");
 	        
 	        TableColumn DateCol = new TableColumn("Date");
-	        DateCol.setMinWidth(200);
+	        DateCol.setMinWidth(220);
 	        DateCol.setCellValueFactory(
-	                new PropertyValueFactory<>("date"));
+	                new PropertyValueFactory<>("prettyDate"));
+	        DateCol.setStyle("-fx-alignment: CENTER;");
 	                
 	        tblScores.setItems(data1);
-	        tblScores.getColumns().addAll(IndexCol, NameCol, ScoreCol, DateCol);
+	        tblScores.getColumns().addAll(numberCol, NameCol, ScoreCol, DateCol);
 	        tblScores.setLayoutY(y);
 	        tblScores.setLayoutX(15);
 	        tblScores.setPrefSize(570, 120);

@@ -23,12 +23,12 @@
             <Font size="17.0" />
          </font>
       </Button>
-      <Text layoutX="163.0" layoutY="230.0" strokeType="OUTSIDE" strokeWidth="0.0" text="BEST SCORES(200)" wrappingWidth="422.13671875">
+      <Text layoutX="163.0" layoutY="230.0" strokeType="OUTSIDE" strokeWidth="0.0" text="BEST SCORES(300)" wrappingWidth="422.13671875">
          <font>
             <Font name="Arial Bold" size="29.0" />
          </font>
       </Text>
-      <Text layoutX="163.0" layoutY="412.0" strokeType="OUTSIDE" strokeWidth="0.0" text="BEST SCORES(300)" wrappingWidth="422.13671875">
+      <Text layoutX="163.0" layoutY="412.0" strokeType="OUTSIDE" strokeWidth="0.0" text="BEST SCORES(500)" wrappingWidth="422.13671875">
          <font>
             <Font name="Arial Bold" size="29.0" />
          </font>
