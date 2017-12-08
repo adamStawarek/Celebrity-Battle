@@ -33,22 +33,48 @@ public class BSWcontrol extends Application implements Initializable{
 	
 	static int ScorePosition=0;
 	static int score=0;
+	static int MaxScore=0;
 	
 	@FXML
 	public void submit() {
-		SqlScores scr=new SqlScores();
-		String name=gloryName.getText();
-		scr.insertScore(name, score);
-		scr.closeConnection();
-		//((Node)event.getSource()).getScene().getWindow().hide();
-		Stage stage = (Stage) gloryName.getScene().getWindow();	    
-	    stage.close();
+		
+		if (MaxScore==1200) {
+			SqlScores scr=new SqlScores("jdbc:sqlite:scores1.sqlite");
+			
+			String name=gloryName.getText();
+			scr.insertScore(name, score);
+			scr.closeConnection();
+			
+			Stage stage = (Stage) gloryName.getScene().getWindow();	    
+		    stage.close();
+		}
+		else if (MaxScore==1200*3) {
+			SqlScores scr=new SqlScores("jdbc:sqlite:scores2.sqlite");
+	
+			String name=gloryName.getText();
+			scr.insertScore(name, score);
+			scr.closeConnection();
+			
+			Stage stage = (Stage) gloryName.getScene().getWindow();	    
+		    stage.close();
+		}
+		else if (MaxScore==1200*5) {
+			SqlScores scr=new SqlScores("jdbc:sqlite:scores3.sqlite");
+		
+			String name=gloryName.getText();
+			scr.insertScore(name, score);
+			scr.closeConnection();
+			
+			Stage stage = (Stage) gloryName.getScene().getWindow();	    
+		    stage.close();
+		}
+	
 	}
 	
 	
 	@Override
 	public void start(Stage stage) throws Exception {
-		// TODO Auto-generated method stub
+	
 		try {				
 	        		AnchorPane root=new AnchorPane();
 	        		root = (AnchorPane) FXMLLoader.load(getClass().getResource("BestScoreWindow.fxml"));
@@ -64,7 +90,7 @@ public class BSWcontrol extends Application implements Initializable{
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		// TODO Auto-generated method stub
+		
 		scoreText.setText("Your score is "+(ScorePosition+1));
 	}
 

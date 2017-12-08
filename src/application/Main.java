@@ -423,7 +423,13 @@ public class Main extends Application implements Initializable{
 								}
 								
 								if (IsMultiPlayer==false) {
-									SqlScores scr=new SqlScores();							
+									SqlScores scr = null;
+									if(MAXSCORE==1200)
+										scr=new SqlScores("jdbc:sqlite:scores1.sqlite");
+									else if(MAXSCORE==(3*1200))
+										scr=new SqlScores("jdbc:sqlite:scores2.sqlite");	
+									else if(MAXSCORE==(5*1200))
+										scr=new SqlScores("jdbc:sqlite:scores3.sqlite");										
 									List<ScoreObiect> scOb=scr.selectScores();
 									scr.closeConnection();
 							    
@@ -437,6 +443,7 @@ public class Main extends Application implements Initializable{
 										BSWcontrol bsw=new BSWcontrol();
 										bsw.ScorePosition=ScorePosition;
 										bsw.score=score2;
+										bsw.MaxScore=MAXSCORE;
 										try {
 											bsw.start(new Stage());
 										} catch (Exception e) {

@@ -12,13 +12,32 @@ import java.util.List;
 
 public class SqlScores {
 	public static final String DRIVER = "org.sqlite.JDBC";
-    public static final String DB_URL = "jdbc:sqlite:scoresV2.sqlite";
+    public static String DB_URL = "";
     
     private Connection conn;
     private Statement stat;
  
     public SqlScores() {
 		
+        try {
+            Class.forName(SqlScores.DRIVER);
+        } catch (ClassNotFoundException e) {
+            System.err.println("Brak sterownika JDBC");
+            e.printStackTrace();
+        }
+ 
+        try {
+            conn = DriverManager.getConnection(DB_URL);
+            stat = conn.createStatement();
+        } catch (SQLException e) {
+            System.err.println("Problem z otwarciem polaczenia");
+            e.printStackTrace();
+        }
+ 
+        createTables();
+    }
+    public SqlScores(String s) {
+		DB_URL=s;
         try {
             Class.forName(SqlScores.DRIVER);
         } catch (ClassNotFoundException e) {

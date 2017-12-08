@@ -5,11 +5,38 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class ScoreObiect implements Comparable<ScoreObiect>{
-	int id;
+	
+	public int id;
 	String name;
 	int score;
 	DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 	Date date;
+	
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public int getScore() {
+		return score;
+	}
+
+
+	public void setScore(int score) {
+		this.score = score;
+	}
+
+	public Date getDate() {
+		return date;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
+	}
+	
 	
 	public ScoreObiect(int id2, String name2, int score2,Date _date) {
 		// TODO Auto-generated constructor stub
