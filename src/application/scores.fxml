@@ -18,7 +18,7 @@
             <Font name="Arial Bold" size="29.0" />
          </font>
       </Text>
-      <Button layoutX="22.0" layoutY="565.0" mnemonicParsing="false" onAction="#GoBack" prefHeight="31.0" prefWidth="74.0" style="-fx-background-radius: 400;" text="Back">
+      <Button layoutX="22.0" layoutY="565.0" mnemonicParsing="false" onAction="#GoBack" prefHeight="31.0" prefWidth="74.0" text="Back">
          <font>
             <Font size="17.0" />
          </font>

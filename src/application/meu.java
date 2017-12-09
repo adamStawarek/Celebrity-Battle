@@ -1,18 +1,29 @@
 package application;
 
+import java.net.URL;
+import java.util.ResourceBundle;
+
+import javax.sound.midi.SysexMessage;
+
+import javafx.animation.ScaleTransition;
+import javafx.animation.TranslateTransition;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
-public class meu extends Application{
+public class meu extends Application implements Initializable{
 	
 	@FXML
-	Button btnSettings;
+	Button btnSettings,btnClose,btnScores;
 	
 	public void OpenScores() {
 		System.out.println("SHow scores");
@@ -56,11 +67,45 @@ public class meu extends Application{
 	        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("menu.fxml"));
 	                Parent root1 = (Parent) fxmlLoader.load();
 	                stage = new Stage();
-	                stage.setScene(new Scene(root1));  
+	                Scene s=new Scene(root1);
+	                s.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+	                stage.setScene(s);  
 	                stage.show();
 	        } catch(Exception e) {
 	           e.printStackTrace();
 	   }
 		
+	}
+	public void animation1(Button b,int milisec,int delay,int X) {
+		  
+		  TranslateTransition translateTransition = new TranslateTransition(); 
+	      //Setting the duration and delay of the transition  
+	      translateTransition.setDuration(Duration.millis(milisec)); 
+	      translateTransition.setDelay(Duration.millis(delay));
+	      //Setting the node for the transition 
+	      translateTransition.setNode(b); 
+	      //Setting the value of the transition along the x axis. 
+	      translateTransition.setByX(X); 
+	      //Setting the cycle count for the transition 
+	      translateTransition.setCycleCount(1); 
+	      //Setting auto reverse value to false 
+	      translateTransition.setAutoReverse(false);       
+	      //Playing the animation 
+	      translateTransition.play();
+	}
+	@Override
+	public void initialize(URL location, ResourceBundle resources) {
+		
+		animation1(btnSettings,500,200,450);
+		animation1(btnScores,500,400,-450);
+		animation1(btnClose,500,600,450);
+		btnSettings.addEventHandler(MouseEvent.MOUSE_ENTERED,
+		        new EventHandler<MouseEvent>() {
+		          @Override
+		          public void handle(MouseEvent e) {
+		           //btnSettings.setStyle("-fx-background-color: red;");
+		          }
+		});
+	      
 	}
 }

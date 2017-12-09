@@ -17,10 +17,15 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.beans.binding.BooleanBinding;
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -31,6 +36,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
@@ -63,6 +71,7 @@ public class Main extends Application implements Initializable{
 	public static int time;
 	int currentCombo=100,currentCombo2=100;//set for normal shooting
 	public static Text txtSCORES;
+	
 	
 	ImageView bonusView, dangerView;
 	public Stage stage;
@@ -111,7 +120,7 @@ public class Main extends Application implements Initializable{
 			primaryStage.setScene(scene);
 			
 	        
-	        
+	       
 	        score1=0;
 	        score2=0;
 	        txtSCORES=new Text();
@@ -571,13 +580,21 @@ public class Main extends Application implements Initializable{
 	            		 
 	            }
 	            
+	            //handle(e);
 	            
 	           if (e.getCode() == KeyCode.A) {            		
 	            	player2.rotateLeft();	    	          
 	            	isPress2=true;
+	            	 //Test
+	            	 if(e.isShiftDown()) {
+	            		 shoot3(player2,bullets2,5);
+	            	 }
 	            } else if (e.getCode() == KeyCode.D) {
 	            	player2.rotateRight();
 	            	isPress2=true;
+	            	 if(e.isShiftDown()) {
+	            		 shoot3(player2,bullets2,5);
+	            	 }
 	            } 
 	            else if (e.getCode() == KeyCode.W) {
 	            	if((player2.velocity.getY()>-3)&&(player2.velocity.getY()<3)&&(player2.velocity.getX()>-3)&&(player2.velocity.getX()<3)) {
@@ -587,8 +604,14 @@ public class Main extends Application implements Initializable{
 	            } 
 	            else if (e.getCode() == KeyCode.S) {
 	            	player2.slowDown();
-	            	isPress2=true;	            		 
-	            }	           	           
+	            	isPress2=true;	 
+	            	 
+	            }	
+	            if (e.isShiftDown()) {
+	            		shoot2(player2,bullets2);
+	            		e.consume();
+	            }
+	  
 	        });
 	        
 	        primaryStage.getScene().setOnKeyReleased(e -> {
@@ -609,7 +632,6 @@ public class Main extends Application implements Initializable{
 	        			shootCombo3(player2, bullets2);
 	        		}
 	        	 }
-	        	
 	        	
 	        	 if (e.getCode() == KeyCode.N) {
 	        		 if(currentCombo2==100) {
@@ -676,7 +698,8 @@ public class Main extends Application implements Initializable{
             
         }
     }
-
+	
+	
 	void explosionHandler(Player2 p, String s, String playerName) {
 		p.ChangeImg(res+s+explosionImgCounter+".png");							
 		explosionTimetoChangePic++;
@@ -722,7 +745,16 @@ public class Main extends Application implements Initializable{
         addObject(bullet, p.getView().getTranslateX()+30, p.getView().getTranslateY()+30);
 		}
 	}
-	
+	public void shoot3(Obiect_Player p,List<Bullet> b, int k) {		
+		t++;
+		if(t%k==0) {
+		makeSound(audioClip);
+        Bullet bullet = new Bullet();
+        bullet.setVelocity(p.getVelocity().normalize().multiply(5));
+        b.add(bullet);
+        addObject(bullet, p.getView().getTranslateX()+30, p.getView().getTranslateY()+30);
+		}
+	}
 	
 	public void shoot2(Obiect_Player p,List<Bullet> b) {		
 		makeSound(audioClip);
@@ -807,6 +839,8 @@ public class Main extends Application implements Initializable{
 		WIDTH=1150;
 		HEIGHT=700;
 	}
+	
+	
 	
 	public void setScenario2() {		
 		res="/resources2";

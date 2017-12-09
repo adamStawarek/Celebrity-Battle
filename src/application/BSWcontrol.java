@@ -79,7 +79,9 @@ public class BSWcontrol extends Application implements Initializable{
 	        		AnchorPane root=new AnchorPane();
 	        		root = (AnchorPane) FXMLLoader.load(getClass().getResource("BestScoreWindow.fxml"));
 	                stage = new Stage();
-	                stage.setScene(new Scene(root));  
+	                Scene s=new Scene(root);
+	                s.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+	                stage.setScene(s);  
 	                stage.show();
 	        }catch(Exception e) {
 	           e.printStackTrace();

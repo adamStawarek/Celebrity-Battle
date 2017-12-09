@@ -64,7 +64,9 @@ public class scores extends Application{
 	        		root.getChildren().add(tblScores2);
 	        		root.getChildren().add(tblScores3);
 	                stage = new Stage();
-	                stage.setScene(new Scene(root));  
+	                Scene s=new Scene(root);
+	                s.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+	                stage.setScene(s);  
 	                stage.show();
 	        }catch(Exception e) {
 	           e.printStackTrace();

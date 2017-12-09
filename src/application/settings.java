@@ -110,7 +110,9 @@ public class settings extends Application implements Initializable{
 		    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("set.fxml"));
 	        Parent root1 = (Parent) fxmlLoader.load();
 	        stage = new Stage();
-	        stage.setScene(new Scene(root1)); 	        
+	        Scene s=new Scene(root1);
+	        stage.setScene(s); 	    
+	        s.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 	        stage.show();
 	       
 			} catch(Exception e) {

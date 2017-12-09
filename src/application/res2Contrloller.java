@@ -79,8 +79,10 @@ public class res2Contrloller extends Application implements Initializable{
 			
 	        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("res2.fxml"));
 	                Parent root1 = (Parent) fxmlLoader.load();	               
-	                stage = new Stage();	               
-	                stage.setScene(new Scene(root1));                 			                
+	                stage = new Stage();	  
+	                Scene s=new Scene(root1);
+	                s.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+	                stage.setScene(s);                 			                
 	                stage.show();
 	        } catch(Exception e) {
 	           e.printStackTrace();
