@@ -34,9 +34,11 @@ public class BSWcontrol extends Application implements Initializable{
 	static int ScorePosition=0;
 	static int score=0;
 	static int MaxScore=0;
+	AudioPlayer aPlayer;
 	
 	@FXML
 	public void submit() {
+		aPlayer.Play();
 		
 		if (MaxScore==1200) {
 			SqlScores scr=new SqlScores("jdbc:sqlite:scores1.sqlite");
@@ -79,6 +81,7 @@ public class BSWcontrol extends Application implements Initializable{
 	        		AnchorPane root=new AnchorPane();
 	        		root = (AnchorPane) FXMLLoader.load(getClass().getResource("BestScoreWindow.fxml"));
 	                stage = new Stage();
+	                root.setId("dark-scene");
 	                Scene s=new Scene(root);
 	                s.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 	                stage.setScene(s);  
@@ -92,7 +95,7 @@ public class BSWcontrol extends Application implements Initializable{
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		
+		aPlayer=new AudioPlayer(getClass().getResource("/sounds/confirm.wav"));
 		scoreText.setText("Your score is "+(ScorePosition+1));
 	}
 

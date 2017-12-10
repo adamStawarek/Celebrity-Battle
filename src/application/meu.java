@@ -25,7 +25,10 @@ public class meu extends Application implements Initializable{
 	@FXML
 	Button btnSettings,btnClose,btnScores;
 	
+	AudioPlayer aPlayer;
+	
 	public void OpenScores() {
+		aPlayer.Play();
 		System.out.println("SHow scores");
 		scores s=new scores();
 		Stage stg=new Stage();
@@ -39,10 +42,12 @@ public class meu extends Application implements Initializable{
 	    stage.close();
 	}
 	public void Close() {
+		aPlayer.Play();
 		System.out.println("Close window");
 		Platform.exit();
 	}
 	public void OpenSettings() {
+		aPlayer.Play();
 		System.out.println("Open Settings");		
 		settings sets=new settings();
 		try {
@@ -67,7 +72,9 @@ public class meu extends Application implements Initializable{
 	        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("menu.fxml"));
 	                Parent root1 = (Parent) fxmlLoader.load();
 	                stage = new Stage();
+	                root1.setId("dark-scene");
 	                Scene s=new Scene(root1);
+	                
 	                s.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 	                stage.setScene(s);  
 	                stage.show();
@@ -96,6 +103,7 @@ public class meu extends Application implements Initializable{
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		
+		aPlayer=new AudioPlayer(getClass().getResource("/sounds/confirm.wav"));
 		animation1(btnSettings,500,200,450);
 		animation1(btnScores,500,400,-450);
 		animation1(btnClose,500,600,450);

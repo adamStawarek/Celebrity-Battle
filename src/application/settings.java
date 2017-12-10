@@ -16,16 +16,24 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
 public class settings extends Application implements Initializable{
 	
 	@FXML
-    private RadioButton rbMulti,rbSingle,rbOnline,rbSmall,rbMedium,rbLarge,rbTime,rbKill ;
+    private RadioButton rbMulti,rbSingle,rbSmall,rbMedium,rbLarge,rbTime,rbKill ;
 	
 	@FXML
 	private ComboBox<String> cmbTime,cmbKill,cmbScenario,cmbLevel;  
-
+	
+	AudioPlayer aPlayer;
+	
+	@FXML
+	private ImageView ScenarioImage,SettingsImage;
+	
+    Scene s;
 	
 	@FXML
 	Button btnPlay,btnBack;
@@ -33,6 +41,7 @@ public class settings extends Application implements Initializable{
 	@FXML
 	public void Play() {
 		
+		aPlayer.Play();
 		
 		Main m=new Main();
 		Stage s= new Stage();
@@ -70,10 +79,12 @@ public class settings extends Application implements Initializable{
 		}
 		
 		
-		if (cmbScenario.getSelectionModel().getSelectedItem().toString()=="USA-Elections")
+		if (cmbScenario.getSelectionModel().getSelectedItem().toString()=="USA-Elections") {
 			m.setScenario1();
-		else if (cmbScenario.getSelectionModel().getSelectedItem().toString()=="Krucjata Korwina")
+		}
+		else if (cmbScenario.getSelectionModel().getSelectedItem().toString()=="Krucjata Korwina") {
 			m.setScenario2();
+		}
 		
 		if (cmbLevel.getSelectionModel().getSelectedItem().toString()=="Easy")
 			m.setHardModeOff();
@@ -85,8 +96,20 @@ public class settings extends Application implements Initializable{
 	    stage.close();
 	}
 	
+	public void ChangeScenarioImg() {
+		if (cmbScenario.getSelectionModel().getSelectedItem().toString()=="USA-Elections") {
+			Image i = new Image(getClass().getResourceAsStream("/sounds/Scenario1.jpg"));
+			ScenarioImage.setImage(i);
+		}
+		else if (cmbScenario.getSelectionModel().getSelectedItem().toString()=="Krucjata Korwina") {			
+			Image i = new Image(getClass().getResourceAsStream("/sounds/Scenario2.jpg"));
+			ScenarioImage.setImage(i);
+		}
+	}
+	
 	@FXML
 	public void GoBack() {
+		aPlayer.Play();
 		Stage stage = (Stage) btnPlay.getScene().getWindow();	    
 	    stage.close();
 	    meu m=new meu();
@@ -110,7 +133,8 @@ public class settings extends Application implements Initializable{
 		    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("set.fxml"));
 	        Parent root1 = (Parent) fxmlLoader.load();
 	        stage = new Stage();
-	        Scene s=new Scene(root1);
+	        root1.setId("dark-scene");
+	        s=new Scene(root1);
 	        stage.setScene(s); 	    
 	        s.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 	        stage.show();
@@ -126,14 +150,20 @@ public class settings extends Application implements Initializable{
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		// TODO Auto-generated method stub
+		
+		aPlayer=new AudioPlayer(getClass().getResource("/sounds/confirm.wav"));
+		Image i = new Image(getClass().getResourceAsStream("/sounds/settings.png"));
+		SettingsImage.setImage(i);
+		Image i2 = new Image(getClass().getResourceAsStream("/sounds/Scenario1.jpg"));
+		ScenarioImage.setImage(i2);
+		
 		ToggleGroup group = new ToggleGroup();
 		ToggleGroup group2 = new ToggleGroup();
 		ToggleGroup group3 = new ToggleGroup();
 		
 		rbMulti.setToggleGroup(group);
 		rbSingle.setToggleGroup(group);
-		rbOnline.setToggleGroup(group);
+		//rbOnline.setToggleGroup(group);
 		rbSingle.setSelected(true);
 			
 		rbSmall.setToggleGroup(group2);

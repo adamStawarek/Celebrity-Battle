@@ -29,6 +29,7 @@ public class res2Contrloller extends Application implements Initializable{
 	static boolean IsClicked=false;
 	static boolean IsTrumpWin=false;
 	static String res;
+	AudioPlayer aPlayer;
 	
 	@FXML
 	Button btnPlayAgain;
@@ -42,11 +43,13 @@ public class res2Contrloller extends Application implements Initializable{
 	
 		
 	public void CloseWindow() {
+		aPlayer.Play();
 		Platform.exit();
 		System.out.println("Close window, pretty please");
 	}
 	
 	public void OpenMenu() {
+		aPlayer.Play();
 		IsClicked=false;
 		meu m=new meu();
 		Stage s=new Stage();
@@ -62,6 +65,7 @@ public class res2Contrloller extends Application implements Initializable{
 		
 	}
 	public void PlayGameAgain() {
+		aPlayer.Play();
 		IsClicked=true;		
 		Stage s=new Stage();
 		Main m=new Main();
@@ -79,7 +83,8 @@ public class res2Contrloller extends Application implements Initializable{
 			
 	        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("res2.fxml"));
 	                Parent root1 = (Parent) fxmlLoader.load();	               
-	                stage = new Stage();	  
+	                stage = new Stage();	
+	                root1.setId("dark-scene");
 	                Scene s=new Scene(root1);
 	                s.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 	                stage.setScene(s);                 			                
@@ -92,6 +97,7 @@ public class res2Contrloller extends Application implements Initializable{
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		aPlayer=new AudioPlayer(getClass().getResource("/sounds/confirm.wav"));
 		Image i;
 		if (IsTrumpWin) {
 			 i = new Image(getClass().getResourceAsStream(res+"/Player1Win.png"));

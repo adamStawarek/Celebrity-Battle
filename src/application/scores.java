@@ -30,12 +30,15 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 
-public class scores extends Application{
+public class scores extends Application implements Initializable{
 	
 	TableView<ScoreObiect> tblScores1,tblScores2,tblScores3;
+	AudioPlayer aPlayer;
 	
 	@FXML
 	public void GoBack(ActionEvent event) {
+		aPlayer.Play();
+		
 		meu m=new meu();		
 		Stage s=new Stage();
 		try {
@@ -52,6 +55,7 @@ public class scores extends Application{
 		
 		try {
 			
+			
 	        tblScores1=addTable("jdbc:sqlite:scores1.sqlite", 70);
 	        tblScores2=addTable("jdbc:sqlite:scores2.sqlite", 250);
 	        tblScores3=addTable("jdbc:sqlite:scores3.sqlite", 430);
@@ -64,6 +68,7 @@ public class scores extends Application{
 	        		root.getChildren().add(tblScores2);
 	        		root.getChildren().add(tblScores3);
 	                stage = new Stage();
+	                root.setId("dark-scene");
 	                Scene s=new Scene(root);
 	                s.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 	                stage.setScene(s);  
@@ -143,6 +148,12 @@ public class scores extends Application{
 	        tblScores.setPrefSize(570, 120);
 	        return tblScores;
 		
+	}
+
+	@Override
+	public void initialize(URL location, ResourceBundle resources) {
+		// TODO Auto-generated method stub
+		aPlayer=new AudioPlayer(getClass().getResource("/sounds/confirm.wav"));
 	}
 
 }
