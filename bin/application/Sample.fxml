@@ -16,7 +16,7 @@
       <Pane prefHeight="581.0" prefWidth="431.0" BorderPane.alignment="CENTER" />
    </center>
    <right>
-      <VBox prefHeight="581.0" prefWidth="181.0" style="-fx-background-color: #efefef; -fx-padding: 10; -fx-pref-width: 200;" BorderPane.alignment="CENTER">
+      <VBox fx:id="VboxId" prefHeight="581.0" prefWidth="181.0" style="-fx-background-color: #efefef; -fx-padding: 10; -fx-pref-width: 200;" BorderPane.alignment="CENTER">
          <children>
             <Text fx:id="txtTime" strokeType="OUTSIDE" strokeWidth="0.0" text="Time:" wrappingWidth="178.970703125">
                <font>

@@ -46,3 +46,11 @@
 .radio-button{
 	-fx-text-fill: lightgray ;
 }
+#stgOnline{
+	-fx-background-image: url("/sounds/web.png");  
+    -fx-background-size:stretch;
+    -fx-background-color: #333b47;
+}
+#stgOnline Text{
+	-fx-fill: lightgray ;
+}

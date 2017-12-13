@@ -11,19 +11,19 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.BorderPane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.meu">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.meu">
    <children>
       <Button fx:id="btnSettings" layoutX="-250.0" layoutY="130.0" mnemonicParsing="false" onAction="#OpenSettings" prefHeight="70.0" prefWidth="209.0" text="PLAY">
          <font>
-            <Font name="Serif Bold" size="25.0" />
+            <Font name="Serif Bold" size="75.0" />
          </font>
          <effect>
             <DropShadow />
          </effect>
       </Button>
-      <Button fx:id="btnClose" layoutX="-250.0" layoutY="306.0" mnemonicParsing="false" onAction="#Close" prefHeight="70.0" prefWidth="209.0" text="EXIT">
+      <Button fx:id="btnClose" layoutX="650.0" layoutY="386.0" mnemonicParsing="false" onAction="#Close" prefHeight="70.0" prefWidth="209.0" text="EXIT">
          <font>
-            <Font name="Serif Bold" size="25.0" />
+            <Font name="Serif Bold" size="75.0" />
          </font>
          <effect>
             <DropShadow />
@@ -31,12 +31,21 @@
       </Button>
       <Button fx:id="btnScores" layoutX="650.0" layoutY="216.0" mnemonicParsing="false" onAction="#OpenScores" prefHeight="70.0" prefWidth="209.0" text="SCORES">
          <font>
-            <Font name="Serif Bold" size="25.0" />
+            <Font name="Serif Bold" size="75.0" />
          </font>
          <effect>
             <DropShadow />
          </effect>
       </Button>
+       <Button fx:id="btnOnline" layoutX="-250.0" layoutY="300.0" mnemonicParsing="false" onAction="#Online" prefHeight="70.0" prefWidth="209.0" text="ONLINE">
+         <font>
+            <Font name="Serif Bold" size="75.0" />
+         </font>
+         <effect>
+            <DropShadow />
+         </effect>
+      </Button>
+      
       <Text layoutX="182.0" layoutY="97.0" strokeType="OUTSIDE" strokeWidth="0.0" text="MENU" wrappingWidth="215.0">
          <font>
             <Font name="Verdana" size="69.0" />

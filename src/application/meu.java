@@ -23,9 +23,23 @@ import javafx.util.Duration;
 public class meu extends Application implements Initializable{
 	
 	@FXML
-	Button btnSettings,btnClose,btnScores;
+	Button btnSettings,btnClose,btnScores,btnOnline;
 	
 	AudioPlayer aPlayer;
+	
+	public void Online() {
+		aPlayer.Play();
+		Stage stage = (Stage) btnOnline.getScene().getWindow();	    
+	    stage.close();
+	    Online m=new Online();
+		Stage s=new Stage();
+		try {
+			m.start(s);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	
 	public void OpenScores() {
 		aPlayer.Play();
@@ -106,7 +120,8 @@ public class meu extends Application implements Initializable{
 		aPlayer=new AudioPlayer(getClass().getResource("/sounds/confirm.wav"));
 		animation1(btnSettings,500,200,450);
 		animation1(btnScores,500,400,-450);
-		animation1(btnClose,500,600,450);
+		animation1(btnClose,500,800,-450);
+		animation1(btnOnline,500,600,450);
 		btnSettings.addEventHandler(MouseEvent.MOUSE_ENTERED,
 		        new EventHandler<MouseEvent>() {
 		          @Override

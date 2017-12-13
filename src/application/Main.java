@@ -40,6 +40,7 @@ import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
@@ -71,6 +72,8 @@ public class Main extends Application implements Initializable{
 	public static int time;
 	int currentCombo=100,currentCombo2=100;//set for normal shooting
 	public static Text txtSCORES;
+	@FXML
+	VBox VboxId;
 	
 	
 	ImageView bonusView, dangerView;
@@ -886,7 +889,8 @@ public class Main extends Application implements Initializable{
 	   }
 
 	@Override
-	public void initialize(URL location, ResourceBundle resources) {	
+	public void initialize(URL location, ResourceBundle resources) {
+		VboxId.setId("dark-scene");
 		i1 = new Image(getClass().getResourceAsStream(res+"/Player2.png"));
         pl1Img.setImage(i1);
         i2 = new Image(getClass().getResourceAsStream(res+"/Player1.png"));
