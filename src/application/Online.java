@@ -1,5 +1,11 @@
 package application;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -10,6 +16,10 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class Online extends Application implements Initializable{
@@ -17,6 +27,13 @@ public class Online extends Application implements Initializable{
 	AudioPlayer aPlayer;
 	@FXML
 	Button btnPlay;
+	@FXML
+	TextField txtHost, txtPort;
+	@FXML
+	Text txtConnection;
+	
+	@FXML
+	RadioButton rbYes,rbNo;
 
 	@Override
 	public void start(Stage stage) throws Exception {
@@ -49,15 +66,36 @@ public class Online extends Application implements Initializable{
 		}
 	}
 
-	@FXML public void Play() {
+	@SuppressWarnings("static-access")
+	@FXML 
+	public void Play() {	
+		boolean IsServer=false;
+		aPlayer.Play();
 		
+		if (rbYes.isSelected()) {
+			IsServer=true;
+		}
+		Main m=new Main();
+		Stage s= new Stage();
+		m.isOnline=true;
+		m.isServer=IsServer;
+		m.host=txtHost.getText();
+		m.port=Integer.parseInt(txtPort.getText());
+		m.IsMultiPlayer=true;
+		m.start(s);
+		
+		Stage stage = (Stage) btnPlay.getScene().getWindow();	    
+	    stage.close();
 	}
-
+		
+	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		aPlayer=new AudioPlayer(getClass().getResource("/sounds/confirm.wav"));
-		// TODO Auto-generated method stub
-		
+		ToggleGroup group = new ToggleGroup();
+		rbNo.setToggleGroup(group);
+		rbYes.setToggleGroup(group);
+		rbYes.setSelected(true);
 	}
 
 }

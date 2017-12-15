@@ -52,5 +52,8 @@
     -fx-background-color: #333b47;
 }
 #stgOnline Text{
-	-fx-fill: lightgray ;
+	-fx-fill: black  ;
+}
+#stgOnline RadioButton{
+	-fx-text-fill: black;
 }

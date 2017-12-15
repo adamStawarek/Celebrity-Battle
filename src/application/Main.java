@@ -1,8 +1,19 @@
 package application;
 	
 import java.applet.Applet;
+import java.io.BufferedReader;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.net.SocketException;
 import java.net.URL;
+import java.net.UnknownHostException;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
@@ -10,6 +21,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.ResourceBundle;
+
+import javax.swing.JOptionPane;
 
 import application.Main.Bullet;
 import javafx.animation.AnimationTimer;
@@ -61,7 +74,7 @@ public class Main extends Application implements Initializable{
 	BorderPane root;	
 	Player2 player,player2,player3;
 	int WIDTH=1150,HEIGHT=700;
-	public boolean isPress=false,isPress2=false,isStop=false,IsEnd=false,SuperAttack=false,IsMultiPlayer=false;
+	public boolean isPress=false,isPress2=false,isStop=false,IsEnd=false,SuperAttack=false,IsMultiPlayer=false,connection=false;
 	private List<Bullet> bullets = new ArrayList<>();
 	private List<Bullet> bullets2 = new ArrayList<>();
 	private List<Point2D> points = new ArrayList<>();
@@ -75,6 +88,13 @@ public class Main extends Application implements Initializable{
 	@FXML
 	VBox VboxId;
 	
+	String clientSendMesg=" ",serverSendMesg=" ";
+	public String host="localhost";
+	public int port=22222;
+	
+	Server server=null;
+	Client client=null;
+
 	
 	ImageView bonusView, dangerView;
 	public Stage stage;
@@ -85,7 +105,7 @@ public class Main extends Application implements Initializable{
 	ImageView i;
 	Image im;
 	
-	public static boolean IsHardMode=false,IsExplosion1=false, IsExplosion2=false;
+	public static boolean IsHardMode=false,IsExplosion1=false, IsExplosion2=false, isOnline=false, isServer=false;
 	
 	Random randCombo;	
 	public static String res="/resources2";
@@ -111,6 +131,7 @@ public class Main extends Application implements Initializable{
 	@FXML
 	Image i1,i2;
 			
+	
 	@Override
 	public void start(Stage primaryStage) {
 		try {			
@@ -162,6 +183,9 @@ public class Main extends Application implements Initializable{
 	        dangerView.setImage(danger);
 	        dangerView.setFitHeight(80);
         	dangerView.setFitWidth(90);
+        	
+        	
+        	
 	        
 	        if (res=="/resources2") {
 	        	bonusView.setFitHeight(100);
@@ -179,8 +203,7 @@ public class Main extends Application implements Initializable{
 	 	        addPlayerObject(player3, 0, 0);
 	        	players.add(player3);
 	        }*/
-	      
-	        
+	                
 	        //Dodawanie graczy
 	        player=new Player2(res+"/Player1.png");
 	        player.setVelocity(new Point2D(-2,-2));
@@ -198,15 +221,25 @@ public class Main extends Application implements Initializable{
 	            public void handle(long now) {
 	            		            		            		            	
 	                onUpdate();
-	                tick++;
-	                
+	                tick++;	                
 	                for(Player2 p:players) {
 	                	check(p);
 	                }
 	                
 	                updatePic();
 	                addBonus();
-	               
+	                
+	                //Online
+	                if(connection) {
+	                	try {
+							client.sendEcho(clientSendMesg);
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+	                }
+	                
+	                
 	                
 	                if (isStop==false&&IsEnd==false&&IsMultiPlayer==false) {
 	                	 autoEnemy(player);
@@ -277,11 +310,8 @@ public class Main extends Application implements Initializable{
 	               }
 	               
 	            }
-	            	
-	            
-	            private void addBonus() {
-					// TODO Auto-generated method stub
-	            	
+
+				private void addBonus() {
 	            	
 	            	if(IsBonus()==false&&timeWithoutBonus>100) {	            		
 	            		Random r=new Random();
@@ -488,9 +518,6 @@ public class Main extends Application implements Initializable{
 								audioClip4.play();
 								timer.stop();
 								
-								//SqlScores scr=new SqlScores();
-								//scr.insertScore("Clinton", score1);
-								//scr.closeConnection();
 								
 								primaryStage.close();
 								res2Contrloller r=new res2Contrloller();
@@ -566,10 +593,12 @@ public class Main extends Application implements Initializable{
 	            if (e.getCode() == KeyCode.LEFT) {
 	            	player.rotateLeft();	            		   
 	            	isPress=true;
+	            	clientSendMesg="left";
 	            		
 	            } else if (e.getCode() == KeyCode.RIGHT) {	            	
 	            	player.rotateRight();	            		   
 	            	isPress=true;
+	            	clientSendMesg="right";
 	            } 
 	            else if (e.getCode() == KeyCode.UP) {
 	            	if((player.velocity.getY()>-3)&&(player.velocity.getY()<3)&&(player.velocity.getX()>-3)&&(player.velocity.getX()<3)) {	            		
@@ -592,12 +621,14 @@ public class Main extends Application implements Initializable{
 	            	 if(e.isShiftDown()) {
 	            		 shoot3(player2,bullets2,5);
 	            	 }
+	            	 serverSendMesg="left";
 	            } else if (e.getCode() == KeyCode.D) {
 	            	player2.rotateRight();
 	            	isPress2=true;
 	            	 if(e.isShiftDown()) {
 	            		 shoot3(player2,bullets2,5);
 	            	 }
+	            	 serverSendMesg="right";
 	            } 
 	            else if (e.getCode() == KeyCode.W) {
 	            	if((player2.velocity.getY()>-3)&&(player2.velocity.getY()<3)&&(player2.velocity.getX()>-3)&&(player2.velocity.getX()<3)) {
@@ -618,6 +649,13 @@ public class Main extends Application implements Initializable{
 	        });
 	        
 	        primaryStage.getScene().setOnKeyReleased(e -> {
+	        	
+	        	 if (e.getCode() == KeyCode.LEFT||e.getCode() == KeyCode.RIGHT) {
+	        		 clientSendMesg="";        		 
+	        	 }
+	        	 if (e.getCode() == KeyCode.A||e.getCode() == KeyCode.D) {
+	        		 serverSendMesg="";        		 
+	        	 }
 	        	
 	        	if (e.getCode() == KeyCode.R) {          	
 	        		System.out.println(currentCombo);
@@ -666,11 +704,27 @@ public class Main extends Application implements Initializable{
 	        timer.start();		
 			primaryStage.show();
 			
+			//ONLINE
+			if(isOnline) {
+        		System.out.println("Online");
+        		if(isServer) {
+        			System.out.println("Server");
+        			server=new Server(this,port);
+        			server.start();
+        		}
+        		else {
+        			System.out.println("Client");
+        			client=new Client(this,host,port);
+        			client.start();
+        			client.sendEcho("Echo");
+        			connection=true;
+        		}
+        	}
+			
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
 	}
-		
 	
     public void makeSound(java.applet.AudioClip a){
         a.play();
