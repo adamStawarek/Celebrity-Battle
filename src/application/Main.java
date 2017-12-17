@@ -75,11 +75,11 @@ public class Main extends Application implements Initializable{
 	Player2 player,player2,player3;
 	int WIDTH=1150,HEIGHT=700;
 	public boolean isPress=false,isPress2=false,isStop=false,IsEnd=false,SuperAttack=false,IsMultiPlayer=false,connection=false;
-	private List<Bullet> bullets = new ArrayList<>();
-	private List<Bullet> bullets2 = new ArrayList<>();
+	List<Bullet> bullets = new ArrayList<>();
+    List<Bullet> bullets2 = new ArrayList<>();
 	private List<Point2D> points = new ArrayList<>();
 	private List<Player2> players = new ArrayList<>();
-	private java.applet.AudioClip audioClip,audioClip2,audioClip3,audioClip4,audioClip5;
+	public java.applet.AudioClip audioClip,audioClip2,audioClip3,audioClip4,audioClip5;
 	public int n=1,k=0,t=0,r=0,timeToDisplayFinalWindow=0,attackloader=0,ComboTimeCounter=600;
 	public static int score1=0,score2=0,MAXSCORE=1200;
 	public static int time;
@@ -91,6 +91,7 @@ public class Main extends Application implements Initializable{
 	String clientSendMesg=" ",serverSendMesg=" ";
 	public String host="localhost";
 	public int port=22222;
+	boolean serverFire=false;
 	
 	Server server=null;
 	Client client=null;
@@ -239,7 +240,9 @@ public class Main extends Application implements Initializable{
 						}
 	                }
 	                
-	                
+	                if(serverFire) {
+	                	shoot3(player, bullets,4);
+	                }
 	                
 	                if (isStop==false&&IsEnd==false&&IsMultiPlayer==false) {
 	                	 autoEnemy(player);
@@ -611,6 +614,10 @@ public class Main extends Application implements Initializable{
 	            	isPress=true;
 	            		 
 	            }
+	            else if (e.getCode() == KeyCode.N) {            		
+	            	clientSendMesg="fire";
+	            		 
+	            }
 	            
 	            //handle(e);
 	            
@@ -641,6 +648,10 @@ public class Main extends Application implements Initializable{
 	            	isPress2=true;	 
 	            	 
 	            }	
+	            else if (e.getCode() == KeyCode.R) {
+	            	 serverSendMesg="fire";
+	            	 
+	            }	
 	            if (e.isShiftDown()) {
 	            		shoot2(player2,bullets2);
 	            		e.consume();
@@ -650,15 +661,16 @@ public class Main extends Application implements Initializable{
 	        
 	        primaryStage.getScene().setOnKeyReleased(e -> {
 	        	
-	        	 if (e.getCode() == KeyCode.LEFT||e.getCode() == KeyCode.RIGHT) {
+	        	 if (e.getCode() == KeyCode.LEFT||e.getCode() == KeyCode.RIGHT||e.getCode() == KeyCode.N) {
 	        		 clientSendMesg="";        		 
 	        	 }
-	        	 if (e.getCode() == KeyCode.A||e.getCode() == KeyCode.D) {
+	        	 if (e.getCode() == KeyCode.A||e.getCode() == KeyCode.D||e.getCode() == KeyCode.R) {
 	        		 serverSendMesg="";        		 
 	        	 }
 	        	
 	        	if (e.getCode() == KeyCode.R) {          	
 	        		System.out.println(currentCombo);
+	        		
 	        	
 	        		if(currentCombo==100) {
 	        			shoot2(player2,bullets2);
@@ -675,6 +687,7 @@ public class Main extends Application implements Initializable{
 	        	 }
 	        	
 	        	 if (e.getCode() == KeyCode.N) {
+	        		
 	        		 if(currentCombo2==100) {
 		        			shoot2(player,bullets);
 		        		}
@@ -735,7 +748,7 @@ public class Main extends Application implements Initializable{
     }
    
 	
-	private void addObject(Object object, double x, double y) {
+	public void addObject(Object object, double x, double y) {
         object.getView().setTranslateX(x);
         object.getView().setTranslateY(y);
         root.getChildren().add(object.getView());
@@ -874,10 +887,10 @@ public class Main extends Application implements Initializable{
 	}
 		
 	public class Bullet extends Object{
-		Bullet(){
+		public Bullet(){
 			super(new Circle(5,5,5,Color.RED));			
 		}
-		Bullet(Color color){
+		public Bullet(Color color){
 			super(new Circle(5,5,5,color));			
 		}
 	}

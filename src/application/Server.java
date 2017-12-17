@@ -6,18 +6,21 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
 
+import javafx.application.Platform;
+
 public class Server extends Thread{
 	private DatagramSocket socket;
-    private boolean running;
+    boolean running;
     private byte[] buf = new byte[1024];
     private Main game;
     int Port;
+    String received=null;
  
     public Server( Main game, int Port) throws SocketException {
         socket = new DatagramSocket(Port);
         this.game=game;
     }
- 
+    
     public void run() {
         running = true;
  
@@ -31,7 +34,7 @@ public class Server extends Thread{
 			}
             
             //Pretwarzanie odebranej wiadomosci
-             String received  = new String(packet.getData(), 0, packet.getLength());
+             received  = new String(packet.getData(), 0, packet.getLength());
              
             //mo¿na potem wyjebac(chyba)
             if (received.equals("end")) {
@@ -39,15 +42,23 @@ public class Server extends Thread{
                 continue;
             }
             else if (received.equals("left")) {
-                game.player.rotateLeft();
+                game.player.rotateLeft(3);
+                game.serverFire=false;
             }
             else if (received.equals("right")) {
-                game.player.rotateRight();
+                game.player.rotateRight(3);
+                game.serverFire=false;
+            }
+            else if (received.equals("fire")) {
+               //game.shoottest(game.player); 
+            	//game.player.shoot(game, game.player, game.bullets, game.t);
+            	game.serverFire=true;
+               System.out.println("Message read in Server:"+received);            	
+            }
+            else {
+            	game.serverFire=false;
             }
             
-            if(received.length()>1) {
-            	System.out.println("Message read in Server:"+received);
-            }
              
             //Wysy³anie pakietu
             InetAddress address = packet.getAddress();
@@ -57,6 +68,8 @@ public class Server extends Thread{
         		   answer="left";
             else if(game.serverSendMesg.equals("right"))
             	   answer="right";
+            else if(game.serverSendMesg.equals("fire"))
+         	   answer="fire";
             
             packet = new DatagramPacket(answer.trim().getBytes(), answer.getBytes().length, address, port);
             

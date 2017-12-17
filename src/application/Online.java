@@ -19,6 +19,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.paint.Paint;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -97,5 +98,38 @@ public class Online extends Application implements Initializable{
 		rbYes.setToggleGroup(group);
 		rbYes.setSelected(true);
 	}
+
+	@FXML public void checkPort() {
+		
+		int port=Integer.parseInt(txtPort.getText());
+		txtConnection.setText("Testing port " + port+"....");
+		txtConnection.setFill(Paint.valueOf("black"));
+	    Socket s = null;
+	    try {
+	        s = new Socket(txtHost.getText(), port);
+	        s.setSoTimeout(3000);
+
+	        // If the code makes it this far without an exception it means
+	        // something is using the port and has responded.
+	        txtConnection.setText("Port " + port + " is not available");
+	        txtConnection.setFill(Paint.valueOf("red"));
+	        return;
+	    } catch (IOException e) {
+	        txtConnection.setText("Port " + port + " is available");
+	        txtConnection.setFill(Paint.valueOf("green"));
+	        return;
+	    } finally {
+	        if( s != null){
+	            try {
+	                s.close();
+	            } catch (IOException e) {
+	                throw new RuntimeException("You should handle this error." , e);
+	            }
+	        }
+	    }
+		
+	}
+
+	
 
 }

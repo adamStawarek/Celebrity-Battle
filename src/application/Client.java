@@ -36,10 +36,13 @@ public class Client extends Thread {
         String received = new String(packet.getData(), 0, packet.getLength());
         
         if (received.equals("left")) {
-            game.player2.rotateLeft();
+            game.player2.rotateLeft(3);
         }
         else if (received.equals("right")) {
-            game.player2.rotateRight();
+            game.player2.rotateRight(3);
+        }
+        else if (received.equals("fire")) {
+            game.shoot3(game.player2, game.bullets2,4);;
         }
         
         if(received.length()>1) {

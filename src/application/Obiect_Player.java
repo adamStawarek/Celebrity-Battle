@@ -2,9 +2,11 @@ package application;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 
+import application.Main.Bullet;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
@@ -29,7 +31,6 @@ public class Obiect_Player {
 	        
 	        imageView.setImage(image);
 	 	}
-	 	
 	 	
 	 	public void update() {
 	        imageView.setTranslateX(imageView.getTranslateX() + velocity.getX());
@@ -68,7 +69,15 @@ public class Obiect_Player {
 	    public void slowDown() {
 	    	 setVelocity(new Point2D(velocity.getX()*0.999, velocity.getY()*0.999));
 	    }
-	    
+	    public void rotateRight(int n) {
+	    	imageView.setRotate(imageView.getRotate() + n);
+	        setVelocity(new Point2D(Math.cos(Math.toRadians(getRotate())), Math.sin(Math.toRadians(getRotate()))));
+	    }
+
+	    public void rotateLeft(int n) {
+	    	imageView.setRotate(imageView.getRotate() - n);
+	        setVelocity(new Point2D(Math.cos(Math.toRadians(getRotate())), Math.sin(Math.toRadians(getRotate()))));
+	    }
 
 	    public void rotateRight() {
 	    	imageView.setRotate(imageView.getRotate() + 5);
