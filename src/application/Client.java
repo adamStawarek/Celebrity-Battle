@@ -7,6 +7,8 @@ import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 
+import javafx.geometry.Point2D;
+
 public class Client extends Thread {
 	
 	private DatagramSocket socket;
@@ -35,18 +37,29 @@ public class Client extends Thread {
         socket.receive(packet);
         String received = new String(packet.getData(), 0, packet.getLength());
         
-        if (received.equals("left")) {
-            game.player2.rotateLeft(3);
-        }
-        else if (received.equals("right")) {
-            game.player2.rotateRight(3);
-        }
-        else if (received.equals("fire")) {
-            game.shoot3(game.player2, game.bullets2,4);;
-        }
         
-        if(received.length()>1) {
-        	System.out.println("Message read in Client:"+received);
+        if (received.contains("fire")) {
+        	String[] parts = received.split(";");
+        	game.currentCombo=Integer.parseInt(parts[1]);
+        	if(game.currentCombo==100) {
+    			game.shoot3(game.player2,game.bullets2,4);
+    		}
+    		else if(game.currentCombo==0) {
+    			game.shootCombo1(game.player2, game.bullets2);
+    		}
+    		else if(game.currentCombo==1) {
+    			game.shootCombo2(game.player2, game.bullets2);
+    		}
+    		else {
+    			game.shootCombo3(game.player2, game.bullets2);
+    		}
+        	System.out.println("Combo client: "+Integer.parseInt(parts[1]));
+            //game.shoot3(game.player2, game.bullets2,4);
+        }
+        else if(received.contains(";")) {
+        	String[] parts = received.split(";");
+        	game.player2.SetRotate(Double.parseDouble(parts[0]));
+        	game.player2.setVelocity(new Point2D(Double.parseDouble(parts[1]),Double.parseDouble(parts[2])));
         }
         
         return received;

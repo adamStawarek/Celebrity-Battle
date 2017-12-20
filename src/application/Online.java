@@ -7,6 +7,7 @@ import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.URL;
+import java.net.UnknownHostException;
 import java.util.ResourceBundle;
 
 import javafx.application.Application;
@@ -78,6 +79,7 @@ public class Online extends Application implements Initializable{
 		}
 		Main m=new Main();
 		Stage s= new Stage();
+		m.setScenario1();
 		m.isOnline=true;
 		m.isServer=IsServer;
 		m.host=txtHost.getText();
@@ -99,10 +101,10 @@ public class Online extends Application implements Initializable{
 		rbYes.setSelected(true);
 	}
 
-	@FXML public void checkPort() {
+	@FXML public void checkPort() throws UnknownHostException {
 		
 		int port=Integer.parseInt(txtPort.getText());
-		txtConnection.setText("Testing port " + port+"....");
+		txtConnection.setText("Host"+InetAddress.getLocalHost().getHostAddress()+"Testing port " + port+"....");
 		txtConnection.setFill(Paint.valueOf("black"));
 	    Socket s = null;
 	    try {
@@ -111,11 +113,11 @@ public class Online extends Application implements Initializable{
 
 	        // If the code makes it this far without an exception it means
 	        // something is using the port and has responded.
-	        txtConnection.setText("Port " + port + " is not available");
+	        txtConnection.setText("Host: '"+InetAddress.getLocalHost().getHostAddress()+"', Port: '" + port + "' is NOT available");
 	        txtConnection.setFill(Paint.valueOf("red"));
 	        return;
 	    } catch (IOException e) {
-	        txtConnection.setText("Port " + port + " is available");
+	        txtConnection.setText("Host: '"+InetAddress.getLocalHost().getHostAddress()+"', Port: '" + port + "' is available");
 	        txtConnection.setFill(Paint.valueOf("green"));
 	        return;
 	    } finally {

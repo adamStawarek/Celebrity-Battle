@@ -7,6 +7,8 @@ import java.net.InetAddress;
 import java.net.SocketException;
 
 import javafx.application.Platform;
+import javafx.geometry.Point2D;
+import javafx.scene.text.Text;
 
 public class Server extends Thread{
 	private DatagramSocket socket;
@@ -41,19 +43,41 @@ public class Server extends Thread{
                 running = false;
                 continue;
             }
-            else if (received.equals("left")) {
-                game.player.rotateLeft(3);
-                game.serverFire=false;
-            }
-            else if (received.equals("right")) {
-                game.player.rotateRight(3);
-                game.serverFire=false;
-            }
-            else if (received.equals("fire")) {
-               //game.shoottest(game.player); 
-            	//game.player.shoot(game, game.player, game.bullets, game.t);
+            else if (received.contains("fire")) {
             	game.serverFire=true;
-               System.out.println("Message read in Server:"+received);            	
+            	String[] parts = received.split(";");
+            	game.currentCombo2=Integer.parseInt(parts[1]);
+            	System.out.println("Message read in Server:"+received);            	
+            }
+            else if (received.equals("Echo")) {
+                game.txtWaitingForClient.setText("");
+            }
+            else if(received.contains("bonus")) {
+            	
+            	String[] parts = received.split(";");
+            	if(parts.length==2) {
+            		if(!parts[1].equals("remove"))
+            			game.currentCombo=Integer.parseInt(parts[1]);
+            		game.serverbonusremove=true;
+            		
+            	}
+            	else {
+            		//System.out.println("BONUS"+Double.parseDouble(parts[1])+";"+Double.parseDouble(parts[2]));           	
+            		game.bonusView.setTranslateX(Double.parseDouble(parts[1]));
+            		game.bonusView.setTranslateY(Double.parseDouble(parts[2]));
+            		game.serverbonus=true;
+            	}
+            }
+            else if(received.contains(";")) {
+            	String[] parts = received.split(";");
+            	game.player.SetRotate(Double.parseDouble(parts[0]));
+            	game.player.setVelocity(new Point2D(Double.parseDouble(parts[1]),Double.parseDouble(parts[2])));
+            	System.out.println((Integer.parseInt(parts[3]))/12+";"+(Integer.parseInt(parts[4]))/12);
+            	game.score1=Integer.parseInt(parts[3]);
+            	game.score2=Integer.parseInt(parts[4]);
+            }
+            else if(received.equals("StopBonus")) {
+            	game.currentCombo=100;
             }
             else {
             	game.serverFire=false;
@@ -64,12 +88,11 @@ public class Server extends Thread{
             InetAddress address = packet.getAddress();
             int port = packet.getPort();
             String answer="Answer from server";
-            if(game.serverSendMesg.equals("left"))
-        		   answer="left";
-            else if(game.serverSendMesg.equals("right"))
-            	   answer="right";
-            else if(game.serverSendMesg.equals("fire"))
-         	   answer="fire";
+            if(game.serverSendMesg.equals("fire")) {
+            	answer="fire;"+game.currentCombo;
+            }
+            else
+            	answer=game.player2.getRotate()+";"+game.player2.velocity.getX()+";"+game.player2.velocity.getY();
             
             packet = new DatagramPacket(answer.trim().getBytes(), answer.getBytes().length, address, port);
             

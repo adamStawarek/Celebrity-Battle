@@ -62,6 +62,9 @@ public class Obiect_Player {
 	    public double getRotate() {
 	        return imageView.getRotate();
 	    }
+	    public void SetRotate(double d) {
+	    	imageView.setRotate(d);
+	    }
 	    
 	    public void speedUp() {
 	    	 setVelocity(new Point2D(velocity.getX()*1.05, velocity.getY()*1.05));

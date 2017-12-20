@@ -91,7 +91,9 @@ public class Main extends Application implements Initializable{
 	String clientSendMesg=" ",serverSendMesg=" ";
 	public String host="localhost";
 	public int port=22222;
-	boolean serverFire=false;
+	boolean serverFire=false,IsOnlyPlayer1=false,IsOnlyPlayer2=false,clientFire=false,serverbonus=false,serverbonusremove=false;
+	public Text txtWaitingForClient;
+	int bonusloader=0;
 	
 	Server server=null;
 	Client client=null;
@@ -156,6 +158,16 @@ public class Main extends Application implements Initializable{
 			txtSCORES.setLayoutY(300);
 			root.getChildren().add(txtSCORES);
 	        
+			if(isServer) {
+				txtWaitingForClient=new Text();
+				txtWaitingForClient.setText("");
+				txtWaitingForClient.setFill(Color.BLACK);
+				txtWaitingForClient.setFont(Font.font(STYLESHEET_CASPIAN, 60));
+				txtWaitingForClient.setLayoutX(100);
+				txtWaitingForClient.setLayoutY(300);
+				root.getChildren().add(txtWaitingForClient);
+			}
+			
 	        //Formatowanie textu
 	        df.setMaximumFractionDigits(2); 
 			df.setMinimumFractionDigits(2); 
@@ -207,11 +219,11 @@ public class Main extends Application implements Initializable{
 	                
 	        //Dodawanie graczy
 	        player=new Player2(res+"/Player1.png");
-	        player.setVelocity(new Point2D(-2,-2));
+	        player.setVelocity(new Point2D(0,0));
 	        addPlayerObject(player, 300, 300);
 	        players.add(player);
 	        player2 = new Player2(res+"/Player2.png");	       
-	        player2.setVelocity(new Point2D(2, 2));
+	        player2.setVelocity(new Point2D(0, 0));
 	        addPlayerObject(player2, 100, 100);	         
 	        players.add(player2);
 	        
@@ -228,21 +240,45 @@ public class Main extends Application implements Initializable{
 	                }
 	                
 	                updatePic();
-	                addBonus();
 	                
+	                if(isServer==false) {
+	                	addBonus();
+	                }else {
+	                	checkBonus();
+	                }
+	                
+	                	
 	                //Online
 	                if(connection) {
 	                	try {
-							client.sendEcho(clientSendMesg);
+	                		String info=player.getRotate()+";"+player.velocity.getX()+";"+player.velocity.getY()+";"+score1+";"+score2;
+	                		
+	                		client.sendEcho(info);
+	                		
 						} catch (IOException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
 	                }
-	                
-	                if(serverFire) {
-	                	shoot3(player, bullets,4);
+	                if(clientFire) {
+	                	shoot3(player2, bullets2,4);
 	                }
+	                if(serverFire) {
+	                	if(currentCombo2==100) {
+		        			shoot2(player,bullets);
+		        		}
+		        		else if(currentCombo2==0) {
+		        			shootCombo1(player, bullets);
+		        		}
+		        		else {
+		        			shootCombo2(player, bullets);
+		        		}	
+	                	
+	                	//shoot2(player, bullets);
+	                	serverFire=false;
+	                	
+	                }
+	                
 	                
 	                if (isStop==false&&IsEnd==false&&IsMultiPlayer==false) {
 	                	 autoEnemy(player);
@@ -324,11 +360,30 @@ public class Main extends Application implements Initializable{
 				        bonusView.setTranslateY(randNumb2);
 				        root.getChildren().add(bonusView);
 				        timeWithoutBonus=0;
+				       if(connection) {
+                			String info="bonus;"+bonusView.getTranslateX()+";"+bonusView.getTranslateY();
+                			try {
+								client.sendEcho(info);
+							} catch (IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+                		}
+                		
 	            	}
 	            	
 	            	if(IsBonus()==true&&timeWithBonus>900) {
 	            		root.getChildren().remove(bonusView);
-	            		timeWithBonus=0;            		
+	            		timeWithBonus=0; 
+	            		 if(connection) {
+	                			String info="bonus;remove";
+	                			try {
+									client.sendEcho(info);
+								} catch (IOException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								}
+	                	}
 	            	}
 	            	
 	            	if(IsBonus()==true&&timeWithBonus<=900) {
@@ -340,6 +395,15 @@ public class Main extends Application implements Initializable{
 							timeWithBonus=0;
 							pl1bonus=1;
 							currentCombo2=randCombo.nextInt(2);
+							 if(connection) {
+		                			String info="bonus;remove";
+		                			try {
+										client.sendEcho(info);
+									} catch (IOException e) {
+										// TODO Auto-generated catch block
+										e.printStackTrace();
+									}
+		                	}
 
 						}
 						else if(80>dist2) {
@@ -348,6 +412,16 @@ public class Main extends Application implements Initializable{
 							timeWithBonus=0;
 							pl2bonus=1;
 							currentCombo=randCombo.nextInt(3);
+							 if(connection) {
+		                			String info="bonus;"+currentCombo;
+								 //String info="bonus;remove";
+		                			try {
+										client.sendEcho(info);
+									} catch (IOException e) {
+										// TODO Auto-generated catch block
+										e.printStackTrace();
+									}
+		                	}
 						}
 	            	}	  
 	            	
@@ -364,9 +438,17 @@ public class Main extends Application implements Initializable{
 	            		currentCombo2=100;
 	            	if(pl2bonus>0)
 	            		pl2bonus-=0.005;
-	            	else
+	            	else {
 	            		currentCombo=100;
-	            						
+	            		if(connection) {
+	            		try {	            			
+							client.sendEcho("StopBonus");
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+	            	}
+	            	}
 				}
 
 	            //resize the circle in combo3, and check if it hits opponent
@@ -374,7 +456,10 @@ public class Main extends Application implements Initializable{
 					// TODO Auto-generated method stub
 					if(SuperAttack==true) {
 						if(GetDistance()-c.getRadius()>-100&&GetDistance()-c.getRadius()<100) {
-							score2++;
+							if(isServer==false) {
+		                		score2++;
+		                	}
+							
 						}
 						System.out.println(GetDistance());
 						attackloader+=10;
@@ -565,7 +650,9 @@ public class Main extends Application implements Initializable{
 					for (Object bullet : bullets) {
 			            
 			                if (bullet.isColliding(player2)) {
-			                	score1++;
+			                	if(isServer==false) {
+			                		score1++;
+			                	}
 			                    root.getChildren().removeAll(bullet.getView());
 			                }
 			               
@@ -573,7 +660,9 @@ public class Main extends Application implements Initializable{
 					for (Object bullet : bullets2) {
 			            
 		                if (bullet.isColliding(player)) {
-		                	score2++;		                    
+		                	if(isServer==false) {
+		                		score2++;
+		                	}	                	
 		                    root.getChildren().removeAll(bullet.getView());
 		                }
 		               
@@ -592,16 +681,16 @@ public class Main extends Application implements Initializable{
 	        
 	        
 	        primaryStage.getScene().setOnKeyPressed(e -> {
-	        	
+	        	if(IsOnlyPlayer2==false) {
 	            if (e.getCode() == KeyCode.LEFT) {
 	            	player.rotateLeft();	            		   
 	            	isPress=true;
-	            	clientSendMesg="left";
+	            	
 	            		
 	            } else if (e.getCode() == KeyCode.RIGHT) {	            	
 	            	player.rotateRight();	            		   
 	            	isPress=true;
-	            	clientSendMesg="right";
+	            	
 	            } 
 	            else if (e.getCode() == KeyCode.UP) {
 	            	if((player.velocity.getY()>-3)&&(player.velocity.getY()<3)&&(player.velocity.getX()>-3)&&(player.velocity.getX()<3)) {	            		
@@ -614,13 +703,20 @@ public class Main extends Application implements Initializable{
 	            	isPress=true;
 	            		 
 	            }
-	            else if (e.getCode() == KeyCode.N) {            		
+	            else if (e.getCode() == KeyCode.N&&connection) {            		
 	            	clientSendMesg="fire";
-	            		 
+	            	try {
+	            		String s="fire;"+currentCombo2;
+						client.sendEcho(s);
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 	            }
+	        	}
 	            
 	            //handle(e);
-	            
+	            if(IsOnlyPlayer1==false) {
 	           if (e.getCode() == KeyCode.A) {            		
 	            	player2.rotateLeft();	    	          
 	            	isPress2=true;
@@ -628,14 +724,14 @@ public class Main extends Application implements Initializable{
 	            	 if(e.isShiftDown()) {
 	            		 shoot3(player2,bullets2,5);
 	            	 }
-	            	 serverSendMesg="left";
+	            	
 	            } else if (e.getCode() == KeyCode.D) {
 	            	player2.rotateRight();
 	            	isPress2=true;
 	            	 if(e.isShiftDown()) {
 	            		 shoot3(player2,bullets2,5);
 	            	 }
-	            	 serverSendMesg="right";
+	            	 
 	            } 
 	            else if (e.getCode() == KeyCode.W) {
 	            	if((player2.velocity.getY()>-3)&&(player2.velocity.getY()<3)&&(player2.velocity.getX()>-3)&&(player2.velocity.getX()<3)) {
@@ -656,6 +752,7 @@ public class Main extends Application implements Initializable{
 	            		shoot2(player2,bullets2);
 	            		e.consume();
 	            }
+	            }
 	  
 	        });
 	        
@@ -667,7 +764,7 @@ public class Main extends Application implements Initializable{
 	        	 if (e.getCode() == KeyCode.A||e.getCode() == KeyCode.D||e.getCode() == KeyCode.R) {
 	        		 serverSendMesg="";        		 
 	        	 }
-	        	
+	        	if(IsOnlyPlayer1==false) {
 	        	if (e.getCode() == KeyCode.R) {          	
 	        		System.out.println(currentCombo);
 	        		
@@ -685,7 +782,8 @@ public class Main extends Application implements Initializable{
 	        			shootCombo3(player2, bullets2);
 	        		}
 	        	 }
-	        	
+	        	}
+	        	if(IsOnlyPlayer2==false) {
 	        	 if (e.getCode() == KeyCode.N) {
 	        		
 	        		 if(currentCombo2==100) {
@@ -696,9 +794,9 @@ public class Main extends Application implements Initializable{
 		        		}
 		        		else {
 		        			shootCombo2(player, bullets);
-		        		}
-	        		 
-	        	 }	        	
+		        		}	 
+	        	 }	     
+	        	}
 	        	 	//Pomocnicza funkcja(zamraza przeciwnika w czasie gry) do testowania przed oddaniem do usuniêcia	         
 		           if (e.getCode() == KeyCode.DIGIT1) {
 		            	if (isStop)
@@ -717,13 +815,15 @@ public class Main extends Application implements Initializable{
 	        timer.start();		
 			primaryStage.show();
 			
-			//ONLINE
+			//ONLINE`
 			if(isOnline) {
         		System.out.println("Online");
         		if(isServer) {
         			System.out.println("Server");
         			server=new Server(this,port);
         			server.start();
+        			IsOnlyPlayer2=true;
+        			txtWaitingForClient.setText("Waiting for another player...");
         		}
         		else {
         			System.out.println("Client");
@@ -731,6 +831,7 @@ public class Main extends Application implements Initializable{
         			client.start();
         			client.sendEcho("Echo");
         			connection=true;
+        			IsOnlyPlayer1=true;
         		}
         	}
 			
@@ -803,6 +904,22 @@ public class Main extends Application implements Initializable{
 	
 	int GetDistanceUniversal(double x1,double y1, double x2,double y2) {
 		return (int) Math.sqrt(Math.pow(y1-y2,2)+Math.pow(x1-x2,2));
+	}
+	
+	public void checkBonus() {
+		
+		if(serverbonus&&IsBonus()==false) {
+			
+			root.getChildren().add(bonusView);
+			serverbonus=false;
+			
+		}
+		if(serverbonusremove) {
+			root.getChildren().remove(bonusView);
+			serverbonusremove=false;
+		}
+		
+    		  
 	}
 	
 	public void shoot(Obiect_Player p,List<Bullet> b) {		

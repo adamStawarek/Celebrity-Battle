@@ -23,9 +23,9 @@
                         <Font name="SansSerif Bold" size="28.0" />
                      </font>
                   </Text>
-                  <Text fx:id="txtConnection" layoutX="54.0" layoutY="233.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="268.13671875">
+                  <Text fx:id="txtConnection" layoutX="35.0" layoutY="233.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="308.13671875">
                      <font>
-                        <Font name="SansSerif Regular" size="20.0" />
+                        <Font name="SansSerif Regular" size="15.0" />
                      </font>
                   </Text>
             <Text layoutX="16.0" layoutY="43.0" strokeType="OUTSIDE" strokeWidth="0.0" text="WOULD YOU LIKE TO START A SERVER?" wrappingWidth="361.001953125">
@@ -47,6 +47,6 @@
          </children></Pane>
       <Button layoutX="28.0" layoutY="346.0" mnemonicParsing="false" onAction="#GoBack" prefHeight="31.0" prefWidth="72.0" text="Back" />
       <Button fx:id="btnPlay" layoutX="397.0" layoutY="346.0" mnemonicParsing="false" onAction="#Play" prefHeight="31.0" prefWidth="72.0" text="Play" />
-      <Button layoutX="194.0" layoutY="346.0" mnemonicParsing="false" onAction="#checkPort" prefHeight="31.0" prefWidth="97.0" text="Check port" />
+      <Button layoutX="194.0" layoutY="346.0" mnemonicParsing="false" onAction="#checkPort" prefHeight="31.0" prefWidth="120.0" text="Check port" />
    </children>
 </AnchorPane>
