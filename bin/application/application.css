@@ -6,6 +6,10 @@
         -fx-background-image: url("/resources2/background.png");  
         -fx-background-size:stretch;
 }
+#pane3{
+	 -fx-background-image: url("/resources3/background.png");  
+      -fx-background-size:stretch;
+}
 .button { 
     -fx-background-color: 
         #090a0c,

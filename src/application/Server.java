@@ -37,6 +37,8 @@ public class Server extends Thread{
             
             //Pretwarzanie odebranej wiadomosci
              received  = new String(packet.getData(), 0, packet.getLength());
+            // System.out.println("Received:"+received+";"+received.length());
+          
              
             //mo¿na potem wyjebac(chyba)
             if (received.equals("end")) {
@@ -47,7 +49,7 @@ public class Server extends Thread{
             	game.serverFire=true;
             	String[] parts = received.split(";");
             	game.currentCombo2=Integer.parseInt(parts[1]);
-            	System.out.println("Message read in Server:"+received);            	
+            	//System.out.println("Message read in Server:"+received);            	
             }
             else if (received.equals("Echo")) {
                 game.txtWaitingForClient.setText("");
@@ -72,9 +74,12 @@ public class Server extends Thread{
             	String[] parts = received.split(";");
             	game.player.SetRotate(Double.parseDouble(parts[0]));
             	game.player.setVelocity(new Point2D(Double.parseDouble(parts[1]),Double.parseDouble(parts[2])));
-            	System.out.println((Integer.parseInt(parts[3]))/12+";"+(Integer.parseInt(parts[4]))/12);
+            	//System.out.println((Integer.parseInt(parts[3]))/12+";"+(Integer.parseInt(parts[4]))/12);
             	game.score1=Integer.parseInt(parts[3]);
             	game.score2=Integer.parseInt(parts[4]);
+            	game.pl1bonus=Double.parseDouble(parts[5]);
+            	game.pl2bonus=Double.parseDouble(parts[6]);
+            	
             }
             else if(received.equals("StopBonus")) {
             	game.currentCombo=100;
@@ -82,7 +87,7 @@ public class Server extends Thread{
             else {
             	game.serverFire=false;
             }
-            
+    
              
             //Wysy³anie pakietu
             InetAddress address = packet.getAddress();
@@ -95,7 +100,7 @@ public class Server extends Thread{
             	answer=game.player2.getRotate()+";"+game.player2.velocity.getX()+";"+game.player2.velocity.getY();
             
             packet = new DatagramPacket(answer.trim().getBytes(), answer.getBytes().length, address, port);
-            
+            System.out.println("Client adress:"+ packet.getAddress());
             try {
 				socket.send(packet);
 			} catch (IOException e) {

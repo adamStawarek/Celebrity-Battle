@@ -14,6 +14,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.RadioButton;
+import javafx.scene.control.Slider;
 import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
@@ -28,7 +29,6 @@ public class settings extends Application implements Initializable{
 	@FXML
 	private ComboBox<String> cmbTime,cmbKill,cmbScenario,cmbLevel;  
 	
-	AudioPlayer aPlayer;
 	
 	@FXML
 	private ImageView ScenarioImage,SettingsImage;
@@ -37,19 +37,24 @@ public class settings extends Application implements Initializable{
 	
 	@FXML
 	Button btnPlay,btnBack;
+
+	@FXML 
+	ImageView imgVolume;
+	
+	@FXML
+	Slider sldVolume;
 	
 	@FXML
 	public void Play() {
 		
-		aPlayer.Play();
+		SoundController sound=new SoundController("/sounds/confirm.wav", 3);
+		sound.Play();
 		
 		Main m=new Main();
 		Stage s= new Stage();
 		
-		if (rbTime.isSelected())
-			cmbKill.setDisable(true);
-		else if (rbKill.isSelected())
-			cmbTime.setDisable(true);
+		m.isOnline=false;
+		m.volume=(int) sldVolume.getValue();
 		
 		if (!(rbSingle.isSelected()))
 			cmbLevel.setDisable(true);
@@ -67,7 +72,6 @@ public class settings extends Application implements Initializable{
 		else
 			m.setMultiplayer(true);
 		
-		if (rbKill.isSelected()) {
 			if(cmbKill.getSelectionModel().getSelectedItem().toString()=="100") {
 				m.MAXSCORE=1200;
 			}
@@ -76,7 +80,6 @@ public class settings extends Application implements Initializable{
 			}
 			else
 				m.MAXSCORE=1200*5;
-		}
 		
 		
 		if (cmbScenario.getSelectionModel().getSelectedItem().toString()=="USA-Elections") {
@@ -84,6 +87,9 @@ public class settings extends Application implements Initializable{
 		}
 		else if (cmbScenario.getSelectionModel().getSelectedItem().toString()=="Krucjata Korwina") {
 			m.setScenario2();
+		}
+		else if (cmbScenario.getSelectionModel().getSelectedItem().toString()=="IQ over 200") {
+			m.setScenario3();
 		}
 		
 		if (cmbLevel.getSelectionModel().getSelectedItem().toString()=="Easy")
@@ -105,11 +111,18 @@ public class settings extends Application implements Initializable{
 			Image i = new Image(getClass().getResourceAsStream("/sounds/Scenario2.jpg"));
 			ScenarioImage.setImage(i);
 		}
+		else if (cmbScenario.getSelectionModel().getSelectedItem().toString()=="IQ over 200") {			
+			Image i = new Image(getClass().getResourceAsStream("/sounds/Scenario3.jpg"));
+			ScenarioImage.setImage(i);
+		}
 	}
 	
 	@FXML
 	public void GoBack() {
-		aPlayer.Play();
+		SoundController sound=new SoundController("/sounds/confirm.wav", 3);
+		sound.Play();
+		
+		//aPlayer.Play();
 		Stage stage = (Stage) btnPlay.getScene().getWindow();	    
 	    stage.close();
 	    meu m=new meu();
@@ -151,19 +164,19 @@ public class settings extends Application implements Initializable{
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		
-		aPlayer=new AudioPlayer(getClass().getResource("/sounds/confirm.wav"));
 		Image i = new Image(getClass().getResourceAsStream("/sounds/settings.png"));
 		SettingsImage.setImage(i);
 		Image i2 = new Image(getClass().getResourceAsStream("/sounds/Scenario1.jpg"));
 		ScenarioImage.setImage(i2);
+		Image i3 = new Image(getClass().getResourceAsStream("/sounds/soundOn.png"));
+		Image i4 = new Image(getClass().getResourceAsStream("/sounds/soundOff.png"));
+		imgVolume.setImage(i3);
 		
 		ToggleGroup group = new ToggleGroup();
 		ToggleGroup group2 = new ToggleGroup();
-		ToggleGroup group3 = new ToggleGroup();
 		
 		rbMulti.setToggleGroup(group);
 		rbSingle.setToggleGroup(group);
-		//rbOnline.setToggleGroup(group);
 		rbSingle.setSelected(true);
 			
 		rbSmall.setToggleGroup(group2);
@@ -171,13 +184,6 @@ public class settings extends Application implements Initializable{
 		rbLarge.setToggleGroup(group2);
 		rbMedium.setSelected(true);
 		
-		rbTime.setToggleGroup(group3);
-		rbKill.setToggleGroup(group3);
-		rbKill.setSelected(true);
-		
-	    cmbTime.getItems().addAll("3min", "5min", "10min");
-	    cmbTime.getSelectionModel().select("3min");
-	    cmbTime.setDisable(true);
 		
 	    cmbKill.getItems().addAll("100", "300", "500");
 	    cmbKill.getSelectionModel().select("100");
@@ -185,27 +191,9 @@ public class settings extends Application implements Initializable{
 	    cmbLevel.getItems().addAll("Easy", "Medium", "Hard");
 	    cmbLevel.getSelectionModel().select("Medium");
 	    
-	    cmbScenario.getItems().addAll("USA-Elections", "Krucjata Korwina");
+	    cmbScenario.getItems().addAll("USA-Elections", "Krucjata Korwina","IQ over 200");
 	    cmbScenario.getSelectionModel().select("USA-Elections");
 	    
-	    rbTime.selectedProperty().addListener(new ChangeListener<Boolean>() {
-	        @Override
-	        public void changed(ObservableValue<? extends Boolean> obs, Boolean wasPreviouslySelected, Boolean isNowSelected) {
-	            if (isNowSelected) { 
-	            	cmbKill.setDisable(true);
-	            	cmbTime.setDisable(false);
-	            } 
-	        }
-	    });
-	    rbKill.selectedProperty().addListener(new ChangeListener<Boolean>() {
-	        @Override
-	        public void changed(ObservableValue<? extends Boolean> obs, Boolean wasPreviouslySelected, Boolean isNowSelected) {
-	            if (isNowSelected) { 
-	            	cmbTime.setDisable(true);
-	            	cmbKill.setDisable(false);
-	            } 
-	        }
-	    });
 	    rbSingle.selectedProperty().addListener(new ChangeListener<Boolean>() {
 	        @Override
 	        public void changed(ObservableValue<? extends Boolean> obs, Boolean wasPreviouslySelected, Boolean isNowSelected) {
@@ -216,7 +204,18 @@ public class settings extends Application implements Initializable{
 	            	cmbLevel.setDisable(false);
 	        }
 	    });
-	    
+	    sldVolume.valueProperty().addListener(new ChangeListener<Number>() {
+            public void changed(ObservableValue<? extends Number> ov, Number old_val, Number new_val) {
+            			if(new_val.intValue()==0) {
+            				imgVolume.setImage(i4);
+            			}
+            			else {
+            				imgVolume.setImage(i3);
+            			}
+                        //System.out.println(new_val.doubleValue());
+                        //opacityValue.setText(String.format("%.2f", new_val));
+                }
+            });
 	    
 	    
 	}

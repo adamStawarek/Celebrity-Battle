@@ -21,38 +21,42 @@
       </Text>
       <RadioButton fx:id="rbMulti" layoutX="200.0" layoutY="257.0" mnemonicParsing="false" text="Multiplayer" />
       <RadioButton fx:id="rbSingle" layoutX="200.0" layoutY="286.0" mnemonicParsing="false" text="Singleplayer" />
-      <Text layoutX="195.0" layoutY="239.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tryb gry">
+      <Text layoutX="195.0" layoutY="239.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Opponent">
          <font>
-            <Font size="20.0" />
+            <Font name="Calibri Bold" size="20.0" />
          </font>
       </Text>
-      <Text layoutX="195.0" layoutY="104.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Rozmiar ekranu">
+      <Text layoutX="195.0" layoutY="104.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Window's size">
          <font>
-            <Font size="20.0" />
+            <Font name="Calibri Bold" size="20.0" />
          </font>
       </Text>
       <RadioButton fx:id="rbSmall" layoutX="200.0" layoutY="121.0" mnemonicParsing="false" text="Small" />
       <RadioButton fx:id="rbMedium" layoutX="200.0" layoutY="150.0" mnemonicParsing="false" text="Medium" />
       <RadioButton fx:id="rbLarge" layoutX="200.0" layoutY="180.0" mnemonicParsing="false" text="Large" />
-      <Text layoutX="25.0" layoutY="104.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Czas gry/ilość żyć">
+      <Text layoutX="25.0" layoutY="104.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Lives">
          <font>
-            <Font size="20.0" />
+            <Font name="Calibri Bold" size="20.0" />
          </font>
       </Text>
-      <RadioButton fx:id="rbTime" layoutX="20.0" layoutY="121.0" mnemonicParsing="false" text="Czasowa" />
-      <RadioButton fx:id="rbKill" layoutX="20.0" layoutY="192.0" mnemonicParsing="false" text="&quot;Do zabicia&quot;" />
-      <ComboBox fx:id="cmbTime" layoutX="17.0" layoutY="151.0" prefHeight="27.0" prefWidth="150.0" />
-      <ComboBox fx:id="cmbKill" layoutX="17.0" layoutY="222.0" prefWidth="150.0" />
+      <ComboBox fx:id="cmbKill" layoutX="27.0" layoutY="117.0" prefWidth="150.0" />
       <ComboBox fx:id="cmbLevel" layoutX="202.0" layoutY="311.0" prefHeight="25.0" prefWidth="103.0" />
       <Separator layoutX="189.0" layoutY="78.0" orientation="VERTICAL" prefHeight="258.0" prefWidth="0.0" />
       <Separator layoutX="340.0" layoutY="78.0" orientation="VERTICAL" prefHeight="258.0" prefWidth="6.0" />
-      <Text layoutX="363.0" layoutY="103.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Scenariusz">
+      <Text layoutX="363.0" layoutY="103.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Theme">
          <font>
-            <Font size="20.0" />
+            <Font name="Calibri Bold" size="20.0" />
          </font>
       </Text>
       <ComboBox fx:id="cmbScenario" layoutX="363.0" layoutY="116.0" onAction="#ChangeScenarioImg" prefHeight="27.0" prefWidth="178.0" />
       <ImageView fx:id="ScenarioImage" fitHeight="180.0" fitWidth="221.0" layoutX="363.0" layoutY="156.0" pickOnBounds="true" preserveRatio="true" />
       <ImageView fx:id="SettingsImage" fitHeight="81.0" fitWidth="86.0" layoutX="205.0" layoutY="0.0" pickOnBounds="true" preserveRatio="true" />
+      <Text layoutX="25.0" layoutY="185.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Music volume">
+         <font>
+            <Font name="Calibri Bold" size="20.0" />
+         </font>
+      </Text>
+      <Slider fx:id="sldVolume" blockIncrement="1.0" layoutX="25.0" layoutY="279.0" majorTickUnit="1.0" max="10.0" min="0.0" minorTickCount="0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="3.0" />
+      <ImageView fx:id="imgVolume" fitHeight="81.0" fitWidth="116.0" layoutX="37.0" layoutY="190.0" pickOnBounds="true" preserveRatio="true" />
    </children>
 </AnchorPane>

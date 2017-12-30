@@ -5,6 +5,7 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
+import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 
 import javafx.geometry.Point2D;
@@ -18,9 +19,11 @@ public class Client extends Thread {
     private Main game;
     String ip;
     int port;
+    boolean canAcess=true;
  
     public Client( Main game,String ip, int port) throws SocketException, UnknownHostException {
         socket = new DatagramSocket();
+        socket.setSoTimeout(6000);
         address = InetAddress.getByName(ip);
         this.game = game;
         this.port=port;
@@ -34,7 +37,18 @@ public class Client extends Thread {
         
         //Odbieranie wiadomoœci
         packet = new DatagramPacket(buf2, buf2.length);
-        socket.receive(packet);
+        //socket.receive(packet);
+        try {
+            socket.receive(packet);
+           
+        }
+        catch (SocketTimeoutException e) {
+            game.txtWaitingForClient.setText("Cannot acess the server :(");
+        	
+        	System.out.println("Server is dead");
+        	canAcess=false;
+        }
+        
         String received = new String(packet.getData(), 0, packet.getLength());
         
         

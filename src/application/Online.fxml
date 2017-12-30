@@ -7,25 +7,25 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane id="stgOnline" prefHeight="400.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Online">
+<AnchorPane id="stgOnline" prefHeight="445.0" prefWidth="662.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Online">
    <children>
-      <Pane layoutX="54.0" layoutY="74.0" prefHeight="253.0" prefWidth="393.0" style="-fx-background-color: rgba(255, 255, 255, 0.7); -fx-background-radius: 20;">
+      <Pane layoutX="20.0" layoutY="50.0" prefHeight="322.0" prefWidth="426.0" style="-fx-background-color: rgba(255, 255, 255, 0.7); -fx-background-radius: 20;">
          <children>
-            <TextField fx:id="txtPort" layoutX="127.0" layoutY="180.0" prefHeight="25.0" prefWidth="213.0" promptText="ex: 21109" />
-                  <TextField fx:id="txtHost" layoutX="127.0" layoutY="133.0" prefHeight="25.0" prefWidth="213.0" promptText="ex: localhost" />
-                  <Text layoutX="39.0" layoutY="202.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Port:">
+            <TextField fx:id="txtPort" layoutX="127.0" layoutY="167.0" prefHeight="25.0" prefWidth="213.0" promptText="ex: 21109" />
+                  <TextField fx:id="txtHost" layoutX="127.0" layoutY="120.0" prefHeight="25.0" prefWidth="213.0" promptText="ex: localhost" />
+                  <Text layoutX="39.0" layoutY="189.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Port:">
                      <font>
                         <Font name="SansSerif Bold" size="28.0" />
                      </font>
                   </Text>
-                  <Text layoutX="36.0" layoutY="155.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Host:">
+                  <Text layoutX="36.0" layoutY="142.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Host:">
                      <font>
                         <Font name="SansSerif Bold" size="28.0" />
                      </font>
                   </Text>
-                  <Text fx:id="txtConnection" layoutX="35.0" layoutY="233.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="308.13671875">
+                  <Text fx:id="txtConnection" layoutX="34.0" layoutY="241.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="328.13671875">
                      <font>
-                        <Font name="SansSerif Regular" size="15.0" />
+                        <Font name="SansSerif Bold" size="15.0" />
                      </font>
                   </Text>
             <Text layoutX="16.0" layoutY="43.0" strokeType="OUTSIDE" strokeWidth="0.0" text="WOULD YOU LIKE TO START A SERVER?" wrappingWidth="361.001953125">
@@ -44,9 +44,31 @@
                   <Font name="System Bold" size="13.0" />
                </font>
             </RadioButton>
+            <Text fx:id="txtHOSTS" layoutX="42.0" layoutY="215.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="308.13671875">
+               <font>
+                  <Font name="SansSerif Bold" size="15.0" />
+               </font>
+            </Text>
          </children></Pane>
-      <Button layoutX="28.0" layoutY="346.0" mnemonicParsing="false" onAction="#GoBack" prefHeight="31.0" prefWidth="72.0" text="Back" />
-      <Button fx:id="btnPlay" layoutX="397.0" layoutY="346.0" mnemonicParsing="false" onAction="#Play" prefHeight="31.0" prefWidth="72.0" text="Play" />
-      <Button layoutX="194.0" layoutY="346.0" mnemonicParsing="false" onAction="#checkPort" prefHeight="31.0" prefWidth="120.0" text="Check port" />
+      <Button layoutX="20.0" layoutY="386.0" mnemonicParsing="false" onAction="#GoBack" prefHeight="31.0" prefWidth="72.0" text="Back" />
+      <Button fx:id="btnPlay" layoutX="521.0" layoutY="386.0" mnemonicParsing="false" onAction="#Play" prefHeight="31.0" prefWidth="72.0" text="Play" />
+      <Button layoutX="326.0" layoutY="386.0" mnemonicParsing="false" onAction="#checkPort" prefHeight="31.0" prefWidth="120.0" text="Check port" />
+      <Pane layoutX="462.0" layoutY="50.0" prefHeight="322.0" prefWidth="188.0" style="-fx-background-color: rgba(255, 255, 255, 0.7); -fx-background-radius: 20;">
+         <children>
+            <Text layoutX="17.0" layoutY="28.0" strokeType="OUTSIDE" strokeWidth="0.0" text="IP's avaible in your LAN" wrappingWidth="149.0">
+               <font>
+                  <Font name="System Bold" size="13.0" />
+               </font>
+            </Text>
+            <Text layoutX="14.0" layoutY="197.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Choose sceanario:">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Text>
+            <ComboBox fx:id="cmbScenario" onAction="#ChangeScenarioImg" layoutX="7.0" layoutY="202.0" prefHeight="25.0" prefWidth="174.0" />
+            <ImageView fx:id="imgScenario" fitHeight="86.0" fitWidth="174.0" layoutX="6.0" layoutY="231.0" pickOnBounds="true" preserveRatio="true" />
+            <ListView fx:id="lstIPs" layoutX="9.0" layoutY="33.0" prefHeight="143.0" prefWidth="166.0" />
+         </children>
+      </Pane>
    </children>
 </AnchorPane>

@@ -79,9 +79,9 @@ public class Main extends Application implements Initializable{
     List<Bullet> bullets2 = new ArrayList<>();
 	private List<Point2D> points = new ArrayList<>();
 	private List<Player2> players = new ArrayList<>();
-	public java.applet.AudioClip audioClip,audioClip2,audioClip3,audioClip4,audioClip5;
+	SoundController sound1,sound2,sound3,sound4,sound5;	
 	public int n=1,k=0,t=0,r=0,timeToDisplayFinalWindow=0,attackloader=0,ComboTimeCounter=600;
-	public static int score1=0,score2=0,MAXSCORE=1200;
+	public static int score1=0,score2=0,MAXSCORE=1200,volume;
 	public static int time;
 	int currentCombo=100,currentCombo2=100;//set for normal shooting
 	public static Text txtSCORES;
@@ -158,7 +158,7 @@ public class Main extends Application implements Initializable{
 			txtSCORES.setLayoutY(300);
 			root.getChildren().add(txtSCORES);
 	        
-			if(isServer) {
+			
 				txtWaitingForClient=new Text();
 				txtWaitingForClient.setText("");
 				txtWaitingForClient.setFill(Color.BLACK);
@@ -166,24 +166,18 @@ public class Main extends Application implements Initializable{
 				txtWaitingForClient.setLayoutX(100);
 				txtWaitingForClient.setLayoutY(300);
 				root.getChildren().add(txtWaitingForClient);
-			}
+		
 			
 	        //Formatowanie textu
 	        df.setMaximumFractionDigits(2); 
 			df.setMinimumFractionDigits(2); 
 			nf = new DecimalFormat("#0.00");
 			
-
-	        URL url = getClass().getResource("/sounds/shoot.wav");
-	        audioClip = Applet.newAudioClip(url);	        
-	        URL url2 = getClass().getResource("/sounds/t3.wav");
-	        audioClip2 = Applet.newAudioClip(url2);
-	        URL url3 = getClass().getResource("/sounds/h3.wav");
-	        audioClip3 = Applet.newAudioClip(url3);
-	        URL url4 = getClass().getResource("/sounds/gameOver.wav");
-	        audioClip4 = Applet.newAudioClip(url4);
-	        URL url5 = getClass().getResource("/sounds/explosion.wav");
-	        audioClip5 = Applet.newAudioClip(url5);
+	        sound1=new SoundController("/sounds/shoot.wav", volume);
+	        sound2=new SoundController("/sounds/t3.wav", volume);
+	        sound3=new SoundController("/sounds/h3.wav", volume);
+	        sound4=new SoundController("/sounds/gameOver.wav", volume);
+	        sound5=new SoundController("/sounds/explosion.wav", volume);
 	        
 	        randCombo=new Random();
 	        
@@ -196,17 +190,20 @@ public class Main extends Application implements Initializable{
 	        dangerView.setImage(danger);
 	        dangerView.setFitHeight(80);
         	dangerView.setFitWidth(90);
-        	
-        	
-        	
+        	 	
 	        
-	        if (res=="/resources2") {
+	        if (res=="/resources") {	        	
+	        	root.setId("pane");
+	        }
+	        else if(res=="/resources2"){
 	        	bonusView.setFitHeight(100);
 	        	bonusView.setFitWidth(140);
 	        	root.setId("pane2");
 	        }
-	        else {
-	        	root.setId("pane");
+	        else{
+	        	bonusView.setFitHeight(120);
+	        	bonusView.setFitWidth(80);
+	        	root.setId("pane3");
 	        }
 	        
 	        //Do zrobienia na super hard mode(difficult)
@@ -249,9 +246,9 @@ public class Main extends Application implements Initializable{
 	                
 	                	
 	                //Online
-	                if(connection) {
+	                if(connection&&client.canAcess) {
 	                	try {
-	                		String info=player.getRotate()+";"+player.velocity.getX()+";"+player.velocity.getY()+";"+score1+";"+score2;
+	                		String info=player.getRotate()+";"+player.velocity.getX()+";"+player.velocity.getY()+";"+score1+";"+score2+";"+pl1bonus+";"+pl2bonus;
 	                		
 	                		client.sendEcho(info);
 	                		
@@ -273,8 +270,6 @@ public class Main extends Application implements Initializable{
 		        		else {
 		        			shootCombo2(player, bullets);
 		        		}	
-	                	
-	                	//shoot2(player, bullets);
 	                	serverFire=false;
 	                	
 	                }
@@ -318,7 +313,6 @@ public class Main extends Application implements Initializable{
 	   	            		int dist1=GetDistanceUniversal(player.GetPosX()+30, player.GetPosY()+30, dangerView.getTranslateX()+100, dangerView.getTranslateY()+20);
 	   						int dist2=GetDistanceUniversal(player2.GetPosX()+30, player2.GetPosY()+30, dangerView.getTranslateX()+100, dangerView.getTranslateY()+20);
 	   						if(80>dist1) {
-	   							//makeSound(audioClip3);
 	   							root.getChildren().remove(dangerView);
 	   							timeWithDanger=0;
 	   							score2+=100;
@@ -329,7 +323,6 @@ public class Main extends Application implements Initializable{
 
 	   						}
 	   						else if(80>dist2) {
-	   							//makeSound(audioClip2);
 	   							root.getChildren().remove(dangerView);
 	   							timeWithoutDanger=0;
 	   							score1+=100;
@@ -360,7 +353,7 @@ public class Main extends Application implements Initializable{
 				        bonusView.setTranslateY(randNumb2);
 				        root.getChildren().add(bonusView);
 				        timeWithoutBonus=0;
-				       if(connection) {
+				       if(connection&&client.canAcess) {
                 			String info="bonus;"+bonusView.getTranslateX()+";"+bonusView.getTranslateY();
                 			try {
 								client.sendEcho(info);
@@ -375,7 +368,7 @@ public class Main extends Application implements Initializable{
 	            	if(IsBonus()==true&&timeWithBonus>900) {
 	            		root.getChildren().remove(bonusView);
 	            		timeWithBonus=0; 
-	            		 if(connection) {
+	            		 if(connection&&client.canAcess) {
 	                			String info="bonus;remove";
 	                			try {
 									client.sendEcho(info);
@@ -390,12 +383,12 @@ public class Main extends Application implements Initializable{
 	            		int dist1=GetDistanceUniversal(player.GetPosX()+30, player.GetPosY()+30, bonusView.getTranslateX()+100, bonusView.getTranslateY()+20);
 						int dist2=GetDistanceUniversal(player2.GetPosX()+30, player2.GetPosY()+30, bonusView.getTranslateX()+100, bonusView.getTranslateY()+20);
 						if(80>dist1) {
-							makeSound(audioClip3);
+							makeSound(sound3);
 							root.getChildren().remove(bonusView);
 							timeWithBonus=0;
 							pl1bonus=1;
 							currentCombo2=randCombo.nextInt(2);
-							 if(connection) {
+							 if(connection&&client.canAcess) {
 		                			String info="bonus;remove";
 		                			try {
 										client.sendEcho(info);
@@ -407,14 +400,13 @@ public class Main extends Application implements Initializable{
 
 						}
 						else if(80>dist2) {
-							makeSound(audioClip2);
+							makeSound(sound2);
 							root.getChildren().remove(bonusView);
 							timeWithBonus=0;
 							pl2bonus=1;
 							currentCombo=randCombo.nextInt(3);
-							 if(connection) {
+							 if(connection&&client.canAcess) {
 		                			String info="bonus;"+currentCombo;
-								 //String info="bonus;remove";
 		                			try {
 										client.sendEcho(info);
 									} catch (IOException e) {
@@ -440,7 +432,7 @@ public class Main extends Application implements Initializable{
 	            		pl2bonus-=0.005;
 	            	else {
 	            		currentCombo=100;
-	            		if(connection) {
+	            		if(connection&&client.canAcess) {
 	            		try {	            			
 							client.sendEcho("StopBonus");
 						} catch (IOException e) {
@@ -539,7 +531,7 @@ public class Main extends Application implements Initializable{
 							IsEnd=true;							
 							timeToDisplayFinalWindow++;
 							if(timeToDisplayFinalWindow>240) {
-								audioClip4.play();
+								makeSound(sound4);
 								timer.stop();
 								
 								primaryStage.close();
@@ -591,7 +583,7 @@ public class Main extends Application implements Initializable{
 							if (k%3==0&&k<43)
 								n++;
 							if(k==3) {
-								audioClip5.play();
+								makeSound(sound5);
 							}
 						}									
 					}
@@ -603,7 +595,7 @@ public class Main extends Application implements Initializable{
 							IsEnd=true;							
 							timeToDisplayFinalWindow++;
 							if(timeToDisplayFinalWindow>240) {
-								audioClip4.play();
+								makeSound(sound4);
 								timer.stop();
 								
 								
@@ -624,7 +616,7 @@ public class Main extends Application implements Initializable{
 							if (k%3==0&&k<43)
 								n++;
 							if(k==3) {
-								audioClip5.play();
+								makeSound(sound5);
 							}
 						}
 					}
@@ -703,7 +695,7 @@ public class Main extends Application implements Initializable{
 	            	isPress=true;
 	            		 
 	            }
-	            else if (e.getCode() == KeyCode.N&&connection) {            		
+	            else if (e.getCode() == KeyCode.N&&connection&&client.canAcess) {            		
 	            	clientSendMesg="fire";
 	            	try {
 	            		String s="fire;"+currentCombo2;
@@ -839,9 +831,8 @@ public class Main extends Application implements Initializable{
 			e.printStackTrace();
 		}
 	}
-	
-    public void makeSound(java.applet.AudioClip a){
-        a.play();
+    public void makeSound(SoundController a){
+        a.Play();
     }
 	
     public void setMultiplayer(boolean b) {
@@ -877,7 +868,7 @@ public class Main extends Application implements Initializable{
 		if (explosionTimetoChangePic%3==0 && explosionTimetoChangePic<36 && explosionImgCounter<8)
 			explosionImgCounter++;
 		if(explosionTimetoChangePic==3) {
-			audioClip5.play();
+			makeSound(sound5);
 		}
 		if (explosionTimetoChangePic>=36) {
 			p.ChangeImg(res+"/"+playerName+".png");
@@ -925,7 +916,7 @@ public class Main extends Application implements Initializable{
 	public void shoot(Obiect_Player p,List<Bullet> b) {		
 		t++;
 		if(t%10==0) {
-		makeSound(audioClip);
+		makeSound(sound1);
         Bullet bullet = new Bullet();
         bullet.setVelocity(p.getVelocity().normalize().multiply(5));
         b.add(bullet);
@@ -935,7 +926,7 @@ public class Main extends Application implements Initializable{
 	public void shoot3(Obiect_Player p,List<Bullet> b, int k) {		
 		t++;
 		if(t%k==0) {
-		makeSound(audioClip);
+		makeSound(sound1);
         Bullet bullet = new Bullet();
         bullet.setVelocity(p.getVelocity().normalize().multiply(5));
         b.add(bullet);
@@ -944,7 +935,7 @@ public class Main extends Application implements Initializable{
 	}
 	
 	public void shoot2(Obiect_Player p,List<Bullet> b) {		
-		makeSound(audioClip);
+		makeSound(sound1);
         Bullet bullet = new Bullet();
         bullet.setVelocity(p.getVelocity().normalize().multiply(5));
         b.add(bullet);
@@ -953,7 +944,7 @@ public class Main extends Application implements Initializable{
 	}
 	
 	public void shootCombo1(Obiect_Player p,List<Bullet> b) {		
-		makeSound(audioClip2);
+		makeSound(sound2);
     	points.add(new Point2D(5,0));
     	points.add(new Point2D(-5,0));
     	points.add(new Point2D(0,5));
@@ -971,8 +962,7 @@ public class Main extends Application implements Initializable{
 	}
 	
 	public void shootCombo2(Obiect_Player p,List<Bullet> b) {
-		
-		makeSound(audioClip2);           	
+		makeSound(sound2);
 		Bullet bullet = new Bullet(Color.BLUE);
 		Bullet bullet2 = new Bullet(Color.YELLOW);
 		Bullet bullet3 = new Bullet(Color.GREEN);
@@ -1028,7 +1018,9 @@ public class Main extends Application implements Initializable{
 	}
 	
 	
-	
+	public void setScenario3() {		
+		res="/resources3";
+	}
 	public void setScenario2() {		
 		res="/resources2";
 	}
@@ -1067,6 +1059,7 @@ public class Main extends Application implements Initializable{
 						pl1life.setText("Life: "+(MAXSCORE-score1)/12);
 						pl2life.setText("Life: "+(MAXSCORE-score2)/12);
 						txtScore.setText("Score: "+score2/12+" : "+score1/12);
+						System.out.println("Value:"+volume);
 					}                	
                 }));
         timeline.playFromStart();
