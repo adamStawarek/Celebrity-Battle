@@ -92,11 +92,21 @@ public class settings extends Application implements Initializable{
 			m.setScenario3();
 		}
 		
-		if (cmbLevel.getSelectionModel().getSelectedItem().toString()=="Easy")
+		if (cmbLevel.getSelectionModel().getSelectedItem().toString()=="Easy") {
 			m.setHardModeOff();
-		else if (cmbLevel.getSelectionModel().getSelectedItem().toString()=="Medium")
+			m._mode=mode.EASY;
+			m.IsExtremeMode=false;
+		}
+		else if (cmbLevel.getSelectionModel().getSelectedItem().toString()=="Medium") {
 			m.setHardModeOn();
-		
+			m._mode=mode.MEDIUM;
+			m.IsExtremeMode=false;
+		}
+		else if (cmbLevel.getSelectionModel().getSelectedItem().toString()=="Hard") {
+			m._mode=mode.HARD;
+			m.setHardModeOff();
+			m.IsExtremeMode=true;
+		}
 		m.start(s);
 		Stage stage = (Stage) btnPlay.getScene().getWindow();	    
 	    stage.close();

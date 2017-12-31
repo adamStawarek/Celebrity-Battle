@@ -72,13 +72,15 @@ import javafx.scene.image.ImageView;
 public class Main extends Application implements Initializable{
 	
 	BorderPane root;	
-	Player2 player,player2,player3;
+	Player2 player,player2;
+	Player2 pl1,pl2,pl3,pl4,pl5;
 	int WIDTH=1150,HEIGHT=700;
 	public boolean isPress=false,isPress2=false,isStop=false,IsEnd=false,SuperAttack=false,IsMultiPlayer=false,connection=false;
 	List<Bullet> bullets = new ArrayList<>();
     List<Bullet> bullets2 = new ArrayList<>();
 	private List<Point2D> points = new ArrayList<>();
 	private List<Player2> players = new ArrayList<>();
+	private List<Player2> playersSmall = new ArrayList<>();
 	SoundController sound1,sound2,sound3,sound4,sound5;	
 	public int n=1,k=0,t=0,r=0,timeToDisplayFinalWindow=0,attackloader=0,ComboTimeCounter=600;
 	public static int score1=0,score2=0,MAXSCORE=1200,volume;
@@ -108,7 +110,9 @@ public class Main extends Application implements Initializable{
 	ImageView i;
 	Image im;
 	
-	public static boolean IsHardMode=false,IsExplosion1=false, IsExplosion2=false, isOnline=false, isServer=false;
+	public static boolean IsHardMode=false,IsExplosion1=false, IsExplosion2=false, isOnline=false, isServer=false,IsExtremeMode=true;
+	int leftOrRightPlayers=0;
+	mode _mode=mode.EASY;
 	
 	Random randCombo;	
 	public static String res="/resources2";
@@ -159,13 +163,13 @@ public class Main extends Application implements Initializable{
 			root.getChildren().add(txtSCORES);
 	        
 			
-				txtWaitingForClient=new Text();
-				txtWaitingForClient.setText("");
-				txtWaitingForClient.setFill(Color.BLACK);
-				txtWaitingForClient.setFont(Font.font(STYLESHEET_CASPIAN, 60));
-				txtWaitingForClient.setLayoutX(100);
-				txtWaitingForClient.setLayoutY(300);
-				root.getChildren().add(txtWaitingForClient);
+			txtWaitingForClient=new Text();
+			txtWaitingForClient.setText("");
+			txtWaitingForClient.setFill(Color.BLACK);
+			txtWaitingForClient.setFont(Font.font(STYLESHEET_CASPIAN, 60));
+			txtWaitingForClient.setLayoutX(100);
+			txtWaitingForClient.setLayoutY(300);
+			root.getChildren().add(txtWaitingForClient);
 		
 			
 	        //Formatowanie textu
@@ -205,14 +209,6 @@ public class Main extends Application implements Initializable{
 	        	bonusView.setFitWidth(80);
 	        	root.setId("pane3");
 	        }
-	        
-	        //Do zrobienia na super hard mode(difficult)
-	        /*if(IsHardMode) {
-	        	player3=new Player2(res+"/Player3.png");
-	        	player3.setVelocity(new Point2D(2,2));
-	 	        addPlayerObject(player3, 0, 0);
-	        	players.add(player3);
-	        }*/
 	                
 	        //Dodawanie graczy
 	        player=new Player2(res+"/Player1.png");
@@ -223,7 +219,21 @@ public class Main extends Application implements Initializable{
 	        player2.setVelocity(new Point2D(0, 0));
 	        addPlayerObject(player2, 100, 100);	         
 	        players.add(player2);
-	        
+	        if(IsExtremeMode) {
+	        	
+				pl1 = new Player2(res+"/Player3.png");	       
+		        pl2 = new Player2(res+"/Player3.png");	              
+		        pl3 = new Player2(res+"/Player3.png");	       
+		        pl4 = new Player2(res+"/Player3.png");	               
+		        pl5 = new Player2(res+"/Player3.png");	       
+		          
+		        playersSmall.add(pl1);
+		        playersSmall.add(pl2);
+		        playersSmall.add(pl3);
+		        playersSmall.add(pl4);
+		        playersSmall.add(pl5);
+		        
+	        }
 	        
 	        
 	        timer = new AnimationTimer() {
@@ -274,12 +284,15 @@ public class Main extends Application implements Initializable{
 	                	
 	                }
 	                
+	                if(IsExtremeMode&&((time/100)!=0)) {
+	                	if((time/100)%15==0)
+	                		Add5Players();
+	                	Remove5Players();
+	                }
+	                
 	                
 	                if (isStop==false&&IsEnd==false&&IsMultiPlayer==false) {
 	                	 autoEnemy(player);
-	                	// if(IsHardMode) {
-	                		// autoEnemy(player3);
-	                	// }
 	                }
 	                
 	                if(IsExplosion1)
@@ -342,6 +355,56 @@ public class Main extends Application implements Initializable{
 	               }
 	               
 	            }
+
+				private void Remove5Players() {
+					for(Player2 p:playersSmall)
+					{
+						if(leftOrRightPlayers==1) {
+							if(p.GetPosX()<20&&players.contains(p)) {							
+								removeObject(p);
+							}else if(players.contains(p)&&(p.GetPosY()-player2.GetPosY()<50)&&(p.GetPosY()-player2.GetPosY()>-50)&&p.GetPosX()-player2.GetPosX()>0) {
+								shoot(p,bullets);
+							}
+						}else {
+							if(p.GetPosX()>WIDTH-20&&players.contains(p)) {				
+								//System.out.println("lll");
+								removeObject(p);
+							}else if(players.contains(p)&&(p.GetPosY()-player2.GetPosY()<50)&&(p.GetPosY()-player2.GetPosY()>-50)&&p.GetPosX()-player2.GetPosX()<0) {
+								shoot(p,bullets);
+							}
+						}
+						if(players.contains(p)&&GetDistanceUniversal(p.GetPosX(), p.GetPosY(), player2.GetPosX(), player2.GetPosY())<30) {
+							explosionImgCounter=1;
+   							explosionTimetoChangePic=0;				
+   							IsExplosion2=true;
+						}	
+					}
+						
+					
+				}
+
+				private void Add5Players() {
+					double i=0.05;
+					Random r=new Random();
+					leftOrRightPlayers=r.nextInt(2);
+					for(Player2 p:playersSmall)
+					{
+						if(!(IsObject(p))&&!(players.contains(p))) {
+							if(leftOrRightPlayers==1) {//Z lewej
+								players.add(p);
+								addPlayerObject(p, 0.7*WIDTH, HEIGHT*i);
+								p.setVelocity(new Point2D(-1,0));
+								i+=0.2;
+							}else {//z prawej
+								players.add(p);
+								p.setVelocity(new Point2D(1,0));
+								addPlayerObject(p, 20, HEIGHT*i);
+								i+=0.2;
+							}
+							 
+						}
+					}
+				}
 
 				private void addBonus() {
 	            	
@@ -453,7 +516,7 @@ public class Main extends Application implements Initializable{
 		                	}
 							
 						}
-						System.out.println(GetDistance());
+						//System.out.println(GetDistance());
 						attackloader+=10;
 						c.setRadius(attackloader);
 						if(attackloader>=300) {
@@ -564,7 +627,6 @@ public class Main extends Application implements Initializable{
 									if(ScorePosition<3) {
 										BSWcontrol bsw=new BSWcontrol();
 										bsw.ScorePosition=ScorePosition;
-										//bsw.score=score2;
 										bsw.score=time/100;
 										bsw.MaxScore=MAXSCORE;
 										try {
@@ -758,7 +820,7 @@ public class Main extends Application implements Initializable{
 	        	 }
 	        	if(IsOnlyPlayer1==false) {
 	        	if (e.getCode() == KeyCode.R) {          	
-	        		System.out.println(currentCombo);
+	        		//System.out.println(currentCombo);
 	        		
 	        	
 	        		if(currentCombo==100) {
@@ -809,7 +871,7 @@ public class Main extends Application implements Initializable{
 			
 			//ONLINE`
 			if(isOnline) {
-        		System.out.println("Online");
+        		//System.out.println("Online");
         		if(isServer) {
         			System.out.println("Server");
         			server=new Server(this,port);
@@ -848,7 +910,7 @@ public class Main extends Application implements Initializable{
 	
 	private void addPlayerObject(Obiect_Player object, double x, double y) {
         object.getView().setTranslateX(x);
-        object.getView().setTranslateY(y);
+        object.getView().setTranslateY(y);      
         root.getChildren().add(object.getView());
     }
 	
@@ -942,6 +1004,15 @@ public class Main extends Application implements Initializable{
         addObject(bullet, p.getView().getTranslateX()+30, p.getView().getTranslateY()+30);
 		
 	}
+	public void shoot4(Obiect_Player p,List<Bullet> b) {		
+		if(time%10==0) {
+        Bullet bullet = new Bullet();
+        bullet.setVelocity(p.getVelocity().normalize().multiply(5));
+        b.add(bullet);
+        addObject(bullet, p.getView().getTranslateX()+30, p.getView().getTranslateY()+30);
+		}
+		
+	}
 	
 	public void shootCombo1(Obiect_Player p,List<Bullet> b) {		
 		makeSound(sound2);
@@ -1033,6 +1104,15 @@ public class Main extends Application implements Initializable{
 	public void setHardModeOff() {
 		IsHardMode=false;
 	}
+
+	private boolean IsObject(Player2 o) {
+		return root.getChildren().contains(o);
+	}
+	
+	private void removeObject(Player2 o) {
+		players.remove(o);
+		root.getChildren().remove(o.getView());
+	}
 	
 	private boolean IsBonus() {
 		return root.getChildren().contains(bonusView);
@@ -1059,7 +1139,7 @@ public class Main extends Application implements Initializable{
 						pl1life.setText("Life: "+(MAXSCORE-score1)/12);
 						pl2life.setText("Life: "+(MAXSCORE-score2)/12);
 						txtScore.setText("Score: "+score2/12+" : "+score1/12);
-						System.out.println("Value:"+volume);
+						
 					}                	
                 }));
         timeline.playFromStart();
