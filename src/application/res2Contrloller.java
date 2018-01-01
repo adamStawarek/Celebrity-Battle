@@ -84,6 +84,7 @@ public class res2Contrloller extends Application implements Initializable{
 	        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("res2.fxml"));
 	                Parent root1 = (Parent) fxmlLoader.load();	               
 	                stage = new Stage();	
+	                stage.setResizable(false);
 	                root1.setId("dark-scene");
 	                Scene s=new Scene(root1);
 	                s.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
@@ -102,20 +103,13 @@ public class res2Contrloller extends Application implements Initializable{
 		if (IsTrumpWin) {
 			 i = new Image(getClass().getResourceAsStream(res+"/Player1Win.png"));
 			 txtResult.setText("Player1 wins!");
+			 imgEnd.setTranslateX(50);
 		}
 		else {
 			 i = new Image(getClass().getResourceAsStream(res+"/Player2Win.png"));
 			 txtResult.setText("Player2 wins!");
 		}
         imgEnd.setImage(i);
-		 /*File file=new File("C:\\Users\\Adam\\Desktop\\EndVideo1.mp4");
-
-		 String source=file.toURI().toString();
-		 //Media media = new Media(this.getClass().getResource("/resources2/EndVideo1.mp4").toExternalForm());
-		 Media media=new Media(source);
-		 javafx.scene.media.MediaPlayer player = new   javafx.scene.media.MediaPlayer(media);
-		 endVideo = new MediaView(player);
-		 player.play();*/
 	}	
 	
 }

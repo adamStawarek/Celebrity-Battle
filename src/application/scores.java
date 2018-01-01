@@ -72,6 +72,7 @@ public class scores extends Application implements Initializable{
 	                Scene s=new Scene(root);
 	                s.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 	                stage.setScene(s);  
+	                stage.setResizable(false);
 	                stage.show();
 	        }catch(Exception e) {
 	           e.printStackTrace();

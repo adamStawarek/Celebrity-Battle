@@ -1,18 +1,130 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.scene.control.*?>
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-
-<AnchorPane prefHeight="400.0" prefWidth="499.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8">
+<AnchorPane prefHeight="400.0" prefWidth="499.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.HowToPlay">
    <children>
-      <Label layoutX="47.0" layoutY="14.0" text="How to play?">
+      <Text layoutX="133.0" layoutY="50.0" strokeType="OUTSIDE" strokeWidth="0.0" text="How to play?">
          <font>
-            <Font name="SansSerif Regular" size="35.0" />
+            <Font name="Calibri Bold" size="40.0" />
          </font>
-      </Label>
+      </Text>
+      <Button layoutX="20.0" layoutY="347.0" mnemonicParsing="false" onAction="#GoBack" prefHeight="30.0" prefWidth="100.0" text="Go Back" />
+      <TextArea editable="false" layoutX="103.0" layoutY="165.0" prefHeight="95.0" prefWidth="370.0" text="You cant play online using wifi, if none of the ip addresses diplayed on the upper-left part of the online-window works correctly, you can check your address directly by typing 'ipconfig' (if you are using Windows) or 'ifconfig' (on Linux)." wrapText="true" />
+      <TextArea editable="false" layoutX="103.0" layoutY="263.0" prefHeight="47.0" prefWidth="370.0" text="If you play online and didn't  run a server on your computer,  don't forget to ask your opponent about server ip." wrapText="true" />
+      <ImageView fx:id="img1" fitHeight="47.0" fitWidth="49.0" layoutX="36.0" layoutY="189.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="img2" fitHeight="47.0" fitWidth="47.0" layoutX="36.0" layoutY="263.0" pickOnBounds="true" preserveRatio="true" />
+      <GridPane gridLinesVisible="true" layoutX="27.0" layoutY="67.0" prefHeight="90.0" prefWidth="445.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="39.0" minHeight="10.0" prefHeight="32.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="28.0" minHeight="10.0" prefHeight="28.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Text layoutX="10.0" layoutY="30.0" strokeType="OUTSIDE" strokeWidth="0.0" text="  PLAYER1" GridPane.rowIndex="1">
+               <font>
+                  <Font name="Calibri Bold" size="16.0" />
+               </font>
+            </Text>
+            <Text layoutX="10.0" layoutY="60.0" strokeType="OUTSIDE" strokeWidth="0.0" text="  PLAYER2" GridPane.rowIndex="2">
+               <font>
+                  <Font name="Calibri Bold" size="16.0" />
+               </font>
+            </Text>
+            <Text layoutX="10.0" layoutY="90.0" strokeType="OUTSIDE" strokeWidth="0.0" text="   'D'" GridPane.columnIndex="2" GridPane.rowIndex="2">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Text>
+            <Text layoutX="110.0" layoutY="30.0" strokeType="OUTSIDE" strokeWidth="0.0" text="   'LEFT'" GridPane.columnIndex="1" GridPane.rowIndex="1">
+               <font>
+                  <Font name="Calibri" size="16.0" />
+               </font>
+            </Text>
+            <Text layoutX="110.0" layoutY="60.0" strokeType="OUTSIDE" strokeWidth="0.0" text="   'A'" GridPane.columnIndex="1" GridPane.rowIndex="2">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Text>
+            <Text layoutX="85.0" layoutY="30.0" strokeType="OUTSIDE" strokeWidth="0.0" text="   RIGHT" GridPane.columnIndex="2">
+               <font>
+                  <Font name="Calibri Bold" size="16.0" />
+               </font>
+            </Text>
+            <Text layoutX="85.0" layoutY="30.0" strokeType="OUTSIDE" strokeWidth="0.0" text="   'RIGHT'" GridPane.columnIndex="2" GridPane.rowIndex="1">
+               <font>
+                  <Font name="Calibri" size="16.0" />
+               </font>
+            </Text>
+            <Text layoutX="160.0" layoutY="90.0" strokeType="OUTSIDE" strokeWidth="0.0" text="    LEFT" GridPane.columnIndex="1">
+               <font>
+                  <Font name="Calibri Bold" size="16.0" />
+               </font>
+            </Text>
+            <Text layoutX="160.0" layoutY="30.0" strokeType="OUTSIDE" strokeWidth="0.0" text="   SLOWER" GridPane.columnIndex="3">
+               <font>
+                  <Font name="Calibri Bold" size="16.0" />
+               </font>
+            </Text>
+            <Text layoutX="235.0" layoutY="30.0" strokeType="OUTSIDE" strokeWidth="0.0" text="   FASTER" GridPane.columnIndex="4">
+               <font>
+                  <Font name="Calibri Bold" size="16.0" />
+               </font>
+            </Text>
+            <Text layoutX="235.0" layoutY="30.0" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+            <Text layoutX="235.0" layoutY="60.0" strokeType="OUTSIDE" strokeWidth="0.0" text="   'S'" GridPane.columnIndex="3" GridPane.rowIndex="2">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Text>
+            <Text layoutX="10.0" layoutY="30.0" strokeType="OUTSIDE" strokeWidth="0.0" text="   'UP'" GridPane.columnIndex="4" GridPane.rowIndex="1">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Text>
+            <Text layoutX="10.0" layoutY="30.0" strokeType="OUTSIDE" strokeWidth="0.0" text="   'W'" GridPane.columnIndex="4" GridPane.rowIndex="2">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Text>
+            <Text layoutX="261.0" layoutY="29.0" strokeType="OUTSIDE" strokeWidth="0.0" text="   SHOOT" GridPane.columnIndex="5">
+               <font>
+                  <Font name="Calibri Bold" size="16.0" />
+               </font>
+            </Text>
+            <Text layoutX="135.0" layoutY="59.0" strokeType="OUTSIDE" strokeWidth="0.0" text="   'DOWN'" GridPane.columnIndex="3" GridPane.rowIndex="1">
+               <font>
+                  <Font name="Calibri" size="16.0" />
+               </font>
+            </Text>
+            <Text layoutX="261.0" layoutY="61.0" strokeType="OUTSIDE" strokeWidth="0.0" text="   'N'" GridPane.columnIndex="5" GridPane.rowIndex="1">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Text>
+            <Text layoutX="261.0" layoutY="90.0" strokeType="OUTSIDE" strokeWidth="0.0" text="   'R'" GridPane.columnIndex="5" GridPane.rowIndex="2">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Text>
+         </children>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+      </GridPane>
    </children>
 </AnchorPane>

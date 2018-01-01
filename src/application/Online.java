@@ -65,6 +65,7 @@ public class Online extends Application implements Initializable{
 	                Parent root1 = (Parent) fxmlLoader.load();
 	                stage = new Stage();
 	                //root1.setId("dark-scene");
+	                stage.setResizable(false);
 	                Scene s=new Scene(root1);                
 	                s.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 	                stage.setScene(s);  
@@ -109,12 +110,17 @@ public class Online extends Application implements Initializable{
 		else if (cmbScenario.getSelectionModel().getSelectedItem().toString()=="Krucjata Korwina") {
 			m.setScenario2();
 		}
-		else if (cmbScenario.getSelectionModel().getSelectedItem().toString()=="IQ over 200") {
+		else if (cmbScenario.getSelectionModel().getSelectedItem().toString()=="Windows vs Apple") {
 			m.setScenario3();
+		}
+		else if (cmbScenario.getSelectionModel().getSelectedItem().toString()=="Tesla vs Edison") {
+			m.setScenario4();
 		}
 		m.isOnline=true;
 		m.isServer=IsServer;
 		m.IsHardMode=false;
+		m.IsExtremeMode=false;
+		m.MAXSCORE=1200*3;
 		m.host=txtHost.getText();
 		m.port=Integer.parseInt(txtPort.getText());
 		m.IsMultiPlayer=true;
@@ -132,9 +138,9 @@ public class Online extends Application implements Initializable{
 		rbNo.setToggleGroup(group);
 		rbYes.setToggleGroup(group);
 		rbYes.setSelected(true);
-		cmbScenario.getItems().addAll("USA-Elections", "Krucjata Korwina","IQ over 200");
-		cmbScenario.getSelectionModel().select("USA-Elections");
-		Image i2 = new Image(getClass().getResourceAsStream("/sounds/Scenario1.jpg"));
+		cmbScenario.getItems().addAll("Windows vs Apple","Tesla vs Edison");
+		cmbScenario.getSelectionModel().select("Windows vs Apple");
+		Image i2 = new Image(getClass().getResourceAsStream("/sounds/Scenario3.jpg"));
 		imgScenario.setImage(i2);
 		lstIPs.setItems(items);
 		lstIPs.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
@@ -192,8 +198,12 @@ public class Online extends Application implements Initializable{
 			Image i = new Image(getClass().getResourceAsStream("/sounds/Scenario2.jpg"));
 			imgScenario.setImage(i);
 		}
-		else if (cmbScenario.getSelectionModel().getSelectedItem().toString()=="IQ over 200") {			
+		else if (cmbScenario.getSelectionModel().getSelectedItem().toString()=="Windows vs Apple") {			
 			Image i = new Image(getClass().getResourceAsStream("/sounds/Scenario3.jpg"));
+			imgScenario.setImage(i);
+		}
+		else if (cmbScenario.getSelectionModel().getSelectedItem().toString()=="Tesla vs Edison") {			
+			Image i = new Image(getClass().getResourceAsStream("/sounds/Scenario4.jpg"));
 			imgScenario.setImage(i);
 		}
 	}

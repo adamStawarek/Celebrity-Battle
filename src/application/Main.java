@@ -83,9 +83,9 @@ public class Main extends Application implements Initializable{
 	private List<Player2> playersSmall = new ArrayList<>();
 	SoundController sound1,sound2,sound3,sound4,sound5;	
 	public int n=1,k=0,t=0,r=0,timeToDisplayFinalWindow=0,attackloader=0,ComboTimeCounter=600;
-	public static int score1=0,score2=0,MAXSCORE=1200,volume;
+	public static int score1=0,score2=0,MAXSCORE=1200,volume=9;
 	public static int time;
-	int currentCombo=100,currentCombo2=100;//set for normal shooting
+	int currentCombo=100,currentCombo2=100;
 	public static Text txtSCORES;
 	@FXML
 	VBox VboxId;
@@ -179,7 +179,7 @@ public class Main extends Application implements Initializable{
 			
 	        sound1=new SoundController("/sounds/shoot.wav", volume);
 	        sound2=new SoundController("/sounds/t3.wav", volume);
-	        sound3=new SoundController("/sounds/h3.wav", volume);
+	        sound3=new SoundController("/sounds/t3.wav", volume);
 	        sound4=new SoundController("/sounds/gameOver.wav", volume);
 	        sound5=new SoundController("/sounds/explosion.wav", volume);
 	        
@@ -204,10 +204,14 @@ public class Main extends Application implements Initializable{
 	        	bonusView.setFitWidth(140);
 	        	root.setId("pane2");
 	        }
-	        else{
+	        else if((res=="/resources3")){
 	        	bonusView.setFitHeight(120);
 	        	bonusView.setFitWidth(80);
 	        	root.setId("pane3");
+	        }else {
+	        	bonusView.setFitHeight(120);
+	        	bonusView.setFitWidth(80);
+	        	root.setId("pane4");
 	        }
 	                
 	        //Dodawanie graczy
@@ -1015,7 +1019,7 @@ public class Main extends Application implements Initializable{
 	}
 	
 	public void shootCombo1(Obiect_Player p,List<Bullet> b) {		
-		makeSound(sound2);
+		//makeSound(sound2);
     	points.add(new Point2D(5,0));
     	points.add(new Point2D(-5,0));
     	points.add(new Point2D(0,5));
@@ -1033,7 +1037,7 @@ public class Main extends Application implements Initializable{
 	}
 	
 	public void shootCombo2(Obiect_Player p,List<Bullet> b) {
-		makeSound(sound2);
+		//makeSound(sound2);
 		Bullet bullet = new Bullet(Color.BLUE);
 		Bullet bullet2 = new Bullet(Color.YELLOW);
 		Bullet bullet3 = new Bullet(Color.GREEN);
@@ -1088,7 +1092,9 @@ public class Main extends Application implements Initializable{
 		HEIGHT=700;
 	}
 	
-	
+	public void setScenario4() {		
+		res="/resources4";
+	}
 	public void setScenario3() {		
 		res="/resources3";
 	}

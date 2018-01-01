@@ -88,8 +88,11 @@ public class settings extends Application implements Initializable{
 		else if (cmbScenario.getSelectionModel().getSelectedItem().toString()=="Krucjata Korwina") {
 			m.setScenario2();
 		}
-		else if (cmbScenario.getSelectionModel().getSelectedItem().toString()=="IQ over 200") {
+		else if (cmbScenario.getSelectionModel().getSelectedItem().toString()=="Windows vs Apple") {
 			m.setScenario3();
+		}
+		else if (cmbScenario.getSelectionModel().getSelectedItem().toString()=="Tesla vs Edison") {
+			m.setScenario4();
 		}
 		
 		if (cmbLevel.getSelectionModel().getSelectedItem().toString()=="Easy") {
@@ -108,7 +111,8 @@ public class settings extends Application implements Initializable{
 			m.IsExtremeMode=true;
 		}
 		m.start(s);
-		Stage stage = (Stage) btnPlay.getScene().getWindow();	    
+		Stage stage = (Stage) btnPlay.getScene().getWindow();	
+		
 	    stage.close();
 	}
 	
@@ -121,8 +125,12 @@ public class settings extends Application implements Initializable{
 			Image i = new Image(getClass().getResourceAsStream("/sounds/Scenario2.jpg"));
 			ScenarioImage.setImage(i);
 		}
-		else if (cmbScenario.getSelectionModel().getSelectedItem().toString()=="IQ over 200") {			
+		else if (cmbScenario.getSelectionModel().getSelectedItem().toString()=="Windows vs Apple") {			
 			Image i = new Image(getClass().getResourceAsStream("/sounds/Scenario3.jpg"));
+			ScenarioImage.setImage(i);
+		}
+		else if (cmbScenario.getSelectionModel().getSelectedItem().toString()=="Tesla vs Edison") {			
+			Image i = new Image(getClass().getResourceAsStream("/sounds/Scenario4.jpg"));
 			ScenarioImage.setImage(i);
 		}
 	}
@@ -156,6 +164,7 @@ public class settings extends Application implements Initializable{
 		    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("set.fxml"));
 	        Parent root1 = (Parent) fxmlLoader.load();
 	        stage = new Stage();
+	        stage.setResizable(false);
 	        root1.setId("dark-scene");
 	        s=new Scene(root1);
 	        stage.setScene(s); 	    
@@ -164,11 +173,7 @@ public class settings extends Application implements Initializable{
 	       
 			} catch(Exception e) {
 				e.printStackTrace();
-			}
-
-		
-		
-		
+			}	
 	}
 
 	@Override
@@ -176,7 +181,7 @@ public class settings extends Application implements Initializable{
 		
 		Image i = new Image(getClass().getResourceAsStream("/sounds/settings.png"));
 		SettingsImage.setImage(i);
-		Image i2 = new Image(getClass().getResourceAsStream("/sounds/Scenario1.jpg"));
+		Image i2 = new Image(getClass().getResourceAsStream("/sounds/Scenario3.jpg"));
 		ScenarioImage.setImage(i2);
 		Image i3 = new Image(getClass().getResourceAsStream("/sounds/soundOn.png"));
 		Image i4 = new Image(getClass().getResourceAsStream("/sounds/soundOff.png"));
@@ -201,8 +206,8 @@ public class settings extends Application implements Initializable{
 	    cmbLevel.getItems().addAll("Easy", "Medium", "Hard");
 	    cmbLevel.getSelectionModel().select("Medium");
 	    
-	    cmbScenario.getItems().addAll("USA-Elections", "Krucjata Korwina","IQ over 200");
-	    cmbScenario.getSelectionModel().select("USA-Elections");
+	    cmbScenario.getItems().addAll("Windows vs Apple","Tesla vs Edison");
+	    cmbScenario.getSelectionModel().select("Windows vs Apple");
 	    
 	    rbSingle.selectedProperty().addListener(new ChangeListener<Boolean>() {
 	        @Override

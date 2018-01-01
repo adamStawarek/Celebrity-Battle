@@ -41,6 +41,20 @@ public class meu extends Application implements Initializable{
 		}
 	}
 	
+	public void Instruction() {
+		aPlayer.Play();
+		Stage stage = (Stage) btnOnline.getScene().getWindow();	    
+	    stage.close();
+	    HowToPlay m=new HowToPlay();
+		Stage s=new Stage();
+		try {
+			m.start(s);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	public void OpenScores() {
 		aPlayer.Play();
 		System.out.println("SHow scores");
@@ -88,6 +102,7 @@ public class meu extends Application implements Initializable{
 	                stage = new Stage();
 	                root1.setId("dark-scene");
 	                Scene s=new Scene(root1);
+	                stage.setResizable(false);
 	                
 	                s.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 	                stage.setScene(s);  
