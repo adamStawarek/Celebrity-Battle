@@ -19,6 +19,7 @@ import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 
 public class settings extends Application implements Initializable{
@@ -44,6 +45,8 @@ public class settings extends Application implements Initializable{
 	@FXML
 	Slider sldVolume;
 	
+	int counter=0;
+	
 	@FXML
 	public void Play() {
 		
@@ -54,6 +57,10 @@ public class settings extends Application implements Initializable{
 		Stage s= new Stage();
 		
 		m.isOnline=false;
+		m.IsOnlyPlayer1=false;
+		m.IsOnlyPlayer2=false;
+		m.isServer=false;
+		m.connection=false;
 		m.volume=(int) sldVolume.getValue();
 		
 		if (!(rbSingle.isSelected()))
@@ -169,6 +176,7 @@ public class settings extends Application implements Initializable{
 	        s=new Scene(root1);
 	        stage.setScene(s); 	    
 	        s.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+	        
 	        stage.show();
 	       
 			} catch(Exception e) {
@@ -209,6 +217,17 @@ public class settings extends Application implements Initializable{
 	    cmbScenario.getItems().addAll("Windows vs Apple","Tesla vs Edison");
 	    cmbScenario.getSelectionModel().select("Windows vs Apple");
 	    
+	    cmbScenario.setOnKeyReleased(e->{
+	    	
+	    	if(e.getCode()==KeyCode.K) {
+        		counter++;
+        		if(counter==3)
+        			cmbScenario.getItems().addAll("USA-Elections","Krucjata Korwina");
+        		
+        	}
+	    		
+	    });
+	    
 	    rbSingle.selectedProperty().addListener(new ChangeListener<Boolean>() {
 	        @Override
 	        public void changed(ObservableValue<? extends Boolean> obs, Boolean wasPreviouslySelected, Boolean isNowSelected) {
@@ -227,8 +246,6 @@ public class settings extends Application implements Initializable{
             			else {
             				imgVolume.setImage(i3);
             			}
-                        //System.out.println(new_val.doubleValue());
-                        //opacityValue.setText(String.format("%.2f", new_val));
                 }
             });
 	    

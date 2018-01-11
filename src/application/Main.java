@@ -594,7 +594,7 @@ public class Main extends Application implements Initializable{
 						if (n>10) {
 																					
 							player.ChangeImg(res+"/Player1Lost.png");
-							txtSCORES.setText("Player1 sucks!");
+							txtSCORES.setText("Player2 wins!");
 							IsEnd=true;							
 							timeToDisplayFinalWindow++;
 							if(timeToDisplayFinalWindow>240) {
@@ -657,7 +657,7 @@ public class Main extends Application implements Initializable{
 						if (n>10) {
 														
 							player2.ChangeImg(res+"/Player2Lost.png");			
-							txtSCORES.setText("Player2 sucks!");							
+							txtSCORES.setText("Player1 wins!");							
 							IsEnd=true;							
 							timeToDisplayFinalWindow++;
 							if(timeToDisplayFinalWindow>240) {

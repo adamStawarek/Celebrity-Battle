@@ -35,12 +35,12 @@
           <RowConstraints maxHeight="28.0" minHeight="10.0" prefHeight="28.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Text layoutX="10.0" layoutY="30.0" strokeType="OUTSIDE" strokeWidth="0.0" text="  PLAYER1" GridPane.rowIndex="1">
+            <Text layoutX="10.0" layoutY="30.0" strokeType="OUTSIDE" strokeWidth="0.0" text="  PLAYER 1" GridPane.rowIndex="1">
                <font>
                   <Font name="Calibri Bold" size="16.0" />
                </font>
             </Text>
-            <Text layoutX="10.0" layoutY="60.0" strokeType="OUTSIDE" strokeWidth="0.0" text="  PLAYER2" GridPane.rowIndex="2">
+            <Text layoutX="10.0" layoutY="60.0" strokeType="OUTSIDE" strokeWidth="0.0" text="  PLAYER 2" GridPane.rowIndex="2">
                <font>
                   <Font name="Calibri Bold" size="16.0" />
                </font>

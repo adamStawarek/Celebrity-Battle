@@ -40,7 +40,7 @@ public class Server extends Thread{
             // System.out.println("Received:"+received+";"+received.length());
           
              
-            //mo¿na potem wyjebac(chyba)
+            //mo¿na potem wywalic
             if (received.equals("end")) {
                 running = false;
                 continue;
