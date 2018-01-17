@@ -75,7 +75,7 @@ public class Main extends Application implements Initializable{
 	Player2 player,player2;
 	Player2 pl1,pl2,pl3,pl4,pl5;
 	int WIDTH=1150,HEIGHT=700;
-	public boolean isPress=false,isPress2=false,isStop=false,IsEnd=false,SuperAttack=false,IsMultiPlayer=false,connection=false;
+	public boolean isPress=false,isPress2=false,isStop=false,IsEnd=false,SuperAttack=false,IsMultiPlayer=false,connection=false,isAlmostEnd=false;
 	List<Bullet> bullets = new ArrayList<>();
     List<Bullet> bullets2 = new ArrayList<>();
 	private List<Point2D> points = new ArrayList<>();
@@ -332,7 +332,8 @@ public class Main extends Application implements Initializable{
 	   						if(80>dist1) {
 	   							root.getChildren().remove(dangerView);
 	   							timeWithDanger=0;
-	   							score2+=100;
+	   							if(isAlmostEnd==false)
+	   								score2+=100;
 	   							explosionImgCounter=1;
 	   							explosionTimetoChangePic=0;
 	   							IsExplosion1=true;
@@ -342,7 +343,8 @@ public class Main extends Application implements Initializable{
 	   						else if(80>dist2) {
 	   							root.getChildren().remove(dangerView);
 	   							timeWithoutDanger=0;
-	   							score1+=100;
+	   							if(isAlmostEnd==false)
+	   								score1+=100;
 	   							explosionImgCounter=1;
 	   							explosionTimetoChangePic=0;				
 	   							IsExplosion2=true;
@@ -644,6 +646,7 @@ public class Main extends Application implements Initializable{
 							}
 							}
 						else {
+							isAlmostEnd=true;
 							player.ChangeImg(res+"/p1explosion"+n+".png");							
 							k++;
 							if (k%3==0&&k<43)
@@ -677,6 +680,7 @@ public class Main extends Application implements Initializable{
 							}
 						}
 						else {
+							isAlmostEnd=true;
 							player2.ChangeImg(res+"/p2explosion"+n+".png");							
 							k++;
 							if (k%3==0&&k<43)
@@ -709,7 +713,8 @@ public class Main extends Application implements Initializable{
 			            
 			                if (bullet.isColliding(player2)) {
 			                	if(isServer==false) {
-			                		score1++;
+			                		if(isAlmostEnd==false)
+			                			score1++;
 			                	}
 			                    root.getChildren().removeAll(bullet.getView());
 			                }
@@ -719,7 +724,8 @@ public class Main extends Application implements Initializable{
 			            
 		                if (bullet.isColliding(player)) {
 		                	if(isServer==false) {
-		                		score2++;
+		                		if(isAlmostEnd==false)
+		                			score2++;
 		                	}	                	
 		                    root.getChildren().removeAll(bullet.getView());
 		                }
