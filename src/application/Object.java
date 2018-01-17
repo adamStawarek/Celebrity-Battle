@@ -2,8 +2,6 @@ package application;
 
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
-import javafx.scene.image.Image;
-
 public class Object {
 	 public Node view;
 	 public Point2D velocity = new Point2D(0, 0);

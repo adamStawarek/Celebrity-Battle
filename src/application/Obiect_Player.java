@@ -1,14 +1,6 @@
 package application;
 
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.util.List;
-
-import javax.imageio.ImageIO;
-
-import application.Main.Bullet;
 import javafx.geometry.Point2D;
-import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 

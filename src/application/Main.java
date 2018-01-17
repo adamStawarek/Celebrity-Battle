@@ -1,72 +1,36 @@
 package application;
 	
-import java.applet.Applet;
-import java.io.BufferedReader;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.net.SocketException;
 import java.net.URL;
-import java.net.UnknownHostException;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.ResourceBundle;
-
-import javax.swing.JOptionPane;
-
-import application.Main.Bullet;
 import javafx.animation.AnimationTimer;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
-import javafx.application.Platform;
-import javafx.beans.binding.BooleanBinding;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyCodeCombination;
-import javafx.scene.input.KeyCombination;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Point2D;
-import javafx.scene.media.AudioClip;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 
 
 public class Main extends Application implements Initializable{
@@ -81,7 +45,7 @@ public class Main extends Application implements Initializable{
 	private List<Point2D> points = new ArrayList<>();
 	private List<Player2> players = new ArrayList<>();
 	private List<Player2> playersSmall = new ArrayList<>();
-	SoundController sound1,sound2,sound3,sound4,sound5;	
+	SoundController sound1,sound2,sound3,sound4,sound5,sound6,sound7;	
 	public int n=1,k=0,t=0,r=0,timeToDisplayFinalWindow=0,attackloader=0,ComboTimeCounter=600;
 	public static int score1=0,score2=0,MAXSCORE=1200,volume=9;
 	public static int time;
@@ -182,6 +146,9 @@ public class Main extends Application implements Initializable{
 	        sound3=new SoundController("/sounds/t3.wav", volume);
 	        sound4=new SoundController("/sounds/gameOver.wav", volume);
 	        sound5=new SoundController("/sounds/explosion.wav", volume);
+	        sound6=new SoundController("/sounds/song1.wav", volume);
+	        sound7=new SoundController("/sounds/song2.wav", volume);
+	        
 	        
 	        randCombo=new Random();
 	        
@@ -237,6 +204,55 @@ public class Main extends Application implements Initializable{
 		        playersSmall.add(pl4);
 		        playersSmall.add(pl5);
 		        
+	        }
+	        if(isOnline) {
+	        	instructions inst =  new instructions();
+	        	inst.playerNumb=2;
+	        	switch(res) {
+	        		case "/resources4":
+	        			inst.scenario=4;
+	        			break;
+	        		case "/resources3":
+	        			inst.scenario=3;
+	        			break;
+	        		case "/resources2":
+	        			inst.scenario=2;
+	        			break;
+	        		case "/resources":
+	        			inst.scenario=1;
+	        			break;
+	        	}
+	        	if(isServer) {
+        			inst.playerNumb=1;
+        		}
+        		
+        	      	
+        	inst.start(primaryStage);
+	        	
+	        }
+	        
+	        if(IsMultiPlayer==false&&!isOnline) {
+	        	instructions inst =  new instructions();
+	        	switch(res) {
+	        		case "/resources4":
+	        			inst.scenario=4;
+	        			break;
+	        		case "/resources3":
+	        			inst.scenario=3;
+	        			break;
+	        		case "/resources2":
+	        			inst.scenario=2;
+	        			break;
+	        		case "/resources":
+	        			inst.scenario=1;
+	        			break;
+	        	}
+	        	
+	        
+	        		inst.playerNumb=1;        		
+	        	
+	        	        	
+	        	inst.start(primaryStage);
 	        }
 	        
 	        
@@ -594,7 +610,13 @@ public class Main extends Application implements Initializable{
 				private void updatePic() {										
 					if(score2>MAXSCORE) {						
 						if (n>10) {
-																					
+							
+							if (res=="/resources") {	        	
+								 sound7.clip.stop();
+						     }
+						     else if(res=="/resources2"){
+						         sound6.clip.stop();
+						     }												
 							player.ChangeImg(res+"/Player1Lost.png");
 							txtSCORES.setText("Player2 wins!");
 							IsEnd=true;							
@@ -658,7 +680,14 @@ public class Main extends Application implements Initializable{
 					}
 					if(score1>MAXSCORE) {
 						if (n>10) {
-														
+							if (res=="/resources") {	        	
+								 sound7.clip.stop();
+						     }
+						     else if(res=="/resources2"){
+						         sound6.clip.stop();
+						     }
+							
+							
 							player2.ChangeImg(res+"/Player2Lost.png");			
 							txtSCORES.setText("Player1 wins!");							
 							IsEnd=true;							
@@ -862,14 +891,14 @@ public class Main extends Application implements Initializable{
 	        	 }	     
 	        	}
 	        	 	//Pomocnicza funkcja(zamraza przeciwnika w czasie gry) do testowania przed oddaniem do usuniêcia	         
-		           if (e.getCode() == KeyCode.DIGIT1) {
+		           /*if (e.getCode() == KeyCode.DIGIT1) {
 		            	if (isStop)
 		            		isStop=false;
 		            	else
 		            		isStop=true;
 		            	player.setVelocity(new Point2D(0,0));
 		            	player2.setVelocity(new Point2D(0,0));
-		              }
+		              }*/
 		           
 	        	isPress2=isPress=false;           	
 	        	
@@ -878,6 +907,14 @@ public class Main extends Application implements Initializable{
 	        
 	        timer.start();		
 			primaryStage.show();
+			time=0;
+			 if (res=="/resources") {	        	
+				 makeSound(sound7);
+		     }
+		     else if(res=="/resources2"){
+		         makeSound(sound6);
+		     }
+			
 			
 			//ONLINE`
 			if(isOnline) {

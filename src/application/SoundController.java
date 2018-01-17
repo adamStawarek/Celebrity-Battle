@@ -1,10 +1,7 @@
 package application;
 
-import java.applet.Applet;
-import java.applet.AudioClip;
-import java.io.File;
+
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
 import java.util.ResourceBundle;
 

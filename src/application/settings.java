@@ -15,7 +15,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.Slider;
-import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -48,7 +47,7 @@ public class settings extends Application implements Initializable{
 	int counter=0;
 	
 	@FXML
-	public void Play() {
+	public void Play(){
 		
 		SoundController sound=new SoundController("/sounds/confirm.wav", 3);
 		sound.Play();
@@ -117,7 +116,7 @@ public class settings extends Application implements Initializable{
 			m.setHardModeOff();
 			m.IsExtremeMode=true;
 		}
-		m.start(s);
+		m.start(s);		
 		Stage stage = (Stage) btnPlay.getScene().getWindow();	
 		
 	    stage.close();
@@ -221,7 +220,7 @@ public class settings extends Application implements Initializable{
 	    	
 	    	if(e.getCode()==KeyCode.K) {
         		counter++;
-        		if(counter==3)
+        		if(counter==10)
         			cmbScenario.getItems().addAll("USA-Elections","Krucjata Korwina");
         		
         	}

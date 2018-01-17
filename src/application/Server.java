@@ -5,10 +5,7 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
-
-import javafx.application.Platform;
 import javafx.geometry.Point2D;
-import javafx.scene.text.Text;
 
 public class Server extends Thread{
 	private DatagramSocket socket;

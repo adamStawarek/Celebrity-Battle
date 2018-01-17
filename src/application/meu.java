@@ -2,10 +2,6 @@ package application;
 
 import java.net.URL;
 import java.util.ResourceBundle;
-
-import javax.sound.midi.SysexMessage;
-
-import javafx.animation.ScaleTransition;
 import javafx.animation.TranslateTransition;
 import javafx.application.Application;
 import javafx.application.Platform;
